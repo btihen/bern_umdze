@@ -1,3 +1,5 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  get '/landing', to: 'landing#index', as: :landing
+  root to: "landing#index"
+  # get 'landing/index'
 end
