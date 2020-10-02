@@ -79,8 +79,14 @@ RSpec.configure do |config|
   # support for Factory Bot
   config.include FactoryBot::Syntax::Methods
 
+  # rarely used
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :view
+
   # setup devise login helpers in Rspec (login helpers)
+  config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include Devise::Test::IntegrationHelpers, type: :request
+  
   # allows us for force session logouts (im feature tests)
   config.include Warden::Test::Helpers
 end
