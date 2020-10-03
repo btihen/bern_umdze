@@ -10,10 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_03_094757) do
+ActiveRecord::Schema.define(version: 2020_10_27_083639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "events", force: :cascade do |t|
+    t.string "event_name", null: false
+    t.string "event_description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "reservations", force: :cascade do |t|
+    t.string "host_name"
+    t.text "alert_notice"
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.time "start_time", null: false
+    t.time "end_time", null: false
+    t.datetime "start_date_time", null: false
+    t.datetime "end_date_time", null: false
+    t.boolean "is_cancelled", default: false, null: false
+    t.bigint "event_id", null: false
+    t.bigint "space_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["end_date"], name: "index_reservations_on_end_date"
+    t.index ["event_id", "space_id", "start_date_time", "end_date_time"], name: "index_reservation_unique", unique: true
+    t.index ["event_id"], name: "index_reservations_on_event_id"
+    t.index ["space_id"], name: "index_reservations_on_space_id"
+    t.index ["start_date"], name: "index_reservations_on_start_date"
+  end
+
+  create_table "spaces", force: :cascade do |t|
+    t.string "space_name", null: false
+    t.string "space_location"
+    t.boolean "publicly_visible", default: true, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["space_name"], name: "index_spaces_on_space_name", unique: true
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -36,7 +73,7 @@ ActiveRecord::Schema.define(version: 2020_10_03_094757) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "real_name"
-    t.string "user_role"
+    t.string "access_role"
     t.string "username", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -45,4 +82,6 @@ ActiveRecord::Schema.define(version: 2020_10_03_094757) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "reservations", "events"
+  add_foreign_key "reservations", "spaces"
 end
