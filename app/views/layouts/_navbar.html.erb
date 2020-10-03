@@ -1,0 +1,62 @@
+<nav class="navbar has-background-light" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    
+    <h4 class="title is-4">
+    <%= link_to "Bern Umdze", root_path, class: 'navbar-item' %>
+    </h4>
+    <!--
+    <%# link_to root_path, class: 'navbar-item' do %>
+    <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+    <%# end %>
+    -->
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <!--
+    <div class="navbar-start">
+      <a class="navbar-item">
+        <%= link_to "Home", root_path, class: 'navbar-item' %>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More
+        </a>
+
+        <div class="navbar-dropdown">
+          <a class="navbar-item">
+            About
+          </a>
+          <a class="navbar-item">
+            Jobs
+          </a>
+          <a class="navbar-item">
+            Contact
+          </a>
+          <hr class="navbar-divider">
+          <a class="navbar-item">
+            Report an issue
+          </a>
+        </div>
+      </div>
+    </div>
+    -->
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <% if current_user.nil? %>
+            <%= link_to("Einloggen", new_user_session_path, class: 'button is-info is-outlined') %>
+          <% else %>
+            <%= link_to("Ausloggen", destroy_user_session_path, method: :delete, class: 'button is-info is-outlined') %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

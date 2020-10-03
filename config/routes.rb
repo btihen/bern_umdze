@@ -13,7 +13,11 @@ Rails.application.routes.draw do
   # end
   get '/home', to: 'home#index', as: :home
   # get 'home/index'
+
   devise_for :users
+  authenticated :user do
+    root to: 'home#index', as: :user_root
+  end
 
   # get 'landing/index'
   get '/landing', to: 'landing#index', as: :landing
