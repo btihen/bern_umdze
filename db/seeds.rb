@@ -8,6 +8,7 @@
 # test with:
 # user = User.first
 # user.valid_password? "xxxx"
-user  = User.create(email: "user@test.com",
+user  = User.create(email: "user@test.ch",
+                    username: "username",
                     password: "Let-M3-In-N0w",
                     password_confirmation: "Let-M3-In-N0w")
