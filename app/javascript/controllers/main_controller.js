@@ -2,6 +2,7 @@
 import fontawesome from '@fortawesome/fontawesome'
 import icons from '@fortawesome/fontawesome-free-regular'
 import { Controller } from 'stimulus'
+
 export default class extends Controller {
   initialize() {
     fontawesome.library.add(icons)

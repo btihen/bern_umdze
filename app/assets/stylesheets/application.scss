@@ -1,22 +1,15 @@
 @charset "utf-8";
 
-// bring in base variables
-@import "~bulma/sass/utilities/initial-variables.sass";
-
-// overwrite variables
-$navbar-breakpoint: $tablet;
-$subtitle-line-height: 1.3;
-
 // import fonts
-@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto+Slab|Open+Sans');
-@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+// @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto+Slab|Open+Sans');
+// @import url('https://fonts.googleapis.com/css?family=Ubuntu');
 
 // add bulma variables to compile
-$family-sans-serif: 'Open Sans', Helvetica, Arial, sans-serif;
-$family-monospace: 'Source Code Pro', monospace;
-$family-primary:'Ubuntu', sans-serif;
+// $family-sans-serif: 'Open Sans', Helvetica, Arial, sans-serif;
+// $family-monospace: 'Source Code Pro', monospace;
+// $family-primary:'Ubuntu', sans-serif;
 
-$subtitle-line-height: 1.5;
+$subtitle-line-height: 1.3;
 
 // Set your brand colors
 // $purple: #8A4D76;
@@ -46,11 +39,7 @@ $subtitle-line-height: 1.5;
 // @import '@creativebulma/bulma-collapsible';
 // @import 'bulma-extensions';
 
-
-// compile variables
-@import "~bulma/bulma.sass";
-@import '~bulma/bulma';
-
-// @import '_layout';
-// @import 'calendar';
-// @import 'reservation';
+// import additional scss layouts
+@import '_layout';
+@import 'calendar';
+@import 'reservation';

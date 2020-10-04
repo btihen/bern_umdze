@@ -61,15 +61,17 @@ class CalendarView
     I18n.t("date.abbr_month_names")[month_number]
   end
 
-  def choose_reservations_modal_html(space, date, reservations = [])
+  def choose_reservations_modal_header_html(space, date)
+    %Q{<b>#{display_date(date)}</b> im <b>#{space.space_name}</b>}
+  end
+
+  def choose_reservations_modal_body_html(space, date, reservations = [])
     %Q{ <section class="modal-card-body">
+          <p class="has-text-centered is-4">
+            am <b>#{display_date(date)}</b> im <b>#{space.space_name}</b>
+          </p>
           <div class="content is-medium has-text-left">
             #{model_reservations_formatting(date, reservations)}
-          </div>
-          <hr>
-          <div class="content is-medium has-text-centered">
-            Location: <b>#{space.space_name}</b><br>
-            Date: <b>#{display_date(date)}</b>
           </div>
         </section>
         <footer class="modal-card-foot">

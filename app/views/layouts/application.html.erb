@@ -18,8 +18,12 @@
     <%= yield(:head) %>
     <% end %>
 
-    <%# stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%# loads my local style sheets %>
+    <%= stylesheet_pack_tag 'application' %>
+
+    <%# turbo links must be a line (or it overrides the local style sheets) %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%# stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">

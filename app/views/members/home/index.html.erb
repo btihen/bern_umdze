@@ -18,8 +18,8 @@
       <p class="is-size-4 has-text-centered">Place: <strong><%= space_view.space_name%></strong></p>
       <%= render 'calendar',  user_view: user_view, space_view: space_view,
                               calendar_view: calendar_view,
-                              prev_month_path: patrons_path(date: calendar_view.prev_month_string),
-                              next_month_path: patrons_path(date: calendar_view.next_month_string)  %>
+                              prev_month_path: home_path(date: calendar_view.prev_month_string),
+                              next_month_path: home_path(date: calendar_view.next_month_string)  %>
     </div>
     <% end %>
   </div>
