@@ -144,8 +144,8 @@
 }
 
 // only use border for is-today
-.calendar .calendar-date .date-item.is-active.has-canceled {
-  background: #f0c791;
+.calendar .calendar-date .date-item.is-active.has-cancelled {
+  background: #f7acaa;
   border-width: medium;
   color: #4b4b4b;
 }
@@ -174,8 +174,8 @@
   color: #4b4b4b;
 }
 
-.calendar .calendar-date .date-item.is-active.has-canceled.is-today {
-  background: #f0c791;
+.calendar .calendar-date .date-item.is-active.has-cancelled.is-today {
+  background: #f7acaa;
   // border-color: #0c227e; // old nav color
   // border-color: #414bbb;
   border-color: #2a42a4;
