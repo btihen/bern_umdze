@@ -67,6 +67,16 @@ Rails.application.routes.draw do
     namespace :umdzes do
       resources :reservations, only: [:edit, :update]
     end
+    namespace :trustees do
+      resources :reservations, except: [:index]
+    end
+    # scope module: 'umdzes', as: 'umdzes' do
+    #   resources :reservations, except: [:index]
+    # end
+    # scope module: 'trustees', as: 'trustees' do
+    #   resources :reservations, except: [:index]
+    # end
+    # https://stackoverflow.com/questions/4753871/how-can-i-redirect-a-users-home-root-path-based-on-their-role-using-devise
     get '/home', to: 'landing#index',       constraints: lambda { |request| !request.env['warden'].user }
     get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
     get '/home', to: 'umdzes/home#index',   constraints: lambda { |request|  request.env['warden'].user.access_role == :umdze }

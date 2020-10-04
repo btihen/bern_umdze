@@ -58,10 +58,10 @@ hour_ev_end   = Time.parse('20:30')
 
   # schedule events within spaces
   spaces.each do |space|
-    FactoryBot.create(:reservation, space: space, event: events.first,  start_date: date_0, start_time: hour_ev_start, end_date: date_2, end_time: hour_pm_end, host_name: [nil, User.all.sample.username].sample)
-    FactoryBot.create(:reservation, space: space, event: events.second, start_date: date_3, start_time: hour_am_start, end_date: date_3, end_time: hour_am_end, host_name: [nil, User.all.sample.username].sample)
-    FactoryBot.create(:reservation, space: space, event: events.last,   start_date: date_3, start_time: hour_ev_start, end_date: date_3, end_time: hour_ev_end, host_name: [nil, User.all.sample.username].sample)
-    FactoryBot.create(:reservation, space: space, event: events.sample, start_date: date_5, start_time: hour_pm_start, end_date: date_5, end_time: hour_ev_end, host_name: [nil, User.all.sample.username].sample)
+    FactoryBot.create(:reservation, space: space, event: events.first,  start_date: date_0, start_time: hour_ev_start, end_date: date_2, end_time: hour_pm_end, host_name: [nil, User.all.map(&:username)].flatten.sample, is_cancelled: [0,1,2,3,4,5,6,7,8,9].sample == 1)
+    FactoryBot.create(:reservation, space: space, event: events.second, start_date: date_3, start_time: hour_am_start, end_date: date_3, end_time: hour_am_end, host_name: [nil, User.all.map(&:username)].flatten.sample, is_cancelled: [0,1,2,3,4,5,6,7,8,9].sample == 3)
+    FactoryBot.create(:reservation, space: space, event: events.last,   start_date: date_3, start_time: hour_ev_start, end_date: date_3, end_time: hour_ev_end, host_name: [nil, User.all.map(&:username)].flatten.sample, is_cancelled: [0,1,2,3,4,5,6,7,8,9].sample == 5)
+    FactoryBot.create(:reservation, space: space, event: events.sample, start_date: date_5, start_time: hour_pm_start, end_date: date_5, end_time: hour_ev_end, host_name: [nil, User.all.map(&:username)].flatten.sample, is_cancelled: [0,1,2,3,4,5,6,7,8,9].sample == 7)
     # space.save
   end
 end

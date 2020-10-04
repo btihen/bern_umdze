@@ -1,4 +1,4 @@
-class SpaceView < ViewObject
+class SpaceView < ViewBase
 
   # alias method allows use to rename view_object to a clear name without the initializer
   alias_method :space,      :root_model

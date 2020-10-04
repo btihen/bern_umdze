@@ -6,7 +6,7 @@
   <meta name="turbolinks-visit-control" content="reload">
 <% end %>
 
-<p hidden id='umdze-edit-resevation-<%= reservation.id %>' class='pageName'>Umdze Edit Reservation <%= reservation.id %></p>
+<p hidden id='trustee-edit-resevation-<%= reservation.id %>' class='pageName'>Trustee Edit Reservation <%= reservation.id %></p>
 
 <h2 class="sub-title is-size-5">
   Edit: <strong><%= event.event_name %></strong>
@@ -20,6 +20,7 @@
               url: umdzes_reservation_path(reservation),    # PATH MUST BE SINGULAR!!!
               id: "edit-reservation-form", class: "reservation" ) do |form|  %>
 
-<%= render 'form', form: form, reservation: reservation %>
+  <%= render 'form',  form: form, reservation: reservation,
+                      spaces: spaces, events: events %>
 
 <% end %>

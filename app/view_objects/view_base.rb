@@ -2,7 +2,7 @@
 require 'csv'
 
 # https://makandracards.com/makandra/1307-how-to-use-helper-methods-inside-a-model
-class ViewObject < ActionView::Base
+class ViewBase < ActionView::Base
 
   include ActiveModel::Model
   include ActiveModel::Serializers::JSON
@@ -40,7 +40,7 @@ class ViewObject < ActionView::Base
   # `to_param` and `model_name` which are needed for `link_to`
   # `id` is just important to have for the view to render the model properly
   # `to_partial_path` is required for the view to `render` collections properly
-  # figure out how to point to the ROOT_MODEL of the ViewObject instance
+  # figure out how to point to the ROOT_MODEL of the View Object instance
   delegate :id, :to_param, :model_name, :to_partial_path, to: :root_model
 
   def initialize(root_model, view_context=nil)

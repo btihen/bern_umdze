@@ -1,4 +1,4 @@
-class ReservationView < ViewObject
+class ReservationView < ViewBase
 
   # alias method allows use to rename view_object to a clear name without the initializer
   alias_method :reservation,      :root_model

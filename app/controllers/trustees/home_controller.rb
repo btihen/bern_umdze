@@ -7,7 +7,7 @@ class Trustees::HomeController < ApplicationController
 
     user_view     = ::UserView.new(user)
     space_views   = ::SpaceView.collection(spaces)
-    calendar_view = ::CalendarView.new(user_view, date)
+    calendar_view = Trustees::CalendarView.new(user_view, date)
 
     render :index, locals: {user_view: user_view,
                             spaces_view: space_views,
