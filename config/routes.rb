@@ -20,14 +20,12 @@ Rails.application.routes.draw do
   # end
   # get '/members', to: 'members/home#index', as: :members
 
-  # get 'home/index'
-  get '/home', to: 'home#index', as: :home
   # https://stackoverflow.com/questions/4753871/how-can-i-redirect-a-users-home-root-path-based-on-their-role-using-devise
-  # get '/home', to: 'landing#index',       constraints: lambda { |request| !request.env['warden'].user }
-  # get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
-  # get '/home', to: 'umdzes/home#index',   constraints: lambda { |request|  request.env['warden'].user.access_role == :umdze }
-  # get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role == :member }
-  # get '/home', to: 'trustees/home#index', constraints: lambda { |request|  request.env['warden'].user.access_role == :trustee }
+  get '/home', to: 'members/home#index',  constraints: lambda { |request| !request.env['warden'].user }
+  get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
+  get '/home', to: 'umdzes/home#index',   constraints: lambda { |request|  request.env['warden'].user.access_role == :umdze }
+  get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role == :member }
+  get '/home', to: 'trustees/home#index', constraints: lambda { |request|  request.env['warden'].user.access_role == :trustee }
   # or
   # https://bjedrocha.com/rails/2015/03/18/role-based-routing-in-rails/
   # constraints RoleRouteConstraint.new { |user| user.has_role? :trustee } do

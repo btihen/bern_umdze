@@ -30,7 +30,7 @@
         <% calendar_view.date_range.each do |day| %>
         <div class="<%= calendar_view.date_class_string(day, reservations) %>">
 
-          <%# date-item has reservation and within month of interest - with tool-tips and modal pop-ups %>
+          <%# date-item has reservation and within month of interest - create modal pop-ups %>
           <% if calendar_view.date_in_month_of_interest?(day) &&
                       calendar_view.date_has_reservation?(day, reservations) %>
           <button data-html="true" 
@@ -44,10 +44,11 @@
           </button>
 
           <%# date-item has reservation and NOT in month of interest - needs is-active for green dot %>
-          <%#  - get tool-tips working %>
           <% elsif !calendar_view.date_in_month_of_interest?(day) &&
                       calendar_view.date_has_reservation?(day, reservations)  %>
-          <button data-html="true" data-tooltip="<%= calendar_view.date_item_tooltip_data(day, reservations) %>" class="date-item modal-button is-active">
+          <button data-html="true" 
+                  data-tooltip="<%= calendar_view.date_item_tooltip_data(day, reservations) %>" 
+                  class="date-item modal-button is-active">
             <%= day.mday %>
           </button>
 

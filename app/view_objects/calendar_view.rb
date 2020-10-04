@@ -99,7 +99,7 @@ class CalendarView
             </dt>
             <dd>
               #{"<strike>" if dr.is_cancelled?}Event: <big><b>#{dr.event_name}</b></big><br>
-              #{dr.host_name.blank? ? "<span class='has-background-danger-light'>Host: <strong>No one</strong></span>" : ("Host: <strong>" + dr.host_name + "</strong>")}#{"</strike>" if dr.is_cancelled?}
+              #{dr.host_name.blank? ? "<span class='has-background-warning-light'>Host: <strong>Kein Umdze</strong></span>" : ("Host: <strong>" + dr.host_name + "</strong>")}#{"</strike>" if dr.is_cancelled?}
               #{alert_notice(dr)}
               #{edit_button_html(dr)}
             </dd>
@@ -136,6 +136,9 @@ class CalendarView
     strings = ["modal-button"]
     strings << "is-today"   if date == today
     strings << "is-active"  if date_has_reservation?(date, reservations)
+    strings << "has-cancelled"     if date_has_cancelled_event?(date, reservations)
+    strings << "has-missing-host"  if date_has_event_wo_host?(date, reservations) && 
+                                      !date_has_cancelled_event?(date, reservations)
     strings.join(" ")
   end
 
@@ -175,6 +178,20 @@ class CalendarView
   def date_has_reservation?(date, reservations = [])
     return false if reservations.blank?
     reservations.any?{ |r| r.date_range.include?(date) }
+  end
+
+  def date_has_cancelled_event?(date, reservations = [])
+    return false if reservations.blank?
+    reservations_this_day = reservations.select { |r| r.date_range.include?(date) }
+    return false if reservations_this_day.blank?
+    reservations_this_day.any?{ |r| r.is_cancelled? }
+  end
+
+  def date_has_event_wo_host?(date, reservations = [])
+    # return false if reservations.blank?
+    reservations_this_day = reservations.select { |r| r.date_range.include?(date) }
+    # return false if reservations_this_day.blank?
+    reservations_this_day.any?{ |r| r.host_name.blank? }
   end
 
   private
