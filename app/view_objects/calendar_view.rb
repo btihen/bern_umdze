@@ -70,10 +70,13 @@ class CalendarView
           <div class="content is-medium has-text-left">
             #{model_reservations_formatting(date, reservations)}
           </div>
+          #{new_button_html(space, date)}
         </section>
+        <!--
         <footer class="modal-card-foot">
           #{new_button_html(space, date)}
         </footer>
+        -->
       }
   end
 
