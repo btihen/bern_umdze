@@ -67,9 +67,6 @@ class CalendarView
 
   def choose_reservations_modal_body_html(space, date, reservations = [])
     %Q{ <section class="modal-card-body">
-          <p class="has-text-centered is-4">
-            am <b>#{display_date(date)}</b> im <b>#{space.space_name}</b>
-          </p>
           <div class="content is-medium has-text-left">
             #{model_reservations_formatting(date, reservations)}
           </div>
@@ -91,7 +88,7 @@ class CalendarView
                           else
                             'has-background-grey-lighter'
                           end
-      %Q{<div class="#{event_color_class}">
+      %Q{<div class="#{event_color_class} with-button">
           <dl class="is-medium reservation">
             <dt>
               #{"<big><b>CANCELLED</b></big><br>" if dr.is_cancelled? }

@@ -20,12 +20,16 @@ Rails.application.routes.draw do
   # end
   # get '/members', to: 'members/home#index', as: :members
 
-  # https://stackoverflow.com/questions/4753871/how-can-i-redirect-a-users-home-root-path-based-on-their-role-using-devise
-  get '/home', to: 'members/home#index',  constraints: lambda { |request| !request.env['warden'].user }
-  get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
-  get '/home', to: 'umdzes/home#index',   constraints: lambda { |request|  request.env['warden'].user.access_role == :umdze }
-  get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role == :member }
-  get '/home', to: 'trustees/home#index', constraints: lambda { |request|  request.env['warden'].user.access_role == :trustee }
+  # get '/home', to: 'members/home#index',  constraints: lambda { |request| !request.env['warden'].user }
+  # get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
+  # resources :reservations, only: [:edit, :update], constraints: lambda { |request|  request.env['warden'].user.access_role == :umdze }
+
+  # # https://stackoverflow.com/questions/4753871/how-can-i-redirect-a-users-home-root-path-based-on-their-role-using-devise
+  # get '/home', to: 'members/home#index',  constraints: lambda { |request| !request.env['warden'].user }
+  # get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
+  # get '/home', to: 'umdzes/home#index',   constraints: lambda { |request|  request.env['warden'].user.access_role == :umdze }
+  # get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role == :member }
+  # get '/home', to: 'trustees/home#index', constraints: lambda { |request|  request.env['warden'].user.access_role == :trustee }
   # or
   # https://bjedrocha.com/rails/2015/03/18/role-based-routing-in-rails/
   # constraints RoleRouteConstraint.new { |user| user.has_role? :trustee } do
@@ -54,9 +58,21 @@ Rails.application.routes.draw do
   # authenticated :user, ->(user) { user.access_role == 'member' } do
   #   root to: 'members/home#index', as: :member_root
   # end
-  # This is the safe way to have multiple userroutes by types
+  # This is the safe way to have multiple user routes by types
+  # ONLY AVAILABLE IF AUTHENTICATED: 
+  # https://github.com/heartcombo/devise/wiki/How-To:-Define-resource-actions-that-require-authentication-using-routes.rb
   ##################
   authenticated :user do
+    
+    namespace :umdzes do
+      resources :reservations, only: [:edit, :update]
+    end
+    get '/home', to: 'landing#index',       constraints: lambda { |request| !request.env['warden'].user }
+    get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
+    get '/home', to: 'umdzes/home#index',   constraints: lambda { |request|  request.env['warden'].user.access_role == :umdze }
+    get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role == :member }
+    get '/home', to: 'trustees/home#index', constraints: lambda { |request|  request.env['warden'].user.access_role == :trustee }
+
     # root to: 'home#index', as: :user_root
     root to: 'landing#index',       as: :landing_root, constraints: lambda { |request| !request.env['warden'].user }
     root to: 'members/home#index',  as: :user_root,    constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
@@ -72,6 +88,7 @@ Rails.application.routes.draw do
   # root to: 'members/home#index',  as: :member_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'member' }
   # root to: 'trustees/home#index', as: :trustee_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'trustee' }
   # root to: 'members/home#index',  as: :user_root
+  get '/home', to: 'landing#index'
   root to: "landing#index"
 
   # get '/', to: "landing#index",       constraints: lambda { |request| !request.env['warden'].user }
