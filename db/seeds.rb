@@ -30,7 +30,7 @@ trustee = User.create(email: "trustee@test.ch",
 
 spaces = []
 spaces << FactoryBot.create(:space, space_name: "Center")
-spaces << FactoryBot.create(:space, space_name: "Anex")
+# spaces << FactoryBot.create(:space, space_name: "Anex")
 
 # events = []
 # 5.times do
