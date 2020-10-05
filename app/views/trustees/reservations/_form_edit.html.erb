@@ -50,7 +50,7 @@
         <div class="field has-addons is-grouped is-grouped-multiline">
           <div class="control">
             <%= form.time_select :start_time, 
-                                  {selected: reservation.start_time, minute_step: 10},
+                                  {selected: reservation.start_time, minute_step: 5},
                                   class: 'select' %>
             <p class="help">Time Required</p>
             <%= error_message_on(form.object, :start_time) %>
@@ -82,7 +82,7 @@
         <div class="field has-addons is-grouped is-grouped-multiline">
           <div class="control">
             <%= form.time_select :end_time, 
-                                  {selected: reservation.end_time, minute_step: 10},
+                                  {selected: reservation.end_time, minute_step: 5},
                                   class: 'select' %>
             <p class="help">Time Required</p>
             <%= error_message_on(form.object, :end_time) %>
