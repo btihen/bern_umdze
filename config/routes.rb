@@ -68,7 +68,7 @@ Rails.application.routes.draw do
       resources :reservations, only: [:edit, :update]
     end
     namespace :trustees do
-      resources :reservations, except: [:index]
+      resources :reservations, only: [:edit, :update, :new, :create]
     end
     # scope module: 'umdzes', as: 'umdzes' do
     #   resources :reservations, except: [:index]
@@ -83,7 +83,12 @@ Rails.application.routes.draw do
     get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role == :member }
     get '/home', to: 'trustees/home#index', constraints: lambda { |request|  request.env['warden'].user.access_role == :trustee }
 
-    # root to: 'home#index', as: :user_root
+    # hmm prettier, but doesn't match?
+    # root to: 'trustees/home#index', as: :trustee_root, constraints: AccessConstraint.new(:trustee)
+    # root to: 'members/home#index',  as: :member_root,  constraints: AccessConstraint.new(:member)
+    # root to: 'umdzes/home#index',   as: :umdze_root,   constraints: AccessConstraint.new(:umdze)
+
+    # ugly, but works as auto-redirect upon login
     root to: 'landing#index',       as: :landing_root, constraints: lambda { |request| !request.env['warden'].user }
     root to: 'members/home#index',  as: :user_root,    constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
     root to: 'umdzes/home#index',   as: :umdze_root,   constraints: lambda { |request|  request.env['warden'].user.access_role == 'umdze' }

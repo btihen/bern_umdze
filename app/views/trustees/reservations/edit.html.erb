@@ -17,10 +17,9 @@
 </h3>
 
 <%= form_for( reservation, local: true,
-              url: umdzes_reservation_path(reservation),    # PATH MUST BE SINGULAR!!!
+              url: trustees_reservation_path(reservation),    # PATH MUST BE SINGULAR!!!
               id: "edit-reservation-form", class: "reservation" ) do |form|  %>
 
-  <%= render 'form',  form: form, reservation: reservation,
-                      spaces: spaces, events: events %>
+  <%= render 'form_edit', form: form, reservation: reservation %>
 
 <% end %>
