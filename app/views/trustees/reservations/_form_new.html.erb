@@ -115,17 +115,17 @@
         </div>
       </div>
     </div>
-    <!--
+
     <div class="field is-horizontal">
       <div class="field-label is-normal">Start Date</div>
       <div class="field-body">
         <div class="field has-addons is-grouped is-grouped-multiline">
           <div class="control">
-            <%# form.date_select :start_date, 
+            <%= form.date_select :start_date, 
                                   {selected: reservation.start_date},
                                   class: 'select' %>
             <p class="help">Date Required</p>
-            <%# error_message_on(form.object, :start_date) %>
+            <%= error_message_on(form.object, :start_date) %>
           </div>
         </div>
       </div>
@@ -136,11 +136,11 @@
       <div class="field-body">
         <div class="field has-addons is-grouped is-grouped-multiline">
           <div class="control">
-            <%# form.time_select :start_time, 
+            <%= form.time_select :start_time, 
                                   {selected: reservation.start_time, minute_step: 10},
                                   class: 'select' %>
             <p class="help">Time Required</p>
-            <%# error_message_on(form.object, :start_time) %>
+            <%= error_message_on(form.object, :start_time) %>
           </div>
         </div>
       </div>
@@ -153,11 +153,11 @@
       <div class="field-body">
         <div class="field has-addons is-grouped is-grouped-multiline">
           <div class="control">
-            <%# form.date_select :end_date, 
+            <%= form.date_select :end_date, 
                                   {selected: reservation.end_date},
                                   class: 'select' %>
             <p class="help">Date Required</p>
-            <%# error_message_on(form.object, :end_date) %>
+            <%= error_message_on(form.object, :end_date) %>
           </div>
         </div>
       </div>
@@ -168,16 +168,15 @@
       <div class="field-body">
         <div class="field has-addons is-grouped is-grouped-multiline">
           <div class="control">
-            <%# form.time_select :end_time, 
+            <%= form.time_select :end_time, 
                                   {selected: reservation.end_time, minute_step: 10},
                                   class: 'select' %>
             <p class="help">Time Required</p>
-            <%# error_message_on(form.object, :end_time) %>
+            <%= error_message_on(form.object, :end_time) %>
           </div>
         </div>
       </div>
     </div>
-    -->
 
     <div class="field is-horizontal">
       <div class="field-label is-normal">Cancelled?</div>

@@ -98,7 +98,6 @@ class Trustees::ReservationForm < FormBase
     new_reservation.event            = event
     new_reservation.space            = space
     new_reservation.host_name        = host_name
-binding.pry
     new_reservation.start_date       = start_date || attributes["start_date"]
     new_reservation.end_date         = end_date   || attributes["end_date"]
     new_reservation.start_time       = start_time || attributes["start_time"]
