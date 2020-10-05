@@ -1,4 +1,4 @@
-class Umdzes::ReservationsController < ApplicationController
+class Umdzes::ReservationsController < Umdzes::ApplicationController
 
   def edit
     user          = current_user

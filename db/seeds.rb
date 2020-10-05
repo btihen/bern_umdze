@@ -10,7 +10,6 @@
 # user.valid_password? "xxxx"
 user    = User.create(email: "user@test.ch",
                       username: "user",
-                      access_role: nil,
                       password: "Let-M3-In!",
                       password_confirmation: "Let-M3-In!")
 member  = User.create(email: "member@test.ch",

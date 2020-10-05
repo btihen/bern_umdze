@@ -1,4 +1,4 @@
-class Trustees::ReservationsController < ApplicationController
+class Trustees::ReservationsController < Trustees::ApplicationController
 
   def new
     user          = current_user

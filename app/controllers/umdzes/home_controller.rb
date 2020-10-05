@@ -1,4 +1,4 @@
-class Umdzes::HomeController < ApplicationController
+class Umdzes::HomeController < Umdzes::ApplicationController
   
   def index
     spaces        = Space.all
