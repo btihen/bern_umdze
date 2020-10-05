@@ -1,0 +1,45 @@
+<!--
+  https://github.com/turbolinks/turbolinks#ensuring-specific-pages-trigger-a-full-reload
+  https://stackoverflow.com/questions/39627881/jquery-plugin-initialization-on-browser-back-button-for-turbolinks-rails-5/39801052
+  -->
+<% content_for :head do %>
+  <meta name="turbolinks-visit-control" content="reload">
+<% end %>
+
+<p hidden id='trustee-index-user' class='pageName'>Trustee Index Users</p>
+
+<h2 class="sub-title is-size-5">Manage Users</h2>
+
+<%= link_to 'New Trustees User', new_trustees_user_path %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>email</th>
+      <th>Name</th>
+      <th>Access Role</th>
+      <th>Reset Password</th>
+      <th>Delete User</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% users.each do |user| %>
+      <tr>
+        <td><%= link_to "#{user.display_name}", edit_trustees_user_path(user) %></td>
+        <td><%= link_to "#{user.email}",        edit_trustees_user_path(user) %></td>
+        <td><%= link_to "#{user.real_name}",    edit_trustees_user_path(user) %></td>
+        <td><%= link_to "#{user.access_role}",  edit_trustees_user_path(user) %></td>
+        <td>Reset Password</td>
+        <td><%= link_to 'Destroy', trustees_user_path(user),
+                        method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Trustees User', new_trustees_user_path %>

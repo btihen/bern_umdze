@@ -21,7 +21,7 @@ RSpec.describe 'Home Page Features without a login', type: :feature do
     after do
       sign_out user
     end
-    
+
     scenario 'Visit home Page' do
       visit home_path
       expect(page).to  have_http_status(:success)

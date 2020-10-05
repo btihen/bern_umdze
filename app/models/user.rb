@@ -11,7 +11,8 @@ class User < ApplicationRecord
 
   attr_writer :login
 
-  validates :username,  presence: true, 
+  # before validation (take first part of email and parameritze for user name)
+  validates :username,  presence: true,
                         uniqueness: { case_sensitive: false },
                         format: { with: /\A[a-z0-9_\-]*\z/,
                                   message: "only lowercase letters, numbers, underscores and dashes allowed" }
@@ -19,8 +20,8 @@ class User < ApplicationRecord
   def login
     @login || username || email
     # @login || self.username || self.email
-  end 
-  
+  end
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
@@ -31,4 +32,5 @@ class User < ApplicationRecord
       where(conditions.to_h).first
     end
   end
+
 end

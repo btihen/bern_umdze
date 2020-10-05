@@ -17,12 +17,20 @@
   </div>
 
   <div id="navbarBasicExample" class="navbar-menu">
-    <!--
     <div class="navbar-start">
-      <a class="navbar-item">
-        <%= link_to "Home", root_path, class: 'navbar-item' %>
-      </a>
 
+      <% if current_user&.access_role.eql?("trustee") %>
+      <a class="navbar-item">
+        <%= link_to "Kalendar", root_path, class: 'navbar-item' %>
+      </a>
+      <% end %>
+
+      <% if current_user&.access_role.eql?("trustee") %>
+      <a class="navbar-item">
+        <%= link_to "Manage Users", trustees_users_path, class: 'navbar-item' %>
+      </a>
+      <% end %>
+      <!--
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
           More
@@ -44,16 +52,19 @@
           </a>
         </div>
       </div>
+      -->
     </div>
-    -->
 
     <div class="navbar-end">
+      <%= link_to "Profile", root_path, class: 'navbar-item' if current_user %>
       <div class="navbar-item">
         <div class="buttons">
           <% if current_user.nil? %>
-            <%= link_to("Einloggen", new_user_session_path, class: 'button is-info is-outlined') %>
+            <%= link_to("Einloggen", new_user_session_path,
+                        class: 'button is-info is-outlined') %>
           <% else %>
-            <%= link_to("Ausloggen", destroy_user_session_path, method: :delete, class: 'button is-info is-outlined') %>
+            <%= link_to("Ausloggen", destroy_user_session_path,
+                        method: :delete, class: 'button is-info is-outlined') %>
           <% end %>
         </div>
       </div>

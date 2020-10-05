@@ -1,0 +1,17 @@
+<%= form_with(model: trustees_user, local: true) do |form| %>
+  <% if trustees_user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(trustees_user.errors.count, "error") %> prohibited this trustees_user from being saved:</h2>
+
+      <ul>
+        <% trustees_user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

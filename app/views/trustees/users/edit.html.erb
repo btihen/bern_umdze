@@ -1,0 +1,16 @@
+<!--
+  https://github.com/turbolinks/turbolinks#ensuring-specific-pages-trigger-a-full-reload
+  https://stackoverflow.com/questions/39627881/jquery-plugin-initialization-on-browser-back-button-for-turbolinks-rails-5/39801052
+  -->
+<% content_for :head do %>
+  <meta name="turbolinks-visit-control" content="reload">
+<% end %>
+
+<p hidden id='trustee-edit-user-<%= user.id %>' class='pageName'>Trustee Edit User <%= user.id %></p>
+
+<h2 class="sub-title is-size-5">Editing: </h2>
+
+<%= render 'form', user: user %>
+
+<%= link_to 'Show', user %> |
+<%= link_to 'Back', trustees_users_path %>

@@ -3,6 +3,8 @@
 # stuff available to all forms
 module FormHelper
 
+  ACCESS_ROLES = %w[trustee umdze member]
+
   def error_message_on(object, method)
     return unless object.respond_to?(:errors) && object.errors.include?(method)
 

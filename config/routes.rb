@@ -59,17 +59,19 @@ Rails.application.routes.draw do
   #   root to: 'members/home#index', as: :member_root
   # end
   # This is the safe way to have multiple user routes by types
-  # ONLY AVAILABLE IF AUTHENTICATED: 
+  # ONLY AVAILABLE IF AUTHENTICATED:
   # https://github.com/heartcombo/devise/wiki/How-To:-Define-resource-actions-that-require-authentication-using-routes.rb
   ##################
   authenticated :user do
-    
+
     namespace :umdzes do
       resources :reservations, only: [:edit, :update]
     end
     namespace :trustees do
+      resources :users,        only: [:edit, :update, :new, :create, :index, :delete]
       resources :reservations, only: [:edit, :update, :new, :create]
     end
+    # https://devblast.com/b/rails-5-routes-scope-vs-namespace
     # scope module: 'umdzes', as: 'umdzes' do
     #   resources :reservations, except: [:index]
     # end
@@ -77,11 +79,11 @@ Rails.application.routes.draw do
     #   resources :reservations, except: [:index]
     # end
     # https://stackoverflow.com/questions/4753871/how-can-i-redirect-a-users-home-root-path-based-on-their-role-using-devise
-    get '/home', to: 'landing#index',       constraints: lambda { |request| !request.env['warden'].user }
-    get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
-    get '/home', to: 'umdzes/home#index',   constraints: lambda { |request|  request.env['warden'].user.access_role == :umdze }
-    get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role == :member }
-    get '/home', to: 'trustees/home#index', constraints: lambda { |request|  request.env['warden'].user.access_role == :trustee }
+    # get '/home', to: 'landing#index',       constraints: lambda { |request| !request.env['warden'].user }
+    # get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
+    # get '/home', to: 'umdzes/home#index',   constraints: lambda { |request|  request.env['warden'].user.access_role == :umdze }
+    # get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role == :member }
+    # get '/home', to: 'trustees/home#index', constraints: lambda { |request|  request.env['warden'].user.access_role == :trustee }
 
     # hmm prettier, but doesn't match?
     # root to: 'trustees/home#index', as: :trustee_root, constraints: AccessConstraint.new(:trustee)
