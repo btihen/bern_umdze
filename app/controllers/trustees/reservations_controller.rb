@@ -2,7 +2,8 @@ class Trustees::ReservationsController < Trustees::ApplicationController
 
   def new
     user          = current_user
-    date          = params[:date].nil? ? Date.today : params[:date].to_s.to_date
+    date          = params[:date].to_s.to_date || Date.today # will crash if date invalid
+    space         = Space.find_by(id: params[:space_id]) || Space.first
     spaces        = Space.all
     events        = Event.all
 
@@ -10,7 +11,11 @@ class Trustees::ReservationsController < Trustees::ApplicationController
     events_views  = EventView.collection(events)
     spaces_views  = SpaceView.collection(spaces)
 
-    reservation   = Reservation.new
+    end_time      = Time.parse("#{(Time.now + 2.hour).hour}:00")
+    start_time    = Time.parse("#{(Time.now + 1.hour).hour}:00")
+
+    reservation   = Reservation.new(start_date: date, end_date: date, space_id: space.id,
+                                    start_time: start_time, end_time: end_time)
     reservation_form = Trustees::ReservationForm.new_from(reservation)
 
     render :new, locals: {user: user_view,
@@ -27,14 +32,18 @@ class Trustees::ReservationsController < Trustees::ApplicationController
     user_view     = UserView.new(user)
     events_views  = EventView.collection(events)
     spaces_views  = SpaceView.collection(spaces)
-    reservation_form = Trustees::ReservationForm.new(reservation_params)
 
+    # Rails models understand how to assemble date_forms
+    # "start_date(1i)"=>"2015", "start_date(2i)"=>"1", "start_date(3i)"=>"10", "start_time(1i)"=>"2020", "start_time(2i)"=>"10", "start_time(3i)"=>"5", "start_time(4i)"=>"00", "start_time(5i)"=>"00", "end_date(1i)"=>"2015", "end_date(2i)"=>"1", "end_date(3i)"=>"10", "end_time(1i)"=>"2020", "end_time(2i)"=>"10", "end_time(3i)"=>"5", "end_time(4i)"=>"00", "end_time(5i)"=>"10"
+    # reservation   = Reservation.new(reservation_params)
+    reservation_form = Trustees::ReservationForm.new(reservation_params)
+binding.pry
     if reservation_form.valid?
       reservation = reservation_form.reservation
       reservation.save!
 
       flash[:notice] = "#{reservation.event.event_name} event was successfully reserved."
-      redirect_to admins_path
+      redirect_to root_path
     else
       flash[:alert] = 'Please fix the errors'
       render :new, locals: {user: user_view,

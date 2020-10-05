@@ -1,6 +1,7 @@
 class Reservation < ApplicationRecord
   belongs_to :space
   belongs_to :event
+  accepts_nested_attributes_for :event
 
   before_validation :create_date_times
   validates :space,      presence: true
