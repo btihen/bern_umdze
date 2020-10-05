@@ -96,12 +96,12 @@ class CalendarView
             <dt>
               #{"<big><b>CANCELLED</b></big><br>" if dr.is_cancelled? }
               #{"<strike>" if dr.is_cancelled?}#{dr.date_range_string}#{"</strike>" if dr.is_cancelled?}
+              #{edit_button_html(dr)}
             </dt>
             <dd>
               #{"<strike>" if dr.is_cancelled?}Event: <big><b>#{dr.event_name}</b></big><br>
               #{dr.host_name.blank? ? "<span class='has-background-warning-light'>Host: <strong>Kein Umdze</strong></span>" : ("Host: <strong>" + dr.host_name + "</strong>")}#{"</strike>" if dr.is_cancelled?}
               #{alert_notice(dr)}
-              #{edit_button_html(dr)}
             </dd>
           </dl>
         </div>}
@@ -120,7 +120,9 @@ class CalendarView
     return "" if reservation_date.alert_notice.blank?
 
     %Q{ <br>
+        <div class="has-notice">
         <strong>Important:<br>#{reservation_date.alert_notice}</strong>
+        </div>
       }
   end
 
@@ -136,9 +138,13 @@ class CalendarView
     strings = ["modal-button"]
     strings << "is-today"   if date == today
     strings << "is-active"  if date_has_reservation?(date, reservations)
-    strings << "has-cancelled"     if date_has_cancelled_event?(date, reservations)
-    strings << "has-missing-host"  if date_has_event_wo_host?(date, reservations) && 
-                                      !date_has_cancelled_event?(date, reservations)
+    if date_has_cancelled_event?(date, reservations)
+      strings << "has-cancelled"
+    elsif date_has_event_wo_host?(date, reservations)
+      strings << "has-missing-host"
+    elsif date_has_notice?(date, reservations)
+      strings << "has-notice"
+    end
     strings.join(" ")
   end
 
@@ -192,6 +198,13 @@ class CalendarView
     reservations_this_day = reservations.select { |r| r.date_range.include?(date) }
     # return false if reservations_this_day.blank?
     reservations_this_day.any?{ |r| r.host_name.blank? }
+  end
+
+  def date_has_notice?(date, reservations = [])
+    # return false if reservations.blank?
+    reservations_this_day = reservations.select { |r| r.date_range.include?(date) }
+    # return false if reservations_this_day.blank?
+    !reservations_this_day.all?{ |r| r.alert_notice.blank? }
   end
 
   private

@@ -10,7 +10,15 @@
   padding-bottom: 15px;
 }
 
+// scrollable modal card body the -140px needs to be larger if you include a footer
+// with footer try -220px
+// https://stackoverflow.com/questions/10476632/how-to-scroll-the-page-when-a-modal-dialog-is-longer-than-the-screen
+// https://stackoverflow.com/questions/25874001/how-to-put-scroll-bar-only-for-modal-body/56229656
 .modal-card-body {
-    max-height: calc(100vh - 140px);
+    max-height: calc(100vh - 120px);
     overflow-y: auto;
+}
+
+.has-notice {
+  background: #f7e0ad;
 }
