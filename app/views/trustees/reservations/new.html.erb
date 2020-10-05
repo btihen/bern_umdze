@@ -14,8 +14,8 @@
               url: trustees_reservations_path,  # MUST BE PLURAL
               id: "new-reservation-form", class: "reservation" ) do |form|  %>
 
-<%= render 'form',  form: form, reservation: reservation,
-                    spaces: spaces, events: events %>
+<%= render 'form_new',  form: form, reservation: reservation,
+                        spaces: spaces, events: events %>
 
 <% end %>
 

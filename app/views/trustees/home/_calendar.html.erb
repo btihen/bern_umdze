@@ -43,6 +43,23 @@
             <%= day.mday %>
           </button>
 
+          <%# admin is allowed to add new events when today is empty (today has another css so it needs a new case) %>
+          <% elsif calendar_view.date_in_month_of_interest?(day) && day == Date.today %>
+          <%# date-item button for a new link %>
+          <%= link_to day.mday,
+                      new_trustees_reservation_path(space_id: space_view.id,
+                                                    date: calendar_view.display_date(day)),
+                      class: "date-item button is-light is-today" %>
+
+
+          <%# admin is allowed to add new events on empty days not today %>
+          <% elsif calendar_view.date_in_month_of_interest?(day) %>
+          <%# date-item button for a new link %>
+          <%= link_to day.mday,
+                      new_trustees_reservation_path(space_id: space_view.id,
+                                                    date: calendar_view.display_date(day)),
+                      class: "date-item button is-light" %>
+
           <%# date-item has reservation and NOT in month of interest - needs is-active for green dot %>
           <% elsif !calendar_view.date_in_month_of_interest?(day) &&
                       calendar_view.date_has_reservation?(day, reservations)  %>
