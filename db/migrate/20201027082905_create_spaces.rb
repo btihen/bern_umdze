@@ -2,7 +2,7 @@ class CreateSpaces < ActiveRecord::Migration[6.0]
   def change
     create_table :spaces do |t|
       t.string  :space_name,        null: false
-      t.string  :space_location
+      t.text    :space_location
       t.boolean :publicly_visible,  null: false, default: true
 
       t.timestamps
