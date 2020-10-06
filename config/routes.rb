@@ -68,8 +68,7 @@ Rails.application.routes.draw do
       resources :reservations, only: [:edit, :update]
     end
     namespace :trustees do
-      resources :users,        only: [:edit, :update, :new, :create, :index, :delete]
-      resources :reservations, only: [:edit, :update, :new, :create]
+      resources :reservations, only: [:edit, :update, :new, :create, :destroy]
     end
     # https://devblast.com/b/rails-5-routes-scope-vs-namespace
     # scope module: 'umdzes', as: 'umdzes' do

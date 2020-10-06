@@ -97,6 +97,7 @@ class CalendarView
               #{"<big><b>CANCELLED</b></big><br>" if dr.is_cancelled? }
               #{"<strike>" if dr.is_cancelled?}#{dr.date_range_string}#{"</strike>" if dr.is_cancelled?}
               #{edit_button_html(dr)}
+              #{delete_button_html(dr)}
             </dt>
             <dd>
               #{"<strike>" if dr.is_cancelled?}Event: <big><b>#{dr.event_name}</b></big><br>
@@ -113,6 +114,10 @@ class CalendarView
   end
 
   def edit_button_html(reservation_date)
+    ""
+  end
+
+  def delete_button_html(reservation_date)
     ""
   end
 

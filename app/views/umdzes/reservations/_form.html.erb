@@ -125,10 +125,11 @@
       <div class="field-body">
         <div class="field is-grouped is-grouped-multiline">
           <div class="control">
-            <%= form.submit("Save", class: "button is-link is-info is-outlined is-light") %>
+            <%= form.submit("Save", class: "button is-success is-info is-outlined is-light") %>
           </div>
           <div class="control">
-            <%= link_to 'Back', root_path, class: 'button is-link is-danger is-outlined' %>
+            <%= link_to 'Back', root_path(date: reservation.start_date.to_s),
+                        class: 'button is-link is-outlined' %>
           </div>
         </div>
       </div>

@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 2020_10_27_083639) do
 
   create_table "spaces", force: :cascade do |t|
     t.string "space_name", null: false
-    t.string "space_location"
+    t.text "space_location"
     t.boolean "publicly_visible", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

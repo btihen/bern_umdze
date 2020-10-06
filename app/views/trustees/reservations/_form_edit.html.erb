@@ -122,10 +122,19 @@
       <div class="field-body">
         <div class="field is-grouped is-grouped-multiline">
           <div class="control">
-            <%= form.submit("Save", class: "button is-link is-info is-outlined is-light") %>
+            <%= form.submit("Save",
+                  class: "button is-link is-success is-outlined is-light") %>
           </div>
           <div class="control">
-            <%= link_to 'Back', root_path, class: 'button is-link is-danger is-outlined' %>
+            <%= link_to 'Back',
+                  root_path(date: reservation.start_date.to_s),
+                  class: 'button is-link is-outlined' %>
+          </div>
+          <div class="control">
+            <%= link_to "Delete",
+                  trustees_reservation_path(reservation),
+                  method: :delete, data: {confirm: "Are you sure?"},
+                  class: "button is-danger" %>
           </div>
         </div>
       </div>
