@@ -121,7 +121,7 @@
       <div class="field-body">
         <div class="field has-addons is-grouped is-grouped-multiline">
           <div class="control">
-            <%= form.date_select :start_date, 
+            <%= form.date_select :start_date,
                                   {selected: reservation.start_date},
                                   class: 'select' %>
             <p class="help">Date Required</p>
@@ -136,7 +136,7 @@
       <div class="field-body">
         <div class="field has-addons is-grouped is-grouped-multiline">
           <div class="control">
-            <%= form.time_select :start_time, 
+            <%= form.time_select :start_time,
                                   {selected: reservation.start_time, minute_step: 5},
                                   class: 'select' %>
             <p class="help">Time Required</p>
@@ -146,14 +146,12 @@
       </div>
     </div>
 
-    <br>
-
     <div class="field is-horizontal">
       <div class="field-label is-normal">End Date</div>
       <div class="field-body">
         <div class="field has-addons is-grouped is-grouped-multiline">
           <div class="control">
-            <%= form.date_select :end_date, 
+            <%= form.date_select :end_date,
                                   {selected: reservation.end_date},
                                   class: 'select' %>
             <p class="help">Date Required</p>
@@ -168,7 +166,7 @@
       <div class="field-body">
         <div class="field has-addons is-grouped is-grouped-multiline">
           <div class="control">
-            <%= form.time_select :end_time, 
+            <%= form.time_select :end_time,
                                   {selected: reservation.end_time, minute_step: 5},
                                   class: 'select' %>
             <p class="help">Time Required</p>
@@ -183,8 +181,8 @@
       <div class="field-body">
         <div class="field has-addons is-grouped is-grouped-multiline">
           <div class="control">
-            <%= form.check_box :is_cancelled, 
-                                value: reservation.is_cancelled, 
+            <%= form.check_box :is_cancelled,
+                                value: reservation.is_cancelled,
                                 class: "checkbox reservation" %>
             <%= error_message_on(form.object, :is_cancelled) %>
           </div>
