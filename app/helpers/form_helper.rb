@@ -9,7 +9,7 @@ module FormHelper
     return unless object.respond_to?(:errors) && object.errors.include?(method)
 
     errors = field_errors(object, method).join(', ')
-    content_tag(:div, errors, class: 'field_with_errors has-background-danger-light')
+    content_tag(:div, errors, class: 'field_with_errors')
   end
 
   private

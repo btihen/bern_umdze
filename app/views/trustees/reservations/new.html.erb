@@ -8,14 +8,14 @@
 
 <p hidden id='trustee-new-resevation-<%= reservation.id %>' class='pageName'>Trustee New Reservation <%= reservation.id %></p>
 
-<h2 class="sub-title is-size-5">New Reservation</h2>
+<h1>New Reservation</h1>
 
 <%= form_for( reservation, local: true,
               url: trustees_reservations_path,  # MUST BE PLURAL
               id: "new-reservation-form", class: "reservation" ) do |form|  %>
 
-  <%= render 'form_new',  form: form, reservation: reservation,
-                          spaces: spaces, events: events %>
+<%= render 'form_new',  form: form, reservation: reservation,
+                        spaces: spaces, events: events %>
 
 <% end %>
 
