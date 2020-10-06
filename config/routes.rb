@@ -68,6 +68,7 @@ Rails.application.routes.draw do
       resources :reservations, only: [:edit, :update]
     end
     namespace :trustees do
+      # resources :users,        except: [:show]
       resources :users,        only: [:edit, :update, :new, :create, :index, :delete]
       resources :reservations, only: [:edit, :update, :new, :create]
     end

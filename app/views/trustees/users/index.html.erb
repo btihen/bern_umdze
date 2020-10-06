@@ -9,18 +9,20 @@
 <p hidden id='trustee-index-user' class='pageName'>Trustee Index Users</p>
 
 <h2 class="sub-title is-size-5">Manage Users</h2>
+<br />
 
-<%= link_to 'New Trustees User', new_trustees_user_path %>
+<%= link_to 'Create new user', new_trustees_user_path, class: "button is-info" %>
+<br />
+<br />
 
-<table>
+<table class="table is-bordered">
   <thead>
     <tr>
       <th>Username</th>
-      <th>email</th>
-      <th>Name</th>
-      <th>Access Role</th>
-      <th>Reset Password</th>
-      <th>Delete User</th>
+      <th>E-mail</th>
+      <th>Real-Name</th>
+      <th>Access Permissions</th>
+      <th colspan="4">Actions</th>
     </tr>
   </thead>
 
@@ -30,16 +32,17 @@
         <td><%= link_to "#{user.display_name}", edit_trustees_user_path(user) %></td>
         <td><%= link_to "#{user.email}",        edit_trustees_user_path(user) %></td>
         <td><%= link_to "#{user.real_name}",    edit_trustees_user_path(user) %></td>
-        <td><%= link_to "#{user.access_role}",  edit_trustees_user_path(user) %></td>
-        <td>Reset Password</td>
-        <td><%= link_to 'Destroy', trustees_user_path(user),
-                        method: :delete, data: { confirm: 'Are you sure?' } %>
+        <td><%= link_to "#{user.access_permissions}",  edit_trustees_user_path(user) %></td>
+        <td><%= link_to "Edit",  edit_trustees_user_path(user), class: 'button is-success is-small' %></td>
+        <td>Reset</td>
+        <td>Block</td>
+        <td><%= link_to 'Delete', trustees_user_path(user),
+                        method: :delete, data: { confirm: 'Are you sure?' },
+                        class: "button is-danger is-small" %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'New Trustees User', new_trustees_user_path %>
+<%= link_to 'Create a User', new_trustees_user_path, class: "button is-info" %>

@@ -14,6 +14,21 @@
   <div class="card-content">
 
     <div class="field is-horizontal">
+      <div class="field-label is-normal">Space</div>
+      <div class="field-body">
+        <div class="field has-addons is-grouped is-grouped-multiline">
+          <div class="control">
+            <%= form.collection_select :space_id, spaces,
+                      :id, :space_name, {selected: reservation.space.id},
+                      {class: 'select'} %>
+            <p class="help">Required</p>
+            <%= error_message_on(form.object, :space_id) %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
       <div class="field-label is-normal">Umdze</div>
       <div class="field-body">
         <div class="field has-addons is-grouped is-grouped-multiline">
@@ -123,8 +138,7 @@
         <div class="field is-grouped is-grouped-multiline">
           <div class="control">
             <%= form.submit("Save", class: "button is-link is-info is-outlined is-light") %>
-          </div>
-          <div class="control">
+            &nbsp;
             <%= link_to 'Back', root_path, class: 'button is-link is-danger is-outlined' %>
           </div>
         </div>

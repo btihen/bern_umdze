@@ -8,9 +8,12 @@
 
 <p hidden id='trustee-edit-user-<%= user.id %>' class='pageName'>Trustee Edit User <%= user.id %></p>
 
-<h2 class="sub-title is-size-5">Editing: </h2>
+<h2 class="sub-title is-size-5">Editing: <%= user_view.display_name %></h2>
+<br>
+<%= form_for( user, local: true,
+              url: trustees_user_path(user),    # EDIT PATH MUST BE SINGULAR for PATCH
+              id: "edit-user-form", class: "user" ) do |form|  %>
 
-<%= render 'form', user: user %>
+  <%= render 'form', form: form, user: user %>
 
-<%= link_to 'Show', user %> |
-<%= link_to 'Back', trustees_users_path %>
+<% end %>

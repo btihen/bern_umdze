@@ -17,7 +17,7 @@
 </h3>
 
 <%= form_for( reservation, local: true,
-              url: trustees_reservation_path(reservation),    # PATH MUST BE SINGULAR!!!
+              url: trustees_reservation_path(reservation),    # EDIT PATH MUST BE SINGULAR!!!
               id: "edit-reservation-form", class: "reservation" ) do |form|  %>
 
   <%= render 'form_edit', form: form, reservation: reservation,
