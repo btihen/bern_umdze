@@ -141,10 +141,18 @@ class Trustees::ReservationForm < FormBase
   def validate_event
     return if event.valid?
 
-    event.errors.each do |attribute_name, desc|
-      attribute_sym = attribute_name.to_s.eql?(id) ? :event_id : attribute_name.to_sym
-      errors.add(attribute_sym, desc)
+    if event_id.blank? && event_name.blank?
+      errors.add(:event_id, "must be chosen or created")
+    else
+      event.errors.each do |attribute_name, desc|
+        attribute_sym = attribute_name.to_s.eql?("id") ? :event_id : attribute_name.to_sym
+        errors.add(attribute_sym, desc)
+      end
     end
+    # event.errors.each do |attribute_name, desc|
+    #   attribute_sym = attribute_name.to_s.eql?(id) ? :event_id : attribute_name.to_sym
+    #   errors.add(attribute_sym, desc)
+    # end
   end
 
   def validate_space
@@ -159,8 +167,12 @@ class Trustees::ReservationForm < FormBase
     return if reservation.valid?
 
     reservation.errors.each do |attribute_name, desc|
-      attribute_sym = attribute_name.to_s.eql?(id) ? :reservation_id : attribute_name.to_sym
-      errors.add(attribute_sym, desc)
+      # attribute_sym = attribute_name.to_s.eql?(id) ? :reservation_id : attribute_name.to_sym
+      # errors.add(attribute_sym, desc)
+      next if attribute_name.to_s.eql?("event.event_name") ||
+              attribute_name.to_s.eql?("space.space_name") ||
+              attribute_name.to_s.eql?("id")  # id should always be valid - but just in case
+      errors.add(attribute_name.to_sym, desc)
     end
   end
 

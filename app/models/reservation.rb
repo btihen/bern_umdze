@@ -15,6 +15,8 @@ class Reservation < ApplicationRecord
   validates :start_date_time, presence: true
   validates :end_date_time,   presence: true
 
+  validate  :validate_start_date_time_before_end_date_time
+
   scope :in_date_range, ->(date_range) {
                           includes(:event, :space)
                           .where("start_date >= ?", date_range.first)
@@ -29,14 +31,19 @@ class Reservation < ApplicationRecord
 
   # https://stackoverflow.com/questions/12181444/ruby-combine-date-and-time-objects-into-a-datetime
   def create_date_times
-    # sd = start_date
-    # st = start_time
-    # self.start_date_time = DateTime.new(sd.year, sd.month, sd.day, st.hour, st.min, 0, st.zone)
     self.start_date_time = start_date.to_datetime + start_time.seconds_since_midnight.seconds
-
-    # ed = end_date
-    # et = end_time
-    # self.end_date_time = DateTime.new(ed.year, ed.month, ed.day, et.hour, et.min, 0, et.zone)
     self.end_date_time = end_date.to_datetime + end_time.seconds_since_midnight.seconds
   end
+
+  def validate_start_date_time_before_end_date_time
+    return if start_date_time < end_date_time
+
+    if start_date > end_date
+      errors.add(:start_date, "must be before end-date")
+    end
+    if start_date == end_date && start_time > end_time
+      errors.add(:start_time, "must be before end-time")
+    end
+  end
+
 end
