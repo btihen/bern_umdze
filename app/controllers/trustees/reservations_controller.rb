@@ -43,10 +43,11 @@ class Trustees::ReservationsController < Trustees::ApplicationController
 
     if reservation_form.valid?
       reservation = reservation_form.reservation
+      show_date   = reservation.start_date.to_s
       reservation.save!
 
       flash[:notice] = "#{reservation.event.event_name} event was successfully reserved."
-      redirect_to root_path
+      redirect_to root_path(date: show_date)
     else
       flash[:alert] = 'Please fix the errors'
       render :new, locals: {user: user_view,
@@ -97,8 +98,10 @@ class Trustees::ReservationsController < Trustees::ApplicationController
 
     # no submodels involved (hence no form_object)
     if reservation.save
-      flash[:notice] = "#{reservation.event.event_name} event was successfully updated."
-      redirect_to root_path
+      show_date   = reservation.start_date.to_s
+
+      flash[:notice] = "#{reservation.event.event_name} on #{show_date} was successfully updated."
+      redirect_to root_path(date: show_date)
     else
       flash[:alert] = 'Please fix the errors'
       render :edit, locals: { user: user_view,
@@ -109,6 +112,15 @@ class Trustees::ReservationsController < Trustees::ApplicationController
                               reservation_view: reservation_view }
     end
   end
+
+  def destroy
+    reservation = Reservation.find(params[:id])
+    show_date   = reservation.start_date.to_s
+    reservation.destroy
+
+    redirect_to root_path(date: show_date), notice: 'User was successfully destroyed.'
+  end
+
 
   private
     # Only allow a list of trusted parameters through.

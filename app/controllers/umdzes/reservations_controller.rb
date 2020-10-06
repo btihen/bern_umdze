@@ -41,8 +41,10 @@ class Umdzes::ReservationsController < Umdzes::ApplicationController
 
     # no submodels involved (hence no form_object)
     if reservation.save
-      flash[:notice] = "#{reservation.event.event_name} event was successfully updated."
-      redirect_to root_path
+      show_date   = reservation.start_date.to_s
+
+      flash[:notice] = "#{reservation.event.event_name} on #{show_date} was successfully updated."
+      redirect_to root_path(date: show_date)
     else
       flash[:alert] = 'Please fix the errors'
       render :edit, locals: { user: user_view,
