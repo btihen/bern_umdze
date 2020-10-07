@@ -1,5 +1,5 @@
 <% if reservation.errors.any? %>
-<div id="error_explanation">
+<div id="error_explanation" class="notification is-danger is-light">
   <h2><%= pluralize(reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
 
   <ul>
@@ -18,7 +18,9 @@
       <div class="field-body">
         <div class="field has-addons is-grouped is-grouped-multiline">
           <div class="control has-icons-left">
-            <%= form.text_field :host_name, placeholder: "(Please Volunteer)", class: "input" %>
+            <%= form.text_field :host_name,
+                                placeholder: "(Please Volunteer)",
+                                class: "input" %>
             <span class="icon is-small is-left">
               <i class="fas fa-user"></i>
             </span>
