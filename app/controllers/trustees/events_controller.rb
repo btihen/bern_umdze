@@ -14,7 +14,8 @@ class Trustees::EventsController < Trustees::ApplicationController
   end
 
   def create
-    event = Event.new(event_params)
+    create_params = event_params.transform_values(&:squish)
+    event = Event.new(create_params)
 
     if event.save
       redirect_to trustees_events_path, notice: "Event: #{event.event_name} was successfully created."
@@ -30,9 +31,10 @@ class Trustees::EventsController < Trustees::ApplicationController
   end
 
   def update
-    event      = Event.find(params[:id])
+    update_params = event_params.transform_values(&:squish)
+    event         = Event.find(params[:id])
 
-    if event.update(event_params)
+    if event.update(update_params)
       redirect_to trustees_events_path, notice: "Event: #{event.event_name} was successfully updated."
     else
       render :edit, locals: {event: event}
