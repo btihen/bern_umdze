@@ -37,7 +37,7 @@
     </div>
 
     <div class="navbar-end">
-      <%= link_to "Profile", root_path, class: 'navbar-item' if current_user %>
+      <%= link_to "Profile", edit_users_profile_path(current_user), class: 'navbar-item' if current_user %>
       <div class="navbar-item">
         <div class="buttons">
           <% if current_user.nil? %>

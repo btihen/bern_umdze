@@ -1,0 +1,43 @@
+<!--
+  https://github.com/turbolinks/turbolinks#ensuring-specific-pages-trigger-a-full-reload
+  https://stackoverflow.com/questions/39627881/jquery-plugin-initialization-on-browser-back-button-for-turbolinks-rails-5/39801052
+  -->
+<% content_for :head do %>
+  <meta name="turbolinks-visit-control" content="reload">
+<% end %>
+
+<p hidden id='edit-profile-<%= user.id %>' class='pageName'>Edit Profile<%= user.id %></p>
+
+<h1 class="sub-title is-size-4">Update your Profile</h1>
+<br>
+<%= form_for( user, local: true,
+              url: users_profile_path(user),    # EDIT PATH MUST BE SINGULAR for PATCH
+              id: "edit-profile-form", class: "user" ) do |form|  %>
+
+  <div class="notification is-success is-light">
+    Blanks values are ignored and won't blank the field.
+  </div>
+
+  <%= render 'form', form: form, user: user %>
+
+  <div class="field is-horizontal">
+    <div class="field-body">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <%= form.submit("Save", class: "button is-success") %>
+        </div>
+        &nbsp;
+        <div class="control">
+          <%= link_to 'Back', root_path, class: 'button is-link is-light' %>
+        </div>
+        &nbsp;
+        <div class="control">
+          <%= link_to 'Delete Access', users_profile_path(user),
+                        method: :delete, data: { confirm: 'Are you sure?' },
+                        class: "button is-danger is-light" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% end %>
