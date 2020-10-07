@@ -72,6 +72,7 @@ Rails.application.routes.draw do
     end
     namespace :trustees do
       resources :users,        only: [:edit, :update, :new, :create, :index, :destroy]
+      resources :events,       only: [:edit, :update, :new, :create, :index, :destroy]
       resources :reservations, only: [:edit, :update, :new, :create, :destroy]
     end
 

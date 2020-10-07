@@ -1,9 +1,7 @@
 class Trustees::UsersController < Trustees::ApplicationController
 
-  RolePermission = Struct.new(:role, :permissions)
-
   def index
-    users      = User.all
+    users      = User.all.order(real_name: :asc)
     user_views = UserView.collection(users)
 
     render :index, locals: {users: user_views}
