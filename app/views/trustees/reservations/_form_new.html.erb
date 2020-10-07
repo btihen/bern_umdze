@@ -78,7 +78,7 @@
                     <%= error_message_on(form.object, :event_name) %>
                   </div>
                 </div>
-
+                <!--
                 <div class="field is-horizontal">
                   <div class="control has-icons-left">
                     <%= form.text_field :event_description,
@@ -87,11 +87,12 @@
                     <span class="icon is-small is-left">
                       <i class="fas fa-user"></i>
                     </span>
-                    <p class="help">Description Optional</p>
+                    <p class="help">Optional</p>
                     <%= error_message_on(form.object, :event_description) %>
                   </div>
                   <%# end %>
                 </div>
+                -->
               </div>
             </div>
           </div>
@@ -101,7 +102,7 @@
     </div>
 
     <div class="field is-horizontal">
-      <div class="field-label is-normal">Umdze</div>
+      <div class="field-label is-normal">Umdze / Koord.</div>
       <div class="field-body">
         <div class="field has-addons">
           <div class="control has-icons-left">
@@ -109,7 +110,7 @@
             <span class="icon is-small is-left">
               <i class="fas fa-user"></i>
             </span>
-            <p class="help">Umdze Optional</p>
+            <p class="help">Optional</p>
             <%= error_message_on(form.object, :host_name) %>
           </div>
         </div>
@@ -124,7 +125,7 @@
             <%= form.date_select :start_date,
                                   {selected: reservation.start_date},
                                   class: 'select' %>
-            <p class="help">Date Required</p>
+            <p class="help">Required</p>
             <%= error_message_on(form.object, :start_date) %>
           </div>
         </div>
@@ -139,7 +140,7 @@
             <%= form.time_select :start_time,
                                   {selected: reservation.start_time, minute_step: 5},
                                   class: 'select' %>
-            <p class="help">Time Required</p>
+            <p class="help">Required</p>
             <%= error_message_on(form.object, :start_time) %>
           </div>
         </div>
@@ -154,7 +155,7 @@
             <%= form.date_select :end_date,
                                   {selected: reservation.end_date},
                                   class: 'select' %>
-            <p class="help">Date Required</p>
+            <p class="help">Required</p>
             <%= error_message_on(form.object, :end_date) %>
           </div>
         </div>
@@ -169,7 +170,7 @@
             <%= form.time_select :end_time,
                                   {selected: reservation.end_time, minute_step: 5},
                                   class: 'select' %>
-            <p class="help">Time Required</p>
+            <p class="help">Required</p>
             <%= error_message_on(form.object, :end_time) %>
           </div>
         </div>
@@ -197,7 +198,7 @@
           <div class="control">
             <%= form.text_area :alert_notice, class: "textarea" %>
             <%# form.text_area :alert_notice, value: reservation.alert_notice, class: "textarea" %>
-            <p class="help">Explain changes or needed info about the event</p>
+            <p class="help">Changes or needed info about the event.</p>
             <%= error_message_on(form.object, :alert_notice) %>
           </div>
         </div>
@@ -209,12 +210,12 @@
       <div class="field-body">
         <div class="field is-grouped is-grouped-multiline">
           <div class="control">
-            <%= form.submit("Save", class: "button is-link is-info is-outlined is-light") %>
+            <%= form.submit("Save", class: "button is-success") %>
           </div>
           <div class="control">
             <%= link_to 'Back',
                   root_path(date: reservation.start_date.to_s),
-                  class: 'button is-link is-outlined' %>
+                  class: 'button is-link is-light' %>
           </div>
         </div>
       </div>
