@@ -19,34 +19,33 @@
   <table class="table is-bordered is-striped">
     <thead class="has-text-centered">
       <tr>
+        <th>Actions</th>
         <th>Name</th>
+        <th>Access</th>
+        <!--
         <th>Username</th>
         <th>email</th>
-        <th>Access</th>
         <th>Password</th>
         <th>Status</th>
-        <th colspan="2">Actions</th>
+        -->
       </tr>
     </thead>
 
     <tbody>
       <% users.each do |user| %>
         <tr>
-          <td><%= link_to "#{user.real_name}",          edit_trustees_user_path(user) %></td>
+          <td>
+            <%= link_to 'Manage', edit_trustees_user_path(user),
+                        class: "button is-success is-light is-small"  %>
+          </td>
+          <td><%= user.real_name %></td>
+          <td><%= user.access_permissions %></td>
+          <!--
           <td><%= link_to "#{user.username}",           edit_trustees_user_path(user) %></td>
           <td><%= link_to "#{user.email}",              edit_trustees_user_path(user) %></td>
-          <td><%= link_to "#{user.access_permissions}", edit_trustees_user_path(user) %></td>
           <td>Reset</td>
           <td>Enabled/Blocked</td>
-          <td>
-            <%= link_to 'Edit',    edit_trustees_user_path(user),
-                        class: "button is-info is-light is-small"  %>
-          </td>
-          <td>
-            <%= link_to 'Delete', trustees_user_path(user),
-                        method: :delete, data: { confirm: 'Are you sure?' },
-                        class: "button is-danger is-light is-small" %>
-          </td>
+          -->
         </tr>
       <% end %>
     </tbody>
