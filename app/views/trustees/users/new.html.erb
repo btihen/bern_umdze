@@ -9,7 +9,25 @@
 <p hidden id='trustee-new-user' class='pageName'>Trustee New User</p>
 
 <h1 class="sub-title is-size-4">Create New User</h1>
+<br>
+<%= form_for( user, local: true,
+              url: trustees_users_path,   # NEW MUST BE PLURAL for POST
+              id: "new-user-form", class: "user" ) do |form|  %>
 
-<%= render 'form', user: user %>
+  <%= render 'form', form: form, user: user %>
 
-<%= link_to 'Back', trustees_users_path %>
+  <div class="field is-horizontal">
+    <div class="field-body">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <%= form.submit("Save", class: "button is-success") %>
+        </div>
+        &nbsp;
+        <div class="control">
+          <%= link_to 'Back', trustees_users_path, class: 'button is-link is-light' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% end %>

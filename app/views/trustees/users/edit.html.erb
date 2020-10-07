@@ -9,8 +9,31 @@
 <p hidden id='trustee-edit-user-<%= user.id %>' class='pageName'>Trustee Edit User<%= user.id %></p>
 
 <h1 class="sub-title is-size-4">Editing: <%= user_view.display_name %></h1>
+<br>
+<%= form_for( user, local: true,
+              url: trustees_user_path(user),    # EDIT PATH MUST BE SINGULAR for PATCH
+              id: "edit-user-form", class: "user" ) do |form|  %>
 
-<%= render 'form', user: user %>
+  <%= render 'form', form: form, user: user %>
 
-<%= link_to 'Show', user %> |
-<%= link_to 'Back', trustees_users_path %>
+  <div class="field is-horizontal">
+    <div class="field-body">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <%= form.submit("Save", class: "button is-success") %>
+        </div>
+        &nbsp;
+        <div class="control">
+          <%= link_to 'Back', trustees_users_path, class: 'button is-link is-light' %>
+        </div>
+        &nbsp;
+        <div class="control">
+          <%= link_to 'Destroy', trustees_user_path(user),
+                        method: :delete, data: { confirm: 'Are you sure?' },
+                        class: "button is-danger is-light" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% end %>

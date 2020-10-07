@@ -15,36 +15,43 @@
 <br />
 <br />
 
-<table class="table is-bordered">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Username</th>
-      <th>email</th>
-      <th>Access</th>
-      <th>Password</th>
-      <th>Status</th>
-      <th>Delete</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% users.each do |user| %>
+<div class="table-container">
+  <table class="table is-bordered is-striped">
+    <thead class="has-text-centered">
       <tr>
-        <td><%= link_to "#{user.real_name}",          edit_trustees_user_path(user) %></td>
-        <td><%= link_to "#{user.username}",           edit_trustees_user_path(user) %></td>
-        <td><%= link_to "#{user.email}",              edit_trustees_user_path(user) %></td>
-        <td><%= link_to "#{user.access_permissions}", edit_trustees_user_path(user) %></td>
-        <td>Reset</td>
-        <td>Enabled/Blocked</td>
-        <td><%= link_to 'Destroy', trustees_user_path(user),
-                        method: :delete, data: { confirm: 'Are you sure?' },
-                        class: "button is-danger is-small" %>
-        </td>
+        <th>Name</th>
+        <th>Username</th>
+        <th>email</th>
+        <th>Access</th>
+        <th>Password</th>
+        <th>Status</th>
+        <th colspan="2">Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+
+    <tbody>
+      <% users.each do |user| %>
+        <tr>
+          <td><%= link_to "#{user.real_name}",          edit_trustees_user_path(user) %></td>
+          <td><%= link_to "#{user.username}",           edit_trustees_user_path(user) %></td>
+          <td><%= link_to "#{user.email}",              edit_trustees_user_path(user) %></td>
+          <td><%= link_to "#{user.access_permissions}", edit_trustees_user_path(user) %></td>
+          <td>Reset</td>
+          <td>Enabled/Blocked</td>
+          <td>
+            <%= link_to 'Edit',    edit_trustees_user_path(user),
+                        class: "button is-info is-light is-small"  %>
+          </td>
+          <td>
+            <%= link_to 'Destroy', trustees_user_path(user),
+                        method: :delete, data: { confirm: 'Are you sure?' },
+                        class: "button is-danger is-light is-small" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
 <br>
 

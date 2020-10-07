@@ -1,5 +1,7 @@
 class Trustees::UsersController < Trustees::ApplicationController
 
+  RolePermission = Struct.new(:role, :permissions)
+
   def index
     users      = User.all
     user_views = UserView.collection(users)
@@ -17,39 +19,49 @@ class Trustees::UsersController < Trustees::ApplicationController
     user = User.new(user_params)
 
     if user.save
-      redirect_to trustees_users_url, notice: 'User was successfully created.'
+      redirect_to trustees_users_path, notice: "User with email: #{user.email} was successfully created."
     else
       render :new, locals: {user: user}
     end
   end
 
   def edit
-    user = User.new(user_params)
+    user      = User.find(params[:id])
+    user_view = UserView.new(user)
 
-    render :edit, locals: {user: user}
+    render :edit, locals: {user: user, user_view: user_view}
   end
 
   def update
     user = User.find(params[:id])
 
-    if user.update(user_params)
-      redirect_to trustees_users_url, notice: 'User was successfully updated.'
+    # if password blank then remove password and password_confirmation keys
+    # Rails 6.1 added compact_blank: `user_params.compact_blank`
+    update_params = user_params.reject{|_, v| v.blank?}
+
+    if user.update(update_params)
+      redirect_to trustees_users_path, notice: "User with email: #{user.email} was successfully updated."
     else
-      render :edit, locals: {user: user}
+      user_view = UserView.new(user)
+
+      render :edit, locals: {user: user, user_view: user_view}
     end
   end
 
   def destroy
-    user = User.find(params[:id])
+    user  = User.find(params[:id])
+    email = user.email
     user.destroy
 
-    redirect_to trustees_users_url, notice: 'User was successfully destroyed.'
+    redirect_to trustees_users_path, notice: "User with email: #{user.email} was successfully deleted."
   end
 
   private
 
-    # Only allow a list of trusted parameters through.
-    def user_params
-      params.fetch(:user, {})
-    end
+  def user_params
+    params.require(:user)
+          .permit(:real_name, :username, :email, :access_role,
+                  :password, :password_confirmation)
+  end
+
 end
