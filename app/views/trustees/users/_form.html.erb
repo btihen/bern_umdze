@@ -24,6 +24,17 @@
   </div>
 
   <div class="field">
+    <label class="label">Status</label>
+    <div class="control">
+      <%# form.text_field :real_name,
+                          placeholder: "Person's actual name",
+                          class: 'input' %>
+    </div>
+    <p class="help">Enabled or Blocked</p>
+    <%= error_message_on(form.object, :real_name) %>
+  </div>
+
+  <div class="field">
     <label class="label">Username</label>
     <div class="control">
       <%= form.text_field :username,
