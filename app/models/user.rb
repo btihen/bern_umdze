@@ -5,6 +5,7 @@ class User < ApplicationRecord
           :recoverable, :rememberable, :validatable,
           authentication_keys: [:login] #, :email, :username]
 
+  validates :real_name,   presence: true
   validates :email,       presence: true, uniqueness: true,
                           format: { with: Devise::email_regexp }
   validates :username,    presence: true,
@@ -13,7 +14,8 @@ class User < ApplicationRecord
                                     message: "only lowercase letters, numbers, underscores and dashes allowed" }
   validates :password,    presence: true, on: :create
   validates :access_role, presence: true,
-                          inclusion: { :in => ApplicationHelper::VALID_ROLES }
+                          inclusion: { in: ApplicationHelper::VALID_ROLES }
+
   validate  :validate_password_complexity
 
   # https://github.com/heartcombo/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address

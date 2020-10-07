@@ -10,20 +10,24 @@
 # user.valid_password? "xxxx"
 user    = User.create(email: "user@test.ch",
                       username: "user",
+                      real_name: "user",
                       password: "Let-M3-In!",
                       password_confirmation: "Let-M3-In!")
 member  = User.create(email: "member@test.ch",
                       username: "member",
+                      real_name: "member",
                       access_role: 'member',
                       password: "Let-M3-In!",
                       password_confirmation: "Let-M3-In!")
 umdze   = User.create(email: "umdze@test.ch",
                       username: "umdze",
+                      real_name: "umdze",
                       access_role: 'umdze',
                       password: "Let-M3-In!",
                       password_confirmation: "Let-M3-In!")
 trustee = User.create(email: "trustee@test.ch",
                       username: "trustee",
+                      real_name: "trustee",
                       access_role: 'trustee',
                       password: "Let-M3-In!",
                       password_confirmation: "Let-M3-In!")

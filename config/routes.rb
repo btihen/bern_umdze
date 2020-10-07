@@ -64,6 +64,9 @@ Rails.application.routes.draw do
   ##################
   authenticated :user do
 
+    namespace :users do
+      resources :profiles, only: [:edit, :update, :destroy]
+    end
     namespace :umdzes do
       resources :reservations, only: [:edit, :update]
     end

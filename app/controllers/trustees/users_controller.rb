@@ -34,6 +34,7 @@ class Trustees::UsersController < Trustees::ApplicationController
 
   def update
     user = User.find(params[:id])
+    user_view = UserView.new(user)
 
     # if password blank then remove password and password_confirmation keys
     # Rails 6.1 added compact_blank: `user_params.compact_blank`
@@ -42,8 +43,6 @@ class Trustees::UsersController < Trustees::ApplicationController
     if user.update(update_params)
       redirect_to trustees_users_path, notice: "User with email: #{user.email} was successfully updated."
     else
-      user_view = UserView.new(user)
-
       render :edit, locals: {user: user, user_view: user_view}
     end
   end
@@ -59,9 +58,8 @@ class Trustees::UsersController < Trustees::ApplicationController
   private
 
   def user_params
-    params.require(:user)
-          .permit(:real_name, :username, :email, :access_role,
-                  :password, :password_confirmation)
+    params.require(:user).permit( :real_name, :username, :email, :access_role,
+                                  :status, :password, :password_confirmation )
   end
 
 end

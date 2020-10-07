@@ -24,24 +24,13 @@
   </div>
 
   <div class="field">
-    <label class="label">Status</label>
-    <div class="control">
-      <%# form.text_field :real_name,
-                          placeholder: "Person's actual name",
-                          class: 'input' %>
-    </div>
-    <p class="help">Enabled or Blocked</p>
-    <%= error_message_on(form.object, :real_name) %>
-  </div>
-
-  <div class="field">
     <label class="label">Username</label>
     <div class="control">
       <%= form.text_field :username,
                           placeholder: "short username / nickname (for login)",
                           class: 'input' %>
     </div>
-    <p class="help">MUST be all LOWERCASE - no spaces</p>
+    <p class="help">Required - all lowercase just letters no spaces</p>
     <%= error_message_on(form.object, :username) %>
   </div>
 
@@ -50,21 +39,8 @@
     <div class="control">
       <%= form.email_field :email, placeholder: "e-mail address", class: 'input' %>
     </div>
-    <p class="help">MUST be all LOWERCASE</p>
+    <p class="help">Required - all lowercase</p>
     <%= error_message_on(form.object, :email) %>
-  </div>
-
-  <div class="field">
-    <label class="label">Permissions</label>
-    <div class="control">
-      <%= form.collection_select :access_role,
-                UserView::role_permission_list,
-                :role, :permissions, {selected: user.access_role},
-                prompt: 'Select Permissions',
-                class: 'select is-medium' %>
-      <p class="help">Required</p>
-      <%= error_message_on(form.object, :access_role) %>
-    </div>
   </div>
 
   <div class="field">

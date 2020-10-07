@@ -6,13 +6,13 @@
   <meta name="turbolinks-visit-control" content="reload">
 <% end %>
 
-<p hidden id='trustee-edit-user-<%= user.id %>' class='pageName'>Trustee Edit User<%= user.id %></p>
+<p hidden id='edit-profile-<%= user.id %>' class='pageName'>Edit Profile<%= user.id %></p>
 
-<h1 class="sub-title is-size-4">Editing: <%= user_view.display_name %></h1>
+<h1 class="sub-title is-size-4">Update your Profile</h1>
 <br>
 <%= form_for( user, local: true,
-              url: trustees_user_path(user),    # EDIT PATH MUST BE SINGULAR for PATCH
-              id: "edit-user-form", class: "user" ) do |form|  %>
+              url: users_profile_path(user),    # EDIT PATH MUST BE SINGULAR for PATCH
+              id: "edit-profile-form", class: "user" ) do |form|  %>
 
   <div class="notification is-success is-light">
     Blanks values are ignored and won't blank the field.
@@ -28,11 +28,11 @@
         </div>
         &nbsp;
         <div class="control">
-          <%= link_to 'Back', trustees_users_path, class: 'button is-link is-light' %>
+          <%= link_to 'Back', root_path, class: 'button is-link is-light' %>
         </div>
         &nbsp;
         <div class="control">
-          <%= link_to 'Delete', trustees_user_path(user),
+          <%= link_to 'Delete Access', users_profile_path(user),
                         method: :delete, data: { confirm: 'Are you sure?' },
                         class: "button is-danger is-light" %>
         </div>
