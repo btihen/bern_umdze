@@ -8,32 +8,38 @@
 
 <p hidden id='trustee-index-user' class='pageName'>Trustee Index Users</p>
 
-<h1 class="sub-title is-size-5">Manage Users</h1>
+<h1 class="sub-title is-size-4">Manage Users</h1>
+<br />
 
-<%= link_to 'New Trustees User', new_trustees_user_path %>
+<%= link_to 'Create new user', new_trustees_user_path, class: "button is-info" %>
+<br />
+<br />
 
-<table>
+<table class="table is-bordered">
   <thead>
     <tr>
+      <th>Name</th>
       <th>Username</th>
       <th>email</th>
-      <th>Name</th>
-      <th>Access Role</th>
-      <th>Reset Password</th>
-      <th>Delete User</th>
+      <th>Access</th>
+      <th>Password</th>
+      <th>Status</th>
+      <th>Delete</th>
     </tr>
   </thead>
 
   <tbody>
     <% users.each do |user| %>
       <tr>
-        <td><%= link_to "#{user.display_name}", edit_trustees_user_path(user) %></td>
-        <td><%= link_to "#{user.email}",        edit_trustees_user_path(user) %></td>
-        <td><%= link_to "#{user.real_name}",    edit_trustees_user_path(user) %></td>
-        <td><%= link_to "#{user.access_role}",  edit_trustees_user_path(user) %></td>
-        <td>Reset Password</td>
+        <td><%= link_to "#{user.real_name}",          edit_trustees_user_path(user) %></td>
+        <td><%= link_to "#{user.username}",           edit_trustees_user_path(user) %></td>
+        <td><%= link_to "#{user.email}",              edit_trustees_user_path(user) %></td>
+        <td><%= link_to "#{user.access_permissions}", edit_trustees_user_path(user) %></td>
+        <td>Reset</td>
+        <td>Enabled/Blocked</td>
         <td><%= link_to 'Destroy', trustees_user_path(user),
-                        method: :delete, data: { confirm: 'Are you sure?' } %>
+                        method: :delete, data: { confirm: 'Are you sure?' },
+                        class: "button is-danger is-small" %>
         </td>
       </tr>
     <% end %>
@@ -42,4 +48,4 @@
 
 <br>
 
-<%= link_to 'New Trustees User', new_trustees_user_path %>
+<%= link_to 'Create new user', new_trustees_user_path, class: "button is-info" %>

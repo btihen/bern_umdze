@@ -5,12 +5,11 @@ class User < ApplicationRecord
           :recoverable, :rememberable, :validatable, 
           authentication_keys: [:login] #, :email, :username]
 
-  # scope email_lookup,     -> { where(email: value) }
-  # scope username_lookup,  -> { where(username: value) }
-  # scope email_or_username_lookup, -> { email_lookup.or(username_lookup) }
-
   attr_writer :login
 
+  # TODOS:
+  # validate email
+  # validate role in ApplicationHelper::VALID_ROLES
   # before validation (take first part of email and parameritze for user name)
   validates :username,  presence: true,
                         uniqueness: { case_sensitive: false },
