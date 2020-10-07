@@ -1,0 +1,38 @@
+<% if event.errors.any? %>
+  <div id="error_explanation" class="notification is-danger is-light">
+    <h2><%= pluralize(event.errors.count, "error") %> prohibited this event from being saved:</h2>
+
+    <ul>
+      <% event.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="field">
+  <label class="label">Event Name</label>
+  <div class="control">
+    <%= form.text_field :event_name,
+                        placeholder: "Event name",
+                        class: 'input' %>
+  </div>
+  <p class="help"></p>
+  <%= error_message_on(form.object, :event_name) %>
+</div>
+
+<!--
+<div class="field">
+  <label class="label">Event Description</label>
+  <div class="control">
+    <%= form.text_field :event_description,
+                        placeholder: "Short event description",
+                        class: 'input' %>
+  </div>
+  <p class="help">Enabled or Blocked</p>
+  <%= error_message_on(form.object, :real_name) %>
+</div>
+-->
+
+<!-- action buttons on calling page -->
+
