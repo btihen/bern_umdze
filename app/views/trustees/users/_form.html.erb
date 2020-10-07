@@ -1,17 +1,94 @@
-<%= form_with(model: trustees_user, local: true) do |form| %>
-  <% if trustees_user.errors.any? %>
+<%# form_with(model: trustees_user, local: true) do |form| %>
+  <% if user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(trustees_user.errors.count, "error") %> prohibited this trustees_user from being saved:</h2>
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited this trustees_user from being saved:</h2>
 
       <ul>
-        <% trustees_user.errors.full_messages.each do |message| %>
+        <% user.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="actions">
-    <%= form.submit %>
+  <div class="field">
+    <label class="label">Real Name</label>
+    <div class="control">
+      <%= form.text_field :real_name,
+                          placeholder: "Person's actual name",
+                          class: 'input' %>
+    </div>
+    <p class="help">Optional - but helpful</p>
+    <%= error_message_on(form.object, :real_name) %>
   </div>
-<% end %>
+
+  <div class="field">
+    <label class="label">Username</label>
+    <div class="control">
+      <%= form.text_field :username,
+                          placeholder: "short username / nickname (for login)",
+                          class: 'input' %>
+    </div>
+    <p class="help">Required - all lowercase just letters no spaces</p>
+    <%= error_message_on(form.object, :username) %>
+  </div>
+
+  <div class="field">
+    <label class="label">Email</label>
+    <div class="control">
+      <%= form.email_field :email, placeholder: "e-mail address", class: 'input' %>
+    </div>
+    <p class="help">Required - all lowercase</p>
+    <%= error_message_on(form.object, :email) %>
+  </div>
+
+  <div class="field">
+    <label class="label">Permissions</label>
+    <div class="control">
+      <%= form.collection_select :access_role,
+                UserView::role_permission_list,
+                :role, :permissions, {selected: user.access_role},
+                prompt: 'Select Permissions',
+                class: 'select is-medium' %>
+      <p class="help">Required</p>
+      <%= error_message_on(form.object, :access_role) %>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Password</label>
+    <div class="control">
+      <%= form.password_field :password,
+                              placeholder: "use a capital, lowercase and at least 12 characters long",
+                              class: 'input' %>
+    </div>
+    <p class="help">Required (on creation) - SUGGESTION: use multiple memorable words and capitalize each word.</p>
+    <%= error_message_on(form.object, :username) %>
+  </div>
+
+  <div class="field">
+    <label class="label">Password Confirmation</label>
+    <div class="control">
+      <%= form.password_field :password_confirmation,
+                              placeholder: "password confirmation",
+                              class: 'input' %>
+    </div>
+    <p class="help">Required (if password entered) - must be the same as the above password</p>
+    <%= error_message_on(form.object, :username) %>
+  </div>
+
+  <div class="field is-horizontal">
+    <div class="field-body">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <%= form.submit("Save", class: "button is-success") %>
+        </div>
+        &nbsp;
+        <div class="control">
+          <%= link_to 'Back', trustees_users_path, class: 'button is-link is-light' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%# end %>

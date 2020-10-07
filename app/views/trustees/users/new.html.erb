@@ -9,7 +9,15 @@
 <p hidden id='trustee-new-user' class='pageName'>Trustee New User</p>
 
 <h1 class="sub-title is-size-4">Create New User</h1>
+<br>
+<%= form_for( user, local: true,
+              url: trustees_users_path,   # NEW MUST BE PLURAL for POST
+              id: "new-user-form", class: "user" ) do |form|  %>
 
-<%= render 'form', user: user %>
+  <%= render 'form', form: form, user: user %>
 
-<%= link_to 'Back', trustees_users_path %>
+<% end %>
+
+<%# render 'form', user: user %>
+
+<%# link_to 'Back', trustees_users_path %>
