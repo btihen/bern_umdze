@@ -14,6 +14,10 @@
               url: trustees_users_path,   # NEW MUST BE PLURAL for POST
               id: "new-user-form", class: "user" ) do |form|  %>
 
+  <div class="notification is-success is-light">
+    Account creation requires all fields
+  </div>
+
   <%= render 'form', form: form, user: user %>
 
   <div class="field is-horizontal">

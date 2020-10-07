@@ -14,6 +14,10 @@
               url: trustees_user_path(user),    # EDIT PATH MUST BE SINGULAR for PATCH
               id: "edit-user-form", class: "user" ) do |form|  %>
 
+  <div class="notification is-success is-light">
+    Blanks values are ignored and won't blank the field.
+  </div>
+
   <%= render 'form', form: form, user: user %>
 
   <div class="field is-horizontal">

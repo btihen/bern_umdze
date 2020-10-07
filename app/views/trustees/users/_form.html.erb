@@ -1,7 +1,7 @@
 <%# form_with(model: user, local: true) do |form| %>
 
   <% if user.errors.any? %>
-    <div id="error_explanation">
+    <div id="error_explanation" class="notification is-danger is-light">
       <h2><%= pluralize(user.errors.count, "error") %> prohibited this trustees_user from being saved:</h2>
 
       <ul>
@@ -19,7 +19,7 @@
                           placeholder: "Person's actual name",
                           class: 'input' %>
     </div>
-    <p class="help">Optional - but helpful</p>
+    <p class="help"></p>
     <%= error_message_on(form.object, :real_name) %>
   </div>
 
@@ -41,7 +41,7 @@
                           placeholder: "short username / nickname (for login)",
                           class: 'input' %>
     </div>
-    <p class="help">Required - all lowercase just letters no spaces</p>
+    <p class="help">MUST be all LOWERCASE - no spaces</p>
     <%= error_message_on(form.object, :username) %>
   </div>
 
@@ -50,7 +50,7 @@
     <div class="control">
       <%= form.email_field :email, placeholder: "e-mail address", class: 'input' %>
     </div>
-    <p class="help">Required - all lowercase</p>
+    <p class="help">MUST be all LOWERCASE</p>
     <%= error_message_on(form.object, :email) %>
   </div>
 
@@ -74,8 +74,8 @@
                               placeholder: "use a capital, lowercase and at least 12 characters long",
                               class: 'input' %>
     </div>
-    <p class="help">Required (on creation) - SUGGESTION: use multiple memorable words and capitalize each word.</p>
-    <%= error_message_on(form.object, :username) %>
+    <p class="help">SUGGESTION: use multiple memorable words and capitalize each word.</p>
+    <%= error_message_on(form.object, :password) %>
   </div>
 
   <div class="field">
@@ -85,8 +85,8 @@
                               placeholder: "password confirmation",
                               class: 'input' %>
     </div>
-    <p class="help">Required (if password entered) - must be the same as the above password</p>
-    <%= error_message_on(form.object, :username) %>
+    <p class="help">Must be the same as the above password</p>
+    <%= error_message_on(form.object, :password_confirmation) %>
   </div>
 
   <!-- action buttons on calling page -->
