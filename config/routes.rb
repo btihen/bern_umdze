@@ -68,26 +68,9 @@ Rails.application.routes.draw do
       resources :reservations, only: [:edit, :update]
     end
     namespace :trustees do
+      resources :users,        only: [:edit, :update, :new, :create, :index, :destroy]
       resources :reservations, only: [:edit, :update, :new, :create, :destroy]
     end
-    # https://devblast.com/b/rails-5-routes-scope-vs-namespace
-    # scope module: 'umdzes', as: 'umdzes' do
-    #   resources :reservations, except: [:index]
-    # end
-    # scope module: 'trustees', as: 'trustees' do
-    #   resources :reservations, except: [:index]
-    # end
-    # https://stackoverflow.com/questions/4753871/how-can-i-redirect-a-users-home-root-path-based-on-their-role-using-devise
-    # get '/home', to: 'landing#index',       constraints: lambda { |request| !request.env['warden'].user }
-    # get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
-    # get '/home', to: 'umdzes/home#index',   constraints: lambda { |request|  request.env['warden'].user.access_role == :umdze }
-    # get '/home', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role == :member }
-    # get '/home', to: 'trustees/home#index', constraints: lambda { |request|  request.env['warden'].user.access_role == :trustee }
-
-    # hmm prettier, but doesn't match?
-    # root to: 'trustees/home#index', as: :trustee_root, constraints: AccessConstraint.new(:trustee)
-    # root to: 'members/home#index',  as: :member_root,  constraints: AccessConstraint.new(:member)
-    # root to: 'umdzes/home#index',   as: :umdze_root,   constraints: AccessConstraint.new(:umdze)
 
     # ugly, but works as auto-redirect upon login
     root to: 'landing#index',       as: :landing_root, constraints: lambda { |request| !request.env['warden'].user }
@@ -95,22 +78,9 @@ Rails.application.routes.draw do
     root to: 'umdzes/home#index',   as: :umdze_root,   constraints: lambda { |request|  request.env['warden'].user.access_role == 'umdze' }
     root to: 'members/home#index',  as: :member_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'member' }
     root to: 'trustees/home#index', as: :trustee_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'trustee' }
-    # root to: 'members/home#index',  as: :user_root
   end
-  # or outside of Devise (redirects after login?)
-  # root to: 'landing#index',       as: :landing_root, constraints: lambda { |request| !request.env['warden'].user }
-  # root to: 'members/home#index',  as: :user_root,    constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
-  # root to: 'umdzes/home#index',   as: :umdze_root,   constraints: lambda { |request|  request.env['warden'].user.access_role == 'umdze' }
-  # root to: 'members/home#index',  as: :member_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'member' }
-  # root to: 'trustees/home#index', as: :trustee_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'trustee' }
-  # root to: 'members/home#index',  as: :user_root
-  get '/home', to: 'landing#index'
-  root to: "landing#index"
 
-  # get '/', to: "landing#index",       constraints: lambda { |request| !request.env['warden'].user }
-  # get '/', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
-  # get '/', to: 'umdzes/home#index',   constraints: lambda { |request|  request.env['warden'].user.access_role == 'umdze' }
-  # get '/', to: 'members/home#index',  constraints: lambda { |request|  request.env['warden'].user.access_role == 'member' }
-  # get '/', to: 'trustees/home#index', constraints: lambda { |request|  request.env['warden'].user.access_role == 'trustee' }
+  # get '/home', to: 'landing#index'
+  root to: "landing#index"
 
 end
