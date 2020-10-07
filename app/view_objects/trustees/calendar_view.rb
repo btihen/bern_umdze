@@ -2,8 +2,7 @@ class Trustees::CalendarView < CalendarView
 
   def new_button_html(space, date)
     %Q{ <a class="button is-success"
-            href="#{url_helpers.new_trustees_reservation_path(space_id: space.id,
-                                                              date: display_date(date))}">
+            href="#{url_helpers.new_trustees_reservation_path(space_id: space.id, date: date.to_s)}">
           Add Reservation
         </a>
       }

@@ -14,7 +14,11 @@ class Trustees::UsersController < Trustees::ApplicationController
   end
 
   def create
-    user = User.new(user_params)
+    # Rails 6.1 added compact_blank: `user_params.compact_blank`
+    # https://stackoverflow.com/questions/812541/how-to-change-hash-values
+    create_params  = user_params.reject{|_, v| v.blank?}    # remove fields that are blank (don't update blank passwords)
+                                .transform_values(&:squish) # should be safe for all param values are strings (use strip if it includes text fields)
+    user = User.new(create_params)
 
     if user.save
       redirect_to trustees_users_path, notice: "User with email: #{user.email} was successfully created."
@@ -31,12 +35,12 @@ class Trustees::UsersController < Trustees::ApplicationController
   end
 
   def update
+    # Rails 6.1 added compact_blank: `user_params.compact_blank`
+    # https://stackoverflow.com/questions/812541/how-to-change-hash-values
+    update_params  = user_params.reject{|_, v| v.blank?}    # remove fields that are blank (don't update blank passwords)
+                                .transform_values(&:squish) # should be safe for all param values are strings (use strip if it includes text fields)
     user = User.find(params[:id])
     user_view = UserView.new(user)
-
-    # if password blank then remove password and password_confirmation keys
-    # Rails 6.1 added compact_blank: `user_params.compact_blank`
-    update_params = user_params.reject{|_, v| v.blank?}
 
     if user.update(update_params)
       redirect_to trustees_users_path, notice: "User with email: #{user.email} was successfully updated."

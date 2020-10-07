@@ -36,9 +36,13 @@ class Trustees::ReservationsController < Trustees::ApplicationController
     # Rails models understand how to assemble date_forms
     # "start_date(1i)"=>"2015", "start_date(2i)"=>"1", "start_date(3i)"=>"10", "start_time(1i)"=>"2020", "start_time(2i)"=>"10", "start_time(3i)"=>"5", "start_time(4i)"=>"00", "start_time(5i)"=>"00", "end_date(1i)"=>"2015", "end_date(2i)"=>"1", "end_date(3i)"=>"10", "end_time(1i)"=>"2020", "end_time(2i)"=>"10", "end_time(3i)"=>"5", "end_time(4i)"=>"00", "end_time(5i)"=>"10"
     # silly hack until I build nicer date forms (and fix above problem - or inherit the right methods)
-    reservation   = Reservation.new(reservation_params)
+    # allow fields to be cleared (don't remove blank fields)
+    create_params    = reservation_params.transform_values(&:squish)
+    form_params      = reservation_form_params.transform_values(&:squish)  # hmmm - types aren't working properly
+
+    reservation      = Reservation.new(create_params)
     reservation_form = Trustees::ReservationForm.new_from(reservation)
-    reservation_form.assign_attributes(reservation_form_params)
+    reservation_form.assign_attributes(form_params)
     # reservation_form = Trustees::ReservationForm.new(reservation_form_params)
 
     if reservation_form.valid?
@@ -94,7 +98,8 @@ class Trustees::ReservationsController < Trustees::ApplicationController
 
     # udpated_attrs = reservation_params.merge(id: params[:id])
     # reservation   = Umdzes::ReservationForm.new(udpated_attrs)
-    reservation.assign_attributes(reservation_params)
+    update_params = reservation_params.transform_values(&:squish)
+    reservation.assign_attributes(update_params)
 
     # no submodels involved (hence no form_object)
     if reservation.save

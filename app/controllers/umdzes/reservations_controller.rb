@@ -37,7 +37,8 @@ class Umdzes::ReservationsController < Umdzes::ApplicationController
 
     # udpated_attrs = reservation_params.merge(id: params[:id])
     # reservation   = Umdzes::ReservationForm.new(udpated_attrs)
-    reservation.assign_attributes(reservation_params)
+    update_params = reservation_params.transform_values(&:squish)
+    reservation.assign_attributes(update_params)
 
     # no submodels involved (hence no form_object)
     if reservation.save
