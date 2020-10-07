@@ -1,4 +1,5 @@
-<%# form_with(model: trustees_user, local: true) do |form| %>
+<%# form_with(model: user, local: true) do |form| %>
+
   <% if user.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(user.errors.count, "error") %> prohibited this trustees_user from being saved:</h2>
@@ -77,18 +78,6 @@
     <%= error_message_on(form.object, :username) %>
   </div>
 
-  <div class="field is-horizontal">
-    <div class="field-body">
-      <div class="field is-grouped is-grouped-multiline">
-        <div class="control">
-          <%= form.submit("Save", class: "button is-success") %>
-        </div>
-        &nbsp;
-        <div class="control">
-          <%= link_to 'Back', trustees_users_path, class: 'button is-link is-light' %>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- action buttons on calling page -->
 
 <%# end %>
