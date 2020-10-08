@@ -70,6 +70,9 @@ Rails.application.routes.draw do
     namespace :umdzes do
       resources :reservations, only: [:edit, :update]
     end
+    namespace :planners do
+      resources :reservations, only: [:edit, :update, :new, :create, :destroy]
+    end
     namespace :trustees do
       resources :users,        only: [:edit, :update, :new, :create, :index, :destroy]
       resources :events,       only: [:edit, :update, :new, :create, :index, :destroy]
@@ -81,6 +84,7 @@ Rails.application.routes.draw do
     root to: 'members/home#index',  as: :user_root,    constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
     root to: 'umdzes/home#index',   as: :umdze_root,   constraints: lambda { |request|  request.env['warden'].user.access_role == 'umdze' }
     root to: 'members/home#index',  as: :member_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'member' }
+    root to: 'planners/home#index', as: :planner_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'planner' }
     root to: 'trustees/home#index', as: :trustee_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'trustee' }
   end
 

@@ -25,6 +25,12 @@ umdze   = User.create(email: "umdze@test.ch",
                       access_role: 'umdze',
                       password: "Let-M3-In!",
                       password_confirmation: "Let-M3-In!")
+planner = User.create(email: "planner@test.ch",
+                      username: "planner",
+                      real_name: "planner",
+                      access_role: 'planner',
+                      password: "Let-M3-In!",
+                      password_confirmation: "Let-M3-In!")
 trustee = User.create(email: "trustee@test.ch",
                       username: "trustee",
                       real_name: "trustee",
