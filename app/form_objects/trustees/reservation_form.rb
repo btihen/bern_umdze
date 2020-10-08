@@ -15,7 +15,7 @@ class Trustees::ReservationForm < FormBase
 
   # All the models that are apart of our form should be part attr_accessor.
   # This allows the form to be initialized with existing instances.
-  attr_accessor :id, :host_name, :event, :space,
+  attr_accessor :host_name, :space, :event, # :id, :event_id, :space_id.
                 :start_date, :end_date, :start_time, :end_time,
                 :start_date_time, :end_date_time
 
@@ -45,13 +45,6 @@ class Trustees::ReservationForm < FormBase
     new(attribs)
   end
 
-  # def initialize(attrs={})
-  #   super
-  # end
-
-  # list attributes - which accept any form (Arrays)
-  # attr_accessor :event_id, :space_id, :time_slot_id
-
   attribute :end_date,            :date, default: Date.today
   attribute :start_date,          :date, default: Date.today
   attribute :end_time,            :time, default: Time.parse("#{(Time.now + 2.hours).hour}:00", Time.now)
@@ -65,11 +58,6 @@ class Trustees::ReservationForm < FormBase
   attribute :event_name,          :squished_string
   attribute :event_description,   :squished_string
   attribute :is_cancelled,        :boolean, default: false
-
-  # validates :start_date,          presence: true
-  # validates :end_date,            presence: true
-  # validates :start_time,          presence: true
-  # validates :end_time,            presence: true
 
   validate :validate_space
   validate :validate_event
@@ -142,24 +130,25 @@ class Trustees::ReservationForm < FormBase
     return if event.valid?
 
     if event_id.blank? && event_name.blank?
-      errors.add(:event_id, "must be chosen or created")
+      errors.add(:event, "must be chosen or created")
     else
       event.errors.each do |attribute_name, desc|
-        attribute_sym = attribute_name.to_s.eql?("id") ? :event_id : attribute_name.to_sym
+        attribute_sym = attribute_name.to_s.eql?("id") ? :event : attribute_name.to_sym
         errors.add(attribute_sym, desc)
       end
     end
-    # event.errors.each do |attribute_name, desc|
-    #   attribute_sym = attribute_name.to_s.eql?(id) ? :event_id : attribute_name.to_sym
-    #   errors.add(attribute_sym, desc)
-    # end
   end
 
   def validate_space
     return if space.valid?
 
-    space.errors.each do |_attribute_name, desc|
-      errors.add(:space_id, desc)
+    if space_id.blank? # && space_name.blank?
+      errors.add(:space, "must be chosen")
+    else
+      space.errors.each do |_attribute_name, desc|
+        attribute_sym = attribute_name.to_s.eql?("id") ? :space : attribute_name.to_sym
+        errors.add(:attribute_sym, desc)
+      end
     end
   end
 
@@ -167,8 +156,6 @@ class Trustees::ReservationForm < FormBase
     return if reservation.valid?
 
     reservation.errors.each do |attribute_name, desc|
-      # attribute_sym = attribute_name.to_s.eql?(id) ? :reservation_id : attribute_name.to_sym
-      # errors.add(attribute_sym, desc)
       next if attribute_name.to_s.eql?("event.event_name") ||
               attribute_name.to_s.eql?("space.space_name") ||
               attribute_name.to_s.eql?("id")  # id should always be valid - but just in case

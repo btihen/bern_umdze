@@ -16,12 +16,12 @@
   Place: <strong><%= reservation_view.space_name %></strong><br>
   From: <strong><%= reservation_view.date_range_string %></strong>
 </h2>
-
+<br>
 <%= form_for( reservation, local: true,
               url: trustees_reservation_path(reservation),    # PATH MUST BE SINGULAR!!!
               id: "edit-reservation-form", class: "reservation" ) do |form|  %>
 
   <%= render 'form_edit', form: form, reservation: reservation,
-                          spaces: spaces %>
+                          spaces: spaces, events: events %>
 
 <% end %>

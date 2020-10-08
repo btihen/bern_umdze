@@ -19,10 +19,11 @@
         <div class="field has-addons is-grouped is-grouped-multiline">
           <div class="control">
             <%= form.collection_select :space_id, spaces,
-                      :id, :space_name, {selected: reservation.space.id},
+                      :id, :space_name, { include_blank: 'Select Space',
+                                          selected: reservation.space&.id },
                       {class: 'select'} %>
             <p class="help">Required</p>
-            <%= error_message_on(form.object, :space_id) %>
+            <%= error_message_on(form.object, :space) %>
           </div>
         </div>
       </div>
@@ -49,7 +50,7 @@
                                                 selected: reservation.event&.id },
                             {class: 'select'} %>
                   <p class="help">Select the Event</p>
-                  <%= error_message_on(form.object, :event_id) %>
+                  <%= error_message_on(form.object, :event) %>
                 </div>
               </div>
             </div>

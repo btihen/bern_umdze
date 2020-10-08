@@ -9,7 +9,7 @@
 <p hidden id='trustee-new-resevation-<%= reservation.id %>' class='pageName'>Trustee New Reservation <%= reservation.id %></p>
 
 <h1 class="sub-title is-size-4">New Reservation</h1>
-
+<br>
 <%= form_for( reservation, local: true,
               url: trustees_reservations_path,  # MUST BE PLURAL
               id: "new-reservation-form", class: "reservation" ) do |form|  %>
