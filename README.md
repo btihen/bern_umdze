@@ -1,6 +1,6 @@
 # README
 
-Simple iphone friendly group  space coordination
+Simple iphone friendly group space schedule coordination
 
 Depoloyed at:
 
@@ -14,7 +14,8 @@ https://bernumdze.herokuapp.com/
 rspec
 ```
 
-
+* force https & *.bernumdze.org -> www.bernumdze.org (redirect)
+https://stackoverflow.com/questions/34862065/force-my-heroku-app-to-use-ssl-https
 
 * Deployment instructions
 ```
