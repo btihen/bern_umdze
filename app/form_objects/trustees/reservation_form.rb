@@ -45,13 +45,6 @@ class Trustees::ReservationForm < FormBase
     new(attribs)
   end
 
-  # def initialize(attrs={})
-  #   super
-  # end
-
-  # list attributes - which accept any form (Arrays)
-  # attr_accessor :event_id, :space_id, :time_slot_id
-
   attribute :end_date,            :date, default: Date.today
   attribute :start_date,          :date, default: Date.today
   attribute :end_time,            :time, default: Time.parse("#{(Time.now + 2.hours).hour}:00", Time.now)
@@ -66,15 +59,9 @@ class Trustees::ReservationForm < FormBase
   attribute :event_description,   :squished_string
   attribute :is_cancelled,        :boolean, default: false
 
-  # validates :start_date,          presence: true
-  # validates :end_date,            presence: true
-  # validates :start_time,          presence: true
-  # validates :end_time,            presence: true
-
   validate :validate_space
   validate :validate_event
   validate :validate_reservation
-  # validate :validate_dates_and_times_available
 
   def reservation
     @reservation     ||= assign_reservation_attribs
@@ -149,10 +136,6 @@ class Trustees::ReservationForm < FormBase
         errors.add(attribute_sym, desc)
       end
     end
-    # event.errors.each do |attribute_name, desc|
-    #   attribute_sym = attribute_name.to_s.eql?(id) ? :event_id : attribute_name.to_sym
-    #   errors.add(attribute_sym, desc)
-    # end
   end
 
   def validate_space
@@ -167,8 +150,6 @@ class Trustees::ReservationForm < FormBase
     return if reservation.valid?
 
     reservation.errors.each do |attribute_name, desc|
-      # attribute_sym = attribute_name.to_s.eql?(id) ? :reservation_id : attribute_name.to_sym
-      # errors.add(attribute_sym, desc)
       next if attribute_name.to_s.eql?("event.event_name") ||
               attribute_name.to_s.eql?("space.space_name") ||
               attribute_name.to_s.eql?("id")  # id should always be valid - but just in case
