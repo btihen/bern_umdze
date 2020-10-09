@@ -6,12 +6,12 @@
   <meta name="turbolinks-visit-control" content="reload">
 <% end %>
 
-<p hidden id='trustee-edit-event-<%= event.id %>' class='pageName'>Trustee Edit Event<%= event.id %></p>
+<p hidden id='manager-edit-event-<%= event.id %>' class='pageName'>Manager Edit Event<%= event.id %></p>
 
 <h1 class="sub-title is-size-4">Editing: <%= event.event_name %></h1>
 <br>
 <%= form_for( event, local: true,
-              url: trustees_event_path(event),    # EDIT PATH MUST BE SINGULAR for PATCH
+              url: managers_event_path(event),    # EDIT PATH MUST BE SINGULAR for PATCH
               id: "edit-event-form", class: "event" ) do |form|  %>
 
   <%= render 'form', form: form, event: event %>
@@ -24,11 +24,11 @@
         </div>
         &nbsp;
         <div class="control">
-          <%= link_to 'Back', trustees_events_path, class: 'button is-link is-light' %>
+          <%= link_to 'Back', managers_events_path, class: 'button is-link is-light' %>
         </div>
         &nbsp;
         <div class="control">
-          <%= link_to 'Delete', trustees_event_path(event),
+          <%= link_to 'Delete', managers_event_path(event),
                         method: :delete, data: { confirm: 'Are you sure? This will also delete any associated reservations too.' },
                         class: "button is-danger is-light" %>
         </div>

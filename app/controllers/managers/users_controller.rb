@@ -1,4 +1,4 @@
-class Trustees::UsersController < Trustees::ApplicationController
+class Managers::UsersController < Managers::ApplicationController
 
   def index
     users      = User.all.order(real_name: :asc)
@@ -21,7 +21,7 @@ class Trustees::UsersController < Trustees::ApplicationController
     user = User.new(create_params)
 
     if user.save
-      redirect_to trustees_users_path, notice: "User with email: #{user.email} was successfully created."
+      redirect_to managers_users_path, notice: "User with email: #{user.email} was successfully created."
     else
       render :new, locals: {user: user}
     end
@@ -43,7 +43,7 @@ class Trustees::UsersController < Trustees::ApplicationController
     user_view = UserView.new(user)
 
     if user.update(update_params)
-      redirect_to trustees_users_path, notice: "User with email: #{user.email} was successfully updated."
+      redirect_to managers_users_path, notice: "User with email: #{user.email} was successfully updated."
     else
       render :edit, locals: {user: user, user_view: user_view}
     end
@@ -54,7 +54,7 @@ class Trustees::UsersController < Trustees::ApplicationController
     email = user.email
     user.destroy
 
-    redirect_to trustees_users_path, notice: "User with email: #{user.email} was successfully deleted."
+    redirect_to managers_users_path, notice: "User with email: #{user.email} was successfully deleted."
   end
 
   private

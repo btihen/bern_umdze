@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe "trustees/users/new", type: :view do
+RSpec.describe "managers/users/new", type: :view do
   before(:each) do
-    assign(:trustees_user, Trustees::User.new())
+    assign(:managers_user, Managers::User.new())
   end
 
-  it "renders new trustees_user form" do
+  it "renders new managers_user form" do
     render
 
-    assert_select "form[action=?][method=?]", trustees_users_path, "post" do
+    assert_select "form[action=?][method=?]", managers_users_path, "post" do
     end
   end
 end

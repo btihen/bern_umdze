@@ -6,12 +6,12 @@
   <meta name="turbolinks-visit-control" content="reload">
 <% end %>
 
-<p hidden id='trustee-new-event' class='pageName'>Trustee New Event</p>
+<p hidden id='manager-new-event' class='pageName'>Manager New Event</p>
 
 <h1 class="sub-title is-size-4">Create New Event</h1>
 <br>
 <%= form_for( event, local: true,
-              url: trustees_events_path,   # NEW MUST BE PLURAL for POST
+              url: managers_events_path,   # NEW MUST BE PLURAL for POST
               id: "new-event-form", class: "event" ) do |form|  %>
 
   <%= render 'form', form: form, event: event %>
@@ -24,7 +24,7 @@
         </div>
         &nbsp;
         <div class="control">
-          <%= link_to 'Back', trustees_events_path, class: 'button is-link is-light' %>
+          <%= link_to 'Back', managers_events_path, class: 'button is-link is-light' %>
         </div>
       </div>
     </div>

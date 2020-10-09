@@ -6,12 +6,12 @@
   <meta name="turbolinks-visit-control" content="reload">
 <% end %>
 
-<p hidden id='trustee-index-event' class='pageName'>Trustee Events Index</p>
+<p hidden id='manager-index-event' class='pageName'>Manager Events Index</p>
 
 <h1 class="sub-title is-size-4">Manage Events</h1>
 <br />
 
-<%= link_to 'Create new event', new_trustees_event_path, class: "button is-info" %>
+<%= link_to 'Create new event', new_managers_event_path, class: "button is-info" %>
 <br />
 <br />
 
@@ -27,13 +27,13 @@
     <tbody>
       <% events.each do |event| %>
         <tr>
-          <td><%= link_to "#{event.event_name}", edit_trustees_event_path(event) %></td>
+          <td><%= link_to "#{event.event_name}", edit_managers_event_path(event) %></td>
           <td>
-            <%= link_to 'Edit',    edit_trustees_event_path(event),
+            <%= link_to 'Edit',    edit_managers_event_path(event),
                         class: "button is-info is-light is-small"  %>
           </td>
           <td>
-            <%= link_to 'Delete', trustees_event_path(event),
+            <%= link_to 'Delete', managers_event_path(event),
                         method: :delete, data: { confirm: 'Are you sure? This will also delete any associated reservations too.' },
                         class: "button is-danger is-light is-small" %>
           </td>
@@ -45,4 +45,4 @@
 
 <br>
 
-<%= link_to 'Create new event', new_trustees_event_path, class: "button is-info" %>
+<%= link_to 'Create new event', new_managers_event_path, class: "button is-info" %>

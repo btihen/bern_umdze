@@ -6,12 +6,12 @@
   <meta name="turbolinks-visit-control" content="reload">
 <% end %>
 
-<p hidden id='trustee-index-user' class='pageName'>Trustee Index Users</p>
+<p hidden id='manager-index-user' class='pageName'>Manager Index Users</p>
 
 <h1 class="sub-title is-size-4">Manage Users</h1>
 <br />
 
-<%= link_to 'Create new user', new_trustees_user_path, class: "button is-info" %>
+<%= link_to 'Create new user', new_managers_user_path, class: "button is-info" %>
 <br />
 <br />
 
@@ -35,14 +35,14 @@
       <% users.each do |user| %>
         <tr>
           <td>
-            <%= link_to 'Manage', edit_trustees_user_path(user),
+            <%= link_to 'Manage', edit_managers_user_path(user),
                         class: "button is-success is-light is-small"  %>
           </td>
           <td><%= user.real_name %></td>
           <td><%= user.access_permissions %></td>
           <!--
-          <td><%= link_to "#{user.username}",           edit_trustees_user_path(user) %></td>
-          <td><%= link_to "#{user.email}",              edit_trustees_user_path(user) %></td>
+          <td><%= link_to "#{user.username}",           edit_managers_user_path(user) %></td>
+          <td><%= link_to "#{user.email}",              edit_managers_user_path(user) %></td>
           <td>Reset</td>
           <td>Enabled/Blocked</td>
           -->
@@ -54,4 +54,4 @@
 
 <br>
 
-<%= link_to 'Create new user', new_trustees_user_path, class: "button is-info" %>
+<%= link_to 'Create new user', new_managers_user_path, class: "button is-info" %>

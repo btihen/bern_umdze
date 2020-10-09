@@ -31,10 +31,10 @@ User.create(email: "planner@test.ch",
             access_role: 'planner',
             password: "Let-M3-In!",
             password_confirmation: "Let-M3-In!")
-User.create(email: "trustee@test.ch",
-            username: "trustee",
-            real_name: "trustee",
-            access_role: 'trustee',
+User.create(email: "manager@test.ch",
+            username: "manager",
+            real_name: "manager",
+            access_role: 'manager',
             password: "Let-M3-In!",
             password_confirmation: "Let-M3-In!")
 

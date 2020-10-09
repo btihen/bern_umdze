@@ -1,4 +1,4 @@
-class Trustees::ReservationForm < FormBase
+class Managers::ReservationForm < FormBase
 
   # alias_method :reservation, :root_model
 

@@ -47,7 +47,7 @@
           <% elsif calendar_view.date_in_month_of_interest?(day) && day == Date.today %>
           <%# date-item button for a new link %>
           <%= link_to day.mday,
-                      new_trustees_reservation_path(space_id: space_view.id, date: day.to_s),
+                      new_managers_reservation_path(space_id: space_view.id, date: day.to_s),
                       class: "date-item button is-light is-today" %>
 
 
@@ -55,7 +55,7 @@
           <% elsif calendar_view.date_in_month_of_interest?(day) %>
           <%# date-item button for a new link %>
           <%= link_to day.mday,
-                      new_trustees_reservation_path(space_id: space_view.id, date: day.to_s),
+                      new_managers_reservation_path(space_id: space_view.id, date: day.to_s),
                       class: "date-item button is-light" %>
 
           <%# date-item has reservation and NOT in month of interest - needs is-active for green dot %>

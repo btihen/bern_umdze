@@ -1,4 +1,4 @@
-class Trustees::HomeController < Trustees::ApplicationController
+class Managers::HomeController < Managers::ApplicationController
   
   def index
     spaces        = Space.all
@@ -7,7 +7,7 @@ class Trustees::HomeController < Trustees::ApplicationController
 
     user_view     = UserView.new(user)
     space_views   = SpaceView.collection(spaces)
-    calendar_view = Trustees::CalendarView.new(user_view, date)
+    calendar_view = Managers::CalendarView.new(user_view, date)
 
     render :index, locals: {user_view: user_view,
                             spaces_view: space_views,

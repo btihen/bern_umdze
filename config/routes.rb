@@ -1,25 +1,26 @@
 Rails.application.routes.draw do
 
   namespace :users do
-    resources :profiles, only: [:edit, :update, :destroy]
+    resources :profiles,        only: [:edit, :update, :destroy]
   end
   namespace :umdzes do
-    resources :reservations, only: [:edit, :update]
+    resources :reservations,    only: [:edit, :update]
   end
   namespace :planners do
-    resources :reservations, only: [:edit, :update, :new, :create, :destroy]
+    resources :reservations,    only: [:edit, :update, :new, :create, :destroy]
   end
-  namespace :trustees do
-    resources :users,        only: [:edit, :update, :new, :create, :index, :destroy]
-    resources :events,       only: [:edit, :update, :new, :create, :index, :destroy]
-    resources :reservations, only: [:edit, :update, :new, :create, :destroy]
+  namespace :managers do
+    resources :users,           only: [:edit, :update, :new, :create, :index, :destroy]
+    resources :events,          only: [:edit, :update, :new, :create, :index, :destroy]
+    resources :reservations,    only: [:edit, :update, :new, :create, :index, :destroy]
+    resources :repeat_bookings, only: [:edit, :update, :new, :create, :index, :destroy]
   end
 
   devise_for :users
   # These cause csfr error!!!
   ###########################
-  # authenticated :user, ->(user) { user.access_role == 'trustee' } do
-  #   root to: 'trustees/home#index', as: :trustee_root
+  # authenticated :user, ->(user) { user.access_role == 'manager' } do
+  #   root to: 'managers/home#index', as: :manager_root
   # end
   # authenticated :user, ->(user) { user.access_role == 'umdze' } do
   #   root to: 'umdzes/home#index', as: :umdze_root
@@ -39,7 +40,7 @@ Rails.application.routes.draw do
   #   namespace :umdzes do
   #     resources :reservations, only: [:edit, :update]
   #   end
-  #   namespace :trustees do
+  #   namespace :managers do
   #     resources :users,        only: [:edit, :update, :new, :create, :index, :destroy]
   #     resources :events,       only: [:edit, :update, :new, :create, :index, :destroy]
   #     resources :reservations, only: [:edit, :update, :new, :create, :destroy]
@@ -56,7 +57,8 @@ Rails.application.routes.draw do
   root to: 'umdzes/home#index',   as: :umdze_root,   constraints: lambda { |request|  request.env['warden'].user.access_role == 'umdze' }
   root to: 'members/home#index',  as: :member_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'member' }
   root to: 'planners/home#index', as: :planner_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'planner' }
-  root to: 'trustees/home#index', as: :trustee_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'trustee' }
+  root to: 'managers/home#index', as: :manager_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'manager' }
+  root to: 'managers/home#index', as: :trustee_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'trustee' }
   root to: "landing#index"
 
 end

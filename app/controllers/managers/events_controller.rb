@@ -1,4 +1,4 @@
-class Trustees::EventsController < Trustees::ApplicationController
+class Managers::EventsController < Managers::ApplicationController
 
   def index
     events      = Event.all.order(event_name: :asc)
@@ -18,7 +18,7 @@ class Trustees::EventsController < Trustees::ApplicationController
     event = Event.new(create_params)
 
     if event.save
-      redirect_to trustees_events_path, notice: "Event: #{event.event_name} was successfully created."
+      redirect_to managers_events_path, notice: "Event: #{event.event_name} was successfully created."
     else
       render :new, locals: {event: event}
     end
@@ -35,7 +35,7 @@ class Trustees::EventsController < Trustees::ApplicationController
     event         = Event.find(params[:id])
 
     if event.update(update_params)
-      redirect_to trustees_events_path, notice: "Event: #{event.event_name} was successfully updated."
+      redirect_to managers_events_path, notice: "Event: #{event.event_name} was successfully updated."
     else
       render :edit, locals: {event: event}
     end
@@ -46,7 +46,7 @@ class Trustees::EventsController < Trustees::ApplicationController
     name  = event.event_name
     event.destroy
 
-    redirect_to trustees_events_path, notice: "Event: #{name} was successfully deleted."
+    redirect_to managers_events_path, notice: "Event: #{name} was successfully deleted."
   end
 
   private
