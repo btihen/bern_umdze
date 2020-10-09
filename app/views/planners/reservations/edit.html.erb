@@ -1,0 +1,44 @@
+<!--
+  https://github.com/turbolinks/turbolinks#ensuring-specific-pages-trigger-a-full-reload
+  https://stackoverflow.com/questions/39627881/jquery-plugin-initialization-on-browser-back-button-for-turbolinks-rails-5/39801052
+  -->
+<% content_for :head do %>
+  <meta name="turbolinks-visit-control" content="reload">
+<% end %>
+
+<p hidden id='trustee-edit-resevation-<%= reservation.id %>' class='pageName'>Trustee Edit Reservation <%= reservation.id %></p>
+
+<h1 class="sub-title is-size-4">
+  Edit Event: <strong><%= event.event_name %></strong>
+</h1>
+
+<h2 class="sub-title is-size-6">
+  Place: <strong><%= reservation_view.space_name %></strong><br>
+  From: <strong><%= reservation_view.date_range_string %></strong>
+</h2>
+<br>
+<%= form_for( reservation, local: true,
+              url: planners_reservation_path(reservation),    # PATH MUST BE SINGULAR!!!
+              id: "edit-reservation-form", class: "reservation" ) do |form|  %>
+
+  <div class="tile is-ancestor">
+    <div class="tile is-vertical is-full">
+
+      <div class="tile">
+        <div class="tile is-parent is-vertical">
+        <%= render 'form_edit', form: form, reservation: reservation,
+                                spaces: spaces, events: events %>
+        </div>
+      </div>
+
+      <!-- load button on the form-defintion level to prevent caching problems -->
+      <div class="tile">
+        <div class="tile is-parent is-vertical">
+        <%= render 'actions_edit', form: form, reservation: reservation %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<% end %>
