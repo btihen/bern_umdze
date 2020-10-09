@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 2020_10_27_083639) do
     t.datetime "locked_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "real_name"
+    t.string "real_name", null: false
     t.string "username", null: false
     t.string "access_role", default: "member", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
