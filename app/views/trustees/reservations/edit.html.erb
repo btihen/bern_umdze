@@ -16,12 +16,35 @@
   Place: <strong><%= reservation_view.space_name %></strong><br>
   From: <strong><%= reservation_view.date_range_string %></strong>
 </h2>
+<br>
 
 <%= form_for( reservation, local: true,
               url: trustees_reservation_path(reservation),    # PATH MUST BE SINGULAR!!!
               id: "edit-reservation-form", class: "reservation" ) do |form|  %>
 
-  <%= render 'form_edit', form: form, reservation: reservation,
-                          spaces: spaces %>
+
+  <div class="tile is-ancestor">
+    <div class="tile is-vertical is-full">
+
+      <div class="tile">
+        <div class="tile is-parent is-vertical">
+
+        <%= render 'form_edit', form: form, reservation: reservation,
+                                spaces: spaces %>
+        </div>
+      </div>
+
+      <!-- load button on the form-defintion level to prevent caching problems -->
+      <div class="tile">
+        <div class="tile is-parent is-vertical">
+
+        <%= render 'actions_edit', form: form, reservation: reservation %>
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
 
 <% end %>

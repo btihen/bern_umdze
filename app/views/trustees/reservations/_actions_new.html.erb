@@ -1,0 +1,16 @@
+      <div class="field is-horizontal">
+        <div class="field-label is-normal"></div>
+        <div class="field-body">
+          <div class="field is-grouped is-grouped-multiline">
+            <div class="control">
+              <%= form.submit("Save", class: "button is-success") %>
+            </div>
+            &nbsp;
+            <div class="control">
+              <%= link_to 'Back',
+                    root_path(date: reservation.start_date.to_s),
+                    class: 'button is-link is-light' %>
+            </div>
+          </div>
+        </div>
+      </div>

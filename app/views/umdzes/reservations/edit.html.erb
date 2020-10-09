@@ -16,11 +16,28 @@
   Place: <strong><%= reservation_view.space_name %></strong><br>
   From: <strong><%= reservation_view.date_range_string %></strong>
 </h3>
-
+<br>
 <%= form_for( reservation, local: true,
               url: umdzes_reservation_path(reservation),    # PATH MUST BE SINGULAR!!!
               id: "edit-reservation-form", class: "reservation" ) do |form|  %>
 
-<%= render 'form', form: form, reservation: reservation %>
+  <%= render 'form', form: form, reservation: reservation %>
+
+  <!-- put here for flexibility and avoid turbolink caching -->
+  <div class="field is-horizontal">
+    <div class="field-label is-normal"></div>
+    <div class="field-body">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <%= form.submit("Save", class: "button is-success") %>
+        </div>
+        &nbsp;
+        <div class="control">
+          <%= link_to 'Back', root_path(date: reservation.start_date.to_s),
+                      class: 'button is-link is-light' %>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <% end %>
