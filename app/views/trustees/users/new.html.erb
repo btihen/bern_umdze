@@ -14,24 +14,9 @@
               url: trustees_users_path,   # NEW MUST BE PLURAL for POST
               id: "new-user-form", class: "user" ) do |form|  %>
 
-  <div class="notification is-success is-light">
-    Account creation requires all fields
-  </div>
+  <%= render 'form_new', form: form, user: user %>
+  <br>
+  <%= render 'actions_new', form: form, user: user %>
 
-  <%= render 'form', form: form, user: user %>
-
-  <div class="field is-horizontal">
-    <div class="field-body">
-      <div class="field is-grouped is-grouped-multiline">
-        <div class="control">
-          <%= form.submit("Save", class: "button is-success") %>
-        </div>
-        &nbsp;
-        <div class="control">
-          <%= link_to 'Back', trustees_users_path, class: 'button is-link is-light' %>
-        </div>
-      </div>
-    </div>
-  </div>
 
 <% end %>

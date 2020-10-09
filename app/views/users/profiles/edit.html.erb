@@ -14,30 +14,26 @@
               url: users_profile_path(user),    # EDIT PATH MUST BE SINGULAR for PATCH
               id: "edit-profile-form", class: "user" ) do |form|  %>
 
-  <div class="notification is-success is-light">
-    Blanks values are ignored and won't blank the field.
-  </div>
+  <div class="tile is-ancestor">
+    <div class="tile is-vertical is-full">
 
-  <%= render 'form', form: form, user: user %>
+      <div class="tile">
+        <div class="tile is-parent is-vertical">
 
-  <div class="field is-horizontal">
-    <div class="field-body">
-      <div class="field is-grouped is-grouped-multiline">
-        <div class="control">
-          <%= form.submit("Save", class: "button is-success") %>
-        </div>
-        &nbsp;
-        <div class="control">
-          <%= link_to 'Back', root_path, class: 'button is-link is-light' %>
-        </div>
-        &nbsp;
-        <div class="control">
-          <%= link_to 'Delete Access', users_profile_path(user),
-                        method: :delete, data: { confirm: 'Are you sure?' },
-                        class: "button is-danger is-light" %>
+        <%= render 'form_edit', form: form, user: user %>
+
         </div>
       </div>
+
+      <!-- load button on the form-defintion level to prevent caching problems -->
+      <div class="tile">
+        <div class="tile is-parent is-vertical">
+
+        <%= render 'actions_edit', form: form, user: user %>
+
+        </div>
+      </div>
+
     </div>
   </div>
-
 <% end %>

@@ -14,30 +14,8 @@
               url: trustees_user_path(user),    # EDIT PATH MUST BE SINGULAR for PATCH
               id: "edit-user-form", class: "user" ) do |form|  %>
 
-  <div class="notification is-success is-light">
-    Blanks values are ignored and won't blank the field.
-  </div>
-
-  <%= render 'form', form: form, user: user %>
-
-  <div class="field is-horizontal">
-    <div class="field-body">
-      <div class="field is-grouped is-grouped-multiline">
-        <div class="control">
-          <%= form.submit("Save", class: "button is-success") %>
-        </div>
-        &nbsp;
-        <div class="control">
-          <%= link_to 'Back', trustees_users_path, class: 'button is-link is-light' %>
-        </div>
-        &nbsp;
-        <div class="control">
-          <%= link_to 'Delete', trustees_user_path(user),
-                        method: :delete, data: { confirm: 'Are you sure?' },
-                        class: "button is-danger is-light" %>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= render 'form_edit', form: form, user: user %>
+  <br>
+  <%= render 'actions_edit', form: form, user: user %>
 
 <% end %>

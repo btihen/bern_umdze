@@ -18,25 +18,29 @@
 </h3>
 <br>
 <%= form_for( reservation, local: true,
-              url: umdzes_reservation_path(reservation),    # PATH MUST BE SINGULAR!!!
+              url: umdzes_reservation_path(reservation), # PATH MUST BE SINGULAR!!!
               id: "edit-reservation-form", class: "reservation" ) do |form|  %>
 
-  <%= render 'form', form: form, reservation: reservation %>
+  <div class="tile is-ancestor">
+    <div class="tile is-vertical is-full">
 
-  <!-- put here for flexibility and avoid turbolink caching -->
-  <div class="field is-horizontal">
-    <div class="field-label is-normal"></div>
-    <div class="field-body">
-      <div class="field is-grouped is-grouped-multiline">
-        <div class="control">
-          <%= form.submit("Save", class: "button is-success") %>
-        </div>
-        &nbsp;
-        <div class="control">
-          <%= link_to 'Back', root_path(date: reservation.start_date.to_s),
-                      class: 'button is-link is-light' %>
+      <div class="tile">
+        <div class="tile is-parent is-vertical">
+
+        <%= render 'form_edit', form: form, reservation: reservation %>
+
         </div>
       </div>
+
+      <!-- load button on the form-defintion level to prevent caching problems -->
+      <div class="tile">
+        <div class="tile is-parent is-vertical">
+
+        <%= render 'actions_edit', form: form, reservation: reservation %>
+
+        </div>
+      </div>
+
     </div>
   </div>
 

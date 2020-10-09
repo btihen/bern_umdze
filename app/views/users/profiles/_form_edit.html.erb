@@ -1,0 +1,75 @@
+<%# form_with(model: user, local: true) do |form| %>
+
+  <% if user.errors.any? %>
+    <div id="error_explanation" class="notification is-danger is-light">
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited your profile from being saved:</h2>
+
+      <ul>
+        <% user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <label class="label">Real Name</label>
+    <div class="control">
+      <%= form.text_field :real_name,
+                          placeholder: "Person's actual name",
+                          class: 'input' %>
+    </div>
+    <p class="help"></p>
+    <%= error_message_on(form.object, :real_name) %>
+  </div>
+
+  <div class="field">
+    <label class="label">Username</label>
+    <div class="control">
+      <%= form.text_field :username,
+                          placeholder: "short username / nickname (for login)",
+                          class: 'input' %>
+    </div>
+    <p class="help">Required - all lowercase just letters no spaces</p>
+    <%= error_message_on(form.object, :username) %>
+  </div>
+
+  <div class="field">
+    <label class="label">Email</label>
+    <div class="control">
+      <%= form.email_field :email, placeholder: "e-mail address", class: 'input' %>
+    </div>
+    <p class="help">Required - all lowercase</p>
+    <%= error_message_on(form.object, :email) %>
+  </div>
+
+  <br>
+  <div class="notification is-success is-light">
+    Leave password fields blank to leave password unchanged.
+  </div>
+
+  <div class="field">
+    <label class="label">Password</label>
+    <div class="control">
+      <%= form.password_field :password,
+                              placeholder: "use a capital, lowercase and at least 12 characters long",
+                              class: 'input' %>
+    </div>
+    <p class="help">SUGGESTION: use multiple memorable words and capitalize each word.</p>
+    <%= error_message_on(form.object, :password) %>
+  </div>
+
+  <div class="field">
+    <label class="label">Password Confirmation</label>
+    <div class="control">
+      <%= form.password_field :password_confirmation,
+                              placeholder: "password confirmation",
+                              class: 'input' %>
+    </div>
+    <p class="help">Must be the same as the above password</p>
+    <%= error_message_on(form.object, :password_confirmation) %>
+  </div>
+
+  <!-- action buttons on calling page -->
+
+<%# end %>
