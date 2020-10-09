@@ -14,10 +14,10 @@
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
 
-      <% if current_user&.access_role.eql?("trustee") %>
+      <% if current_user&.access_role.eql?("manager") || current_user&.access_role.eql?("trustee") %>
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
-          Manage
+          Manager
         </a>
 
         <div class="navbar-dropdown">
@@ -25,19 +25,26 @@
             <%= link_to "Agenda", root_path, class: 'navbar-item' %>
           </a>
           <a class="navbar-item">
-            <%= link_to "Users", trustees_users_path, class: 'navbar-item' %>
+            <%= link_to "Users", managers_users_path, class: 'navbar-item' %>
           </a>
           <a class="navbar-item">
-            <%= link_to "Events", trustees_events_path, class: 'navbar-item' %>
+            <%= link_to "Events", managers_events_path, class: 'navbar-item' %>
+          </a>
+          <a class="navbar-item">
+            <%= link_to "Repeat Bookings", managers_repeat_bookings_path, class: 'navbar-item' %>
           </a>
         </div>
       </div>
+      <% elsif current_user %>
+        <a class="navbar-item">
+          <%= link_to "Agenda", root_path, class: 'navbar-item' %>
+        </a>
       <% end %>
 
     </div>
 
     <div class="navbar-end">
-      <%= link_to "Profile", edit_users_profile_path(current_user), class: 'navbar-item' if current_user %>
+      <%= link_to "Profile - #{current_user.username}", edit_users_profile_path(current_user), class: 'navbar-item' if current_user %>
       <div class="navbar-item">
         <div class="buttons">
           <% if current_user.nil? %>

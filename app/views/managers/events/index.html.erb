@@ -1,0 +1,48 @@
+<!--
+  https://github.com/turbolinks/turbolinks#ensuring-specific-pages-trigger-a-full-reload
+  https://stackoverflow.com/questions/39627881/jquery-plugin-initialization-on-browser-back-button-for-turbolinks-rails-5/39801052
+  -->
+<% content_for :head do %>
+  <meta name="turbolinks-visit-control" content="reload">
+<% end %>
+
+<p hidden id='manager-index-event' class='pageName'>Manager Events Index</p>
+
+<h1 class="sub-title is-size-4">Manage Events</h1>
+<br />
+
+<%= link_to 'Create new event', new_managers_event_path, class: "button is-info" %>
+<br />
+<br />
+
+<div class="table-container">
+  <table class="table is-bordered is-striped">
+    <thead class="has-text-centered">
+      <tr>
+        <th>Name</th>
+        <th colspan="2">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% events.each do |event| %>
+        <tr>
+          <td><%= link_to "#{event.event_name}", edit_managers_event_path(event) %></td>
+          <td>
+            <%= link_to 'Edit',    edit_managers_event_path(event),
+                        class: "button is-info is-light is-small"  %>
+          </td>
+          <td>
+            <%= link_to 'Delete', managers_event_path(event),
+                        method: :delete, data: { confirm: 'Are you sure? This will also delete any associated reservations too.' },
+                        class: "button is-danger is-light is-small" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<br>
+
+<%= link_to 'Create new event', new_managers_event_path, class: "button is-info" %>

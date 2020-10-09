@@ -1,0 +1,252 @@
+<% if reservation.errors.any? %>
+<div id="error_explanation" class="notification is-danger is-light">
+  <h2><%= pluralize(reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
+
+  <ul>
+    <% reservation.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<div class="card">
+  <div class="card-content">
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">Space</div>
+      <div class="field-body">
+        <div class="field has-addons is-grouped is-grouped-multiline">
+          <div class="control">
+            <%= form.collection_select :space_id, spaces,
+                      :id, :space_name, {selected: reservation.space.id},
+                      {class: 'select'} %>
+            <p class="help">Required</p>
+            <%= error_message_on(form.object, :space_id) %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">Event</div>
+      <div class="field-body">
+
+        <section>
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">Choose an Event</p>
+              <a class="card-header-icon card-toggle" id="existingEventToggle">
+                <i class="fa fa-angle-down"></i>
+              </a>
+            </header>
+            <div class="card-content" id="existingEventContent">
+              <div class="content">
+                <div class="field">
+                <div class="control has-addons">
+                  <%= form.collection_select :event_id, events,
+                            :id, :event_name, { include_blank: 'Select Event',
+                                                selected: reservation.event&.id },
+                            {class: 'select'} %>
+                  <p class="help">Select the Event</p>
+                  <%= error_message_on(form.object, :event_id) %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">Create New Event</p>
+              <a class="card-header-icon card-toggle" id="newEventToggle">
+                <i class="fa fa-angle-down"></i>
+              </a>
+            </header>
+
+            <div class="card-content is-hidden" id="newEventContent">
+              <div class="content">
+                <div class="field is-horizontal">
+                  <%# form.fields_for :event do |f|%>
+                  <div class="control has-icons-left">
+                    <%= form.text_field :event_name,
+                                      placeholder: "Event Name",
+                                      class: "input" %>
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                    <p class="help">Event Name Required</p>
+                    <%= error_message_on(form.object, :event_name) %>
+                  </div>
+                </div>
+                <!--
+                <div class="field is-horizontal">
+                  <div class="control has-icons-left">
+                    <%= form.text_field :event_description,
+                                      placeholder: "Event Description (Optional)",
+                                      class: "input" %>
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                    <p class="help">Optional</p>
+                    <%= error_message_on(form.object, :event_description) %>
+                  </div>
+                  <%# end %>
+                </div>
+                -->
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">Umdze / Koord.</div>
+      <div class="field-body">
+        <div class="field has-addons">
+          <div class="control has-icons-left">
+            <%= form.text_field :host_name, placeholder: "Umdze / Koord. (wenn bekannt)", class: "input" %>
+            <span class="icon is-small is-left">
+              <i class="fas fa-user"></i>
+            </span>
+            <p class="help">Optional</p>
+            <%= error_message_on(form.object, :host_name) %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">Start Date</div>
+      <div class="field-body">
+        <div class="field has-addons is-grouped is-grouped-multiline">
+          <div class="control">
+            <%= form.date_select :start_date,
+                                  {selected: reservation.start_date},
+                                  class: 'select' %>
+            <p class="help">Required</p>
+            <%= error_message_on(form.object, :start_date) %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">Start Time</div>
+      <div class="field-body">
+        <div class="field has-addons is-grouped is-grouped-multiline">
+          <div class="control">
+            <%= form.time_select :start_time,
+                                  {selected: reservation.start_time, minute_step: 15},
+                                  class: 'select' %>
+            <p class="help">Required</p>
+            <%= error_message_on(form.object, :start_time) %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">End Date</div>
+      <div class="field-body">
+        <div class="field has-addons is-grouped is-grouped-multiline">
+          <div class="control">
+            <%= form.date_select :end_date,
+                                  {selected: reservation.end_date},
+                                  class: 'select' %>
+            <p class="help">Required</p>
+            <%= error_message_on(form.object, :end_date) %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">End Time</div>
+      <div class="field-body">
+        <div class="field has-addons is-grouped is-grouped-multiline">
+          <div class="control">
+            <%= form.time_select :end_time,
+                                  {selected: reservation.end_time, minute_step: 15},
+                                  class: 'select' %>
+            <p class="help">Required</p>
+            <%= error_message_on(form.object, :end_time) %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">Cancelled?</div>
+      <div class="field-body">
+        <div class="field has-addons is-grouped is-grouped-multiline">
+          <div class="control">
+            <%= form.check_box :is_cancelled,
+                                value: reservation.is_cancelled,
+                                class: "checkbox reservation" %>
+            <%= error_message_on(form.object, :is_cancelled) %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">Notice</div>
+      <div class="field-body">
+        <div class="field has-addons is-grouped is-grouped-multiline">
+          <div class="control">
+            <%= form.text_area :alert_notice, class: "textarea" %>
+            <p class="help">Changes or needed info about the event.</p>
+            <%= error_message_on(form.object, :alert_notice) %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  'use strict';
+
+  document.getElementById("newEventToggle").onclick = function() {
+    var $target
+
+    // open the new event card
+    $target = document.getElementById("newEventContent");
+    $target.setAttribute('class', 'card-content');
+
+    // clear the previous event_id
+    $target = document.getElementById("reservation_event_id")
+    $target.selectedIndex = 0;
+
+    // close the existing event card
+    $target = document.getElementById("existingEventContent");
+    $target.setAttribute('class', 'card-content is-hidden');
+
+    // prevent form submission
+    event.preventDefault();
+  }
+
+  document.getElementById("existingEventToggle").onclick = function() {
+    var $target
+
+    // open the existing event card
+    $target = document.getElementById("existingEventContent");
+    $target.setAttribute('class', 'card-content');
+
+    // clear the form when closing
+    $target = document.getElementById("reservation_event_name")
+    $target.value = ''
+    $target = document.getElementById("reservation_event_description")
+    $target.value = ''
+
+    // close the new event card
+    $target = document.getElementById("newEventContent");
+    $target.setAttribute('class', 'card-content is-hidden');
+
+    // prevent form submission
+    event.preventDefault();
+  }
+</script>

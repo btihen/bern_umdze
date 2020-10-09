@@ -101,7 +101,7 @@ class CalendarView
             </dt>
             <dd>
               #{"<strike>" if dr.is_cancelled?}Event: <big><b>#{dr.event_name}</b></big><br>
-              #{dr.host_name.blank? ? "<span class='has-background-warning-light'>Host: <strong>Kein Umdze</strong></span>" : ("Host: <strong>" + dr.host_name + "</strong>")}#{"</strike>" if dr.is_cancelled?}
+              #{dr.host_name.blank? ? "<span class='has-background-warning-light'>Host: <strong>Kein Umdze/Koordinator</strong></span>" : ("Host: <strong>" + dr.host_name + "</strong>")}#{"</strike>" if dr.is_cancelled?}
               #{alert_notice(dr)}
             </dd>
           </dl>

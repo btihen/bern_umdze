@@ -1,0 +1,57 @@
+<!--
+  https://github.com/turbolinks/turbolinks#ensuring-specific-pages-trigger-a-full-reload
+  https://stackoverflow.com/questions/39627881/jquery-plugin-initialization-on-browser-back-button-for-turbolinks-rails-5/39801052
+  -->
+<% content_for :head do %>
+  <meta name="turbolinks-visit-control" content="reload">
+<% end %>
+
+<p hidden id='manager-index-user' class='pageName'>Manager Index Users</p>
+
+<h1 class="sub-title is-size-4">Manage Users</h1>
+<br />
+
+<%= link_to 'Create new user', new_managers_user_path, class: "button is-info" %>
+<br />
+<br />
+
+<div class="table-container">
+  <table class="table is-bordered is-striped">
+    <thead class="has-text-centered">
+      <tr>
+        <th>Actions</th>
+        <th>Name</th>
+        <th>Access</th>
+        <!--
+        <th>Username</th>
+        <th>email</th>
+        <th>Password</th>
+        <th>Status</th>
+        -->
+      </tr>
+    </thead>
+
+    <tbody>
+      <% users.each do |user| %>
+        <tr>
+          <td>
+            <%= link_to 'Manage', edit_managers_user_path(user),
+                        class: "button is-success is-light is-small"  %>
+          </td>
+          <td><%= user.real_name %></td>
+          <td><%= user.access_permissions %></td>
+          <!--
+          <td><%= link_to "#{user.username}",           edit_managers_user_path(user) %></td>
+          <td><%= link_to "#{user.email}",              edit_managers_user_path(user) %></td>
+          <td>Reset</td>
+          <td>Enabled/Blocked</td>
+          -->
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<br>
+
+<%= link_to 'Create new user', new_managers_user_path, class: "button is-info" %>

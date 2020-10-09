@@ -12,8 +12,8 @@
 # of tools you can use to make these specs even more expressive, but we're
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
-RSpec.describe "/trustees/users", type: :request do
-  # Trustees::User. As you add validations to Trustees::User, be sure to
+RSpec.describe "/managers/users", type: :request do
+  # Managers::User. As you add validations to Managers::User, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
     skip("Add a hash of attributes valid for your model")
@@ -25,58 +25,58 @@ RSpec.describe "/trustees/users", type: :request do
 
   describe "GET /index" do
     it "renders a successful response" do
-      Trustees::User.create! valid_attributes
-      get trustees_users_url
+      Managers::User.create! valid_attributes
+      get managers_users_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /show" do
     it "renders a successful response" do
-      user = Trustees::User.create! valid_attributes
-      get trustees_user_url(trustees_user)
+      user = Managers::User.create! valid_attributes
+      get managers_user_url(managers_user)
       expect(response).to be_successful
     end
   end
 
   describe "GET /new" do
     it "renders a successful response" do
-      get new_trustees_user_url
+      get new_managers_user_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /edit" do
     it "render a successful response" do
-      user = Trustees::User.create! valid_attributes
-      get edit_trustees_user_url(trustees_user)
+      user = Managers::User.create! valid_attributes
+      get edit_managers_user_url(managers_user)
       expect(response).to be_successful
     end
   end
 
   describe "POST /create" do
     context "with valid parameters" do
-      it "creates a new Trustees::User" do
+      it "creates a new Managers::User" do
         expect {
-          post trustees_users_url, params: { trustees_user: valid_attributes }
-        }.to change(Trustees::User, :count).by(1)
+          post managers_users_url, params: { managers_user: valid_attributes }
+        }.to change(Managers::User, :count).by(1)
       end
 
-      it "redirects to the created trustees_user" do
-        post trustees_users_url, params: { trustees_user: valid_attributes }
-        expect(response).to redirect_to(trustees_user_url(@trustees_user))
+      it "redirects to the created managers_user" do
+        post managers_users_url, params: { managers_user: valid_attributes }
+        expect(response).to redirect_to(managers_user_url(@managers_user))
       end
     end
 
     context "with invalid parameters" do
-      it "does not create a new Trustees::User" do
+      it "does not create a new Managers::User" do
         expect {
-          post trustees_users_url, params: { trustees_user: invalid_attributes }
-        }.to change(Trustees::User, :count).by(0)
+          post managers_users_url, params: { managers_user: invalid_attributes }
+        }.to change(Managers::User, :count).by(0)
       end
 
       it "renders a successful response (i.e. to display the 'new' template)" do
-        post trustees_users_url, params: { trustees_user: invalid_attributes }
+        post managers_users_url, params: { managers_user: invalid_attributes }
         expect(response).to be_successful
       end
     end
@@ -88,42 +88,42 @@ RSpec.describe "/trustees/users", type: :request do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested trustees_user" do
-        user = Trustees::User.create! valid_attributes
-        patch trustees_user_url(trustees_user), params: { trustees_user: new_attributes }
+      it "updates the requested managers_user" do
+        user = Managers::User.create! valid_attributes
+        patch managers_user_url(managers_user), params: { managers_user: new_attributes }
         user.reload
         skip("Add assertions for updated state")
       end
 
-      it "redirects to the trustees_user" do
-        user = Trustees::User.create! valid_attributes
-        patch trustees_user_url(trustees_user), params: { trustees_user: new_attributes }
+      it "redirects to the managers_user" do
+        user = Managers::User.create! valid_attributes
+        patch managers_user_url(managers_user), params: { managers_user: new_attributes }
         user.reload
-        expect(response).to redirect_to(trustees_user_url(user))
+        expect(response).to redirect_to(managers_user_url(user))
       end
     end
 
     context "with invalid parameters" do
       it "renders a successful response (i.e. to display the 'edit' template)" do
-        user = Trustees::User.create! valid_attributes
-        patch trustees_user_url(trustees_user), params: { trustees_user: invalid_attributes }
+        user = Managers::User.create! valid_attributes
+        patch managers_user_url(managers_user), params: { managers_user: invalid_attributes }
         expect(response).to be_successful
       end
     end
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested trustees_user" do
-      user = Trustees::User.create! valid_attributes
+    it "destroys the requested managers_user" do
+      user = Managers::User.create! valid_attributes
       expect {
-        delete trustees_user_url(trustees_user)
-      }.to change(Trustees::User, :count).by(-1)
+        delete managers_user_url(managers_user)
+      }.to change(Managers::User, :count).by(-1)
     end
 
-    it "redirects to the trustees_users list" do
-      user = Trustees::User.create! valid_attributes
-      delete trustees_user_url(trustees_user)
-      expect(response).to redirect_to(trustees_users_url)
+    it "redirects to the managers_users list" do
+      user = Managers::User.create! valid_attributes
+      delete managers_user_url(managers_user)
+      expect(response).to redirect_to(managers_users_url)
     end
   end
 end

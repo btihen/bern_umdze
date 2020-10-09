@@ -1,31 +1,32 @@
 Rails.application.routes.draw do
 
   namespace :users do
-    resources :profiles, only: [:edit, :update, :destroy]
+    resources :profiles,        only: [:edit, :update, :destroy]
   end
-  namespace :umdzes do
-    resources :reservations, only: [:edit, :update]
+  namespace :hosts do
+    resources :reservations,    only: [:edit, :update]
   end
   namespace :planners do
-    resources :reservations, only: [:edit, :update, :new, :create, :destroy]
+    resources :reservations,    only: [:edit, :update, :new, :create, :destroy]
   end
-  namespace :trustees do
-    resources :users,        only: [:edit, :update, :new, :create, :index, :destroy]
-    resources :events,       only: [:edit, :update, :new, :create, :index, :destroy]
-    resources :reservations, only: [:edit, :update, :new, :create, :destroy]
+  namespace :managers do
+    resources :users,           only: [:edit, :update, :new, :create, :index, :destroy]
+    resources :events,          only: [:edit, :update, :new, :create, :index, :destroy]
+    resources :reservations,    only: [:edit, :update, :new, :create, :destroy]
+    resources :repeat_bookings, only: [:edit, :update, :new, :create, :destroy]
   end
 
   devise_for :users
   # These cause csfr error!!!
   ###########################
-  # authenticated :user, ->(user) { user.access_role == 'trustee' } do
-  #   root to: 'trustees/home#index', as: :trustee_root
+  # authenticated :user, ->(user) { user.access_role == 'manager' } do
+  #   root to: 'managers/home#index', as: :manager_root
   # end
-  # authenticated :user, ->(user) { user.access_role == 'umdze' } do
-  #   root to: 'umdzes/home#index', as: :umdze_root
+  # authenticated :user, ->(user) { user.access_role == 'host' } do
+  #   root to: 'hosts/home#index', as: :host_root
   # end
-  # authenticated :user, ->(user) { user.access_role == 'member' } do
-  #   root to: 'members/home#index', as: :member_root
+  # authenticated :user, ->(user) { user.access_role == 'viewer' } do
+  #   root to: 'viewers/home#index', as: :viewer_root
   # end
 
   # This is the safe way to have multiple user routes by types
@@ -36,10 +37,10 @@ Rails.application.routes.draw do
   #   namespace :users do
   #     resources :profiles, only: [:edit, :update, :destroy]
   #   end
-  #   namespace :umdzes do
+  #   namespace :hosts do
   #     resources :reservations, only: [:edit, :update]
   #   end
-  #   namespace :trustees do
+  #   namespace :managers do
   #     resources :users,        only: [:edit, :update, :new, :create, :index, :destroy]
   #     resources :events,       only: [:edit, :update, :new, :create, :index, :destroy]
   #     resources :reservations, only: [:edit, :update, :new, :create, :destroy]
@@ -52,11 +53,14 @@ Rails.application.routes.draw do
   # ugly, but works as auto-redirect upon login
   # https://stackoverflow.com/questions/4753871/how-can-i-redirect-a-users-home-root-path-based-on-their-role-using-devise
   root to: 'landing#index',       as: :landing_root, constraints: lambda { |request| !request.env['warden'].user }
-  root to: 'members/home#index',  as: :user_root,    constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
-  root to: 'umdzes/home#index',   as: :umdze_root,   constraints: lambda { |request|  request.env['warden'].user.access_role == 'umdze' }
-  root to: 'members/home#index',  as: :member_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'member' }
+  root to: 'viewers/home#index',  as: :user_root,    constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
+  root to: 'hosts/home#index',    as: :host_root,    constraints: lambda { |request|  request.env['warden'].user.access_role == 'host' }
+  root to: 'hosts/home#index',    as: :umdze_root,   constraints: lambda { |request|  request.env['warden'].user.access_role == 'umdze' }
+  root to: 'viewers/home#index',  as: :viewer_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'viewer' }
+  root to: 'viewers/home#index',  as: :member_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'member' }
   root to: 'planners/home#index', as: :planner_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'planner' }
-  root to: 'trustees/home#index', as: :trustee_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'trustee' }
+  root to: 'managers/home#index', as: :manager_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'manager' }
+  root to: 'managers/home#index', as: :trustee_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'trustee' }
   root to: "landing#index"
 
 end

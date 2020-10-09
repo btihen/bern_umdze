@@ -1,0 +1,21 @@
+<!--
+  https://github.com/turbolinks/turbolinks#ensuring-specific-pages-trigger-a-full-reload
+  https://stackoverflow.com/questions/39627881/jquery-plugin-initialization-on-browser-back-button-for-turbolinks-rails-5/39801052
+  -->
+<% content_for :head do %>
+  <meta name="turbolinks-visit-control" content="reload">
+<% end %>
+
+<p hidden id='manager-edit-user-<%= user.id %>' class='pageName'>Manager Edit User<%= user.id %></p>
+
+<h1 class="sub-title is-size-4">Editing: <%= user_view.display_name %></h1>
+<br>
+<%= form_for( user, local: true,
+              url: managers_user_path(user),    # EDIT PATH MUST BE SINGULAR for PATCH
+              id: "edit-user-form", class: "user" ) do |form|  %>
+
+  <%= render 'form_edit', form: form, user: user %>
+  <br>
+  <%= render 'actions_edit', form: form, user: user %>
+
+<% end %>

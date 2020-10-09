@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe "trustees/users/index", type: :view do
+RSpec.describe "managers/users/index", type: :view do
   before(:each) do
-    assign(:trustees_users, [
-      Trustees::User.create!(),
-      Trustees::User.create!()
+    assign(:managers_users, [
+      Managers::User.create!(),
+      Managers::User.create!()
     ])
   end
 
-  it "renders a list of trustees/users" do
+  it "renders a list of managers/users" do
     render
   end
 end

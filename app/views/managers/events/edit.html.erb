@@ -1,0 +1,39 @@
+<!--
+  https://github.com/turbolinks/turbolinks#ensuring-specific-pages-trigger-a-full-reload
+  https://stackoverflow.com/questions/39627881/jquery-plugin-initialization-on-browser-back-button-for-turbolinks-rails-5/39801052
+  -->
+<% content_for :head do %>
+  <meta name="turbolinks-visit-control" content="reload">
+<% end %>
+
+<p hidden id='manager-edit-event-<%= event.id %>' class='pageName'>Manager Edit Event<%= event.id %></p>
+
+<h1 class="sub-title is-size-4">Editing: <%= event.event_name %></h1>
+<br>
+<%= form_for( event, local: true,
+              url: managers_event_path(event),    # EDIT PATH MUST BE SINGULAR for PATCH
+              id: "edit-event-form", class: "event" ) do |form|  %>
+
+  <%= render 'form', form: form, event: event %>
+
+  <div class="field is-horizontal">
+    <div class="field-body">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <%= form.submit("Save", class: "button is-success") %>
+        </div>
+        &nbsp;
+        <div class="control">
+          <%= link_to 'Back', managers_events_path, class: 'button is-link is-light' %>
+        </div>
+        &nbsp;
+        <div class="control">
+          <%= link_to 'Delete', managers_event_path(event),
+                        method: :delete, data: { confirm: 'Are you sure? This will also delete any associated reservations too.' },
+                        class: "button is-danger is-light" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% end %>
