@@ -22,13 +22,11 @@
               url: trustees_reservation_path(reservation),    # PATH MUST BE SINGULAR!!!
               id: "edit-reservation-form", class: "reservation" ) do |form|  %>
 
-
   <div class="tile is-ancestor">
     <div class="tile is-vertical is-full">
 
       <div class="tile">
         <div class="tile is-parent is-vertical">
-
         <%= render 'form_edit', form: form, reservation: reservation,
                                 spaces: spaces %>
         </div>
@@ -37,12 +35,9 @@
       <!-- load button on the form-defintion level to prevent caching problems -->
       <div class="tile">
         <div class="tile is-parent is-vertical">
-
         <%= render 'actions_edit', form: form, reservation: reservation %>
-
         </div>
       </div>
-
 
     </div>
   </div>
