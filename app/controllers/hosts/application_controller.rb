@@ -6,7 +6,7 @@ class Hosts::ApplicationController < ApplicationController
 
   def host_only
     unless current_user.access_role == 'host' || current_user.access_role == 'umdze'
-      redirect_back fallback_location: root_path, :alert => "Access denied."
+      redirect_back fallback_location: landing_path, :alert => "Access denied."
     end
   end
 
