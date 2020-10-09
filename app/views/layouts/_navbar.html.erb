@@ -35,12 +35,16 @@
           </a>
         </div>
       </div>
+      <% elsif current_user %>
+        <a class="navbar-item">
+          <%= link_to "Agenda", root_path, class: 'navbar-item' %>
+        </a>
       <% end %>
 
     </div>
 
     <div class="navbar-end">
-      <%= link_to "Profile", edit_users_profile_path(current_user), class: 'navbar-item' if current_user %>
+      <%= link_to "Profile - #{current_user.username}", edit_users_profile_path(current_user), class: 'navbar-item' if current_user %>
       <div class="navbar-item">
         <div class="buttons">
           <% if current_user.nil? %>
