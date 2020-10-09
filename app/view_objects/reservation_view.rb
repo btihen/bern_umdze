@@ -7,10 +7,17 @@ class ReservationView < ViewBase
   delegate  :start_date_time, :end_date_time, :start_date, :end_date,
             :is_cancelled?, to: :reservation
 
+
+  def event_name
+    event.event_name
+  end
   def event
     EventView.new(reservation.event)
   end
 
+  def space_name
+    space.space_name
+  end
   def space
     SpaceView.new(reservation.space)
   end
@@ -23,14 +30,6 @@ class ReservationView < ViewBase
 
   def host_name
     @host_name ||= reservation.host_name || ""
-  end
-
-  def event_name
-    @event_name ||= event.event_name
-  end
-
-  def space_name
-    @space_name ||= space.space_name
   end
 
   def date_range_string
