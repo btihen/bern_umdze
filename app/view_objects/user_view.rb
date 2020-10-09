@@ -24,15 +24,11 @@ class UserView < ViewBase
   end
 
   def access_permissions
-    # first version allowed default access blank
-    role  = if username.present? && access_role.blank?
-              "member"
-            else
-              access_role
-            end
+    # notify manager of outdated roles
+    return "#{access_role} - Outdated" unless username.present? && ApplicationHelper::VALID_ROLES.include?(access_role)
 
     ApplicationHelper::USER_ROLES_AND_PERMISSIONS
-                      .detect{ |rp| rp[:role].eql?(role)}[:permissions]
+                      .detect{ |rp| rp[:role].eql?(access_role)}[:permissions]
   end
 
   def display_name
