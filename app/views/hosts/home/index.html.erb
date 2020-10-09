@@ -6,11 +6,9 @@
   <meta name="turbolinks-visit-control" content="reload">
 <% end %>
 
-<p hidden id='umdze_home' class='pageName'>Umdze-<%= user_view.id %> Home</p>
+<p hidden id='host_home' class='pageName'>Host-<%= user_view.id %> Home</p>
 
 <div class="container">
-
-  <h1 class="sub-title is-size-4">Umdze Agenda</h1>
 
   <div class="columns is-centered is-multiline">
     <% spaces_view.each do |space_view| %>
@@ -23,5 +21,7 @@
     </div>
     <% end %>
   </div>
+
+  <h2 class="sub-title is-size-5 has-text-centered">Bitte einschreiben beim gelben Datums</h2>
 
 </div>

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   namespace :users do
     resources :profiles,        only: [:edit, :update, :destroy]
   end
-  namespace :umdzes do
+  namespace :hosts do
     resources :reservations,    only: [:edit, :update]
   end
   namespace :planners do
@@ -22,8 +22,8 @@ Rails.application.routes.draw do
   # authenticated :user, ->(user) { user.access_role == 'manager' } do
   #   root to: 'managers/home#index', as: :manager_root
   # end
-  # authenticated :user, ->(user) { user.access_role == 'umdze' } do
-  #   root to: 'umdzes/home#index', as: :umdze_root
+  # authenticated :user, ->(user) { user.access_role == 'host' } do
+  #   root to: 'hosts/home#index', as: :host_root
   # end
   # authenticated :user, ->(user) { user.access_role == 'viewer' } do
   #   root to: 'viewers/home#index', as: :viewer_root
@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   #   namespace :users do
   #     resources :profiles, only: [:edit, :update, :destroy]
   #   end
-  #   namespace :umdzes do
+  #   namespace :hosts do
   #     resources :reservations, only: [:edit, :update]
   #   end
   #   namespace :managers do
@@ -54,7 +54,8 @@ Rails.application.routes.draw do
   # https://stackoverflow.com/questions/4753871/how-can-i-redirect-a-users-home-root-path-based-on-their-role-using-devise
   root to: 'landing#index',       as: :landing_root, constraints: lambda { |request| !request.env['warden'].user }
   root to: 'viewers/home#index',  as: :user_root,    constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
-  root to: 'umdzes/home#index',   as: :umdze_root,   constraints: lambda { |request|  request.env['warden'].user.access_role == 'umdze' }
+  root to: 'hosts/home#index',    as: :host_root,    constraints: lambda { |request|  request.env['warden'].user.access_role == 'host' }
+  root to: 'hosts/home#index',    as: :umdze_root,   constraints: lambda { |request|  request.env['warden'].user.access_role == 'umdze' }
   root to: 'viewers/home#index',  as: :viewer_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'viewer' }
   root to: 'viewers/home#index',  as: :member_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'member' }
   root to: 'planners/home#index', as: :planner_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'planner' }

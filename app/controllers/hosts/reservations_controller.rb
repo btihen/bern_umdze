@@ -1,4 +1,4 @@
-class Umdzes::ReservationsController < Umdzes::ApplicationController
+class Hosts::ReservationsController < Hosts::ApplicationController
 
   def edit
     user          = current_user
@@ -12,7 +12,7 @@ class Umdzes::ReservationsController < Umdzes::ApplicationController
     space_view    = SpaceView.new(space)
     spaces_views  = SpaceView.collection(spaces)
     reservation_view = ReservationView.new(reservation)
-    # reservation_form = Umdzes::ReservationForm.new_from(reservation)
+    # reservation_form = Hosts::ReservationForm.new_from(reservation)
 
     render :edit, locals: { user: user_view,
                             event: event_view,
@@ -36,7 +36,7 @@ class Umdzes::ReservationsController < Umdzes::ApplicationController
     reservation_view = ReservationView.new(reservation)
 
     # udpated_attrs = reservation_params.merge(id: params[:id])
-    # reservation   = Umdzes::ReservationForm.new(udpated_attrs)
+    # reservation   = Hosts::ReservationForm.new(udpated_attrs)
     update_params = reservation_params.transform_values(&:squish)
     reservation.assign_attributes(update_params)
 

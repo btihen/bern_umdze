@@ -8,21 +8,21 @@
 # test with:
 # user = User.first
 # user.valid_password? "xxxx"
-User.create(email: "user@test.ch",
-            username: "user",
-            real_name: "user",
-            password: "Let-M3-In!",
-            password_confirmation: "Let-M3-In!")
+# User.create(email: "user@test.ch",
+#             username: "user",
+#             real_name: "user",
+#             password: "Let-M3-In!",
+#             password_confirmation: "Let-M3-In!")
 User.create(email: "viewer@test.ch",
             username: "viewer",
             real_name: "viewer",
             access_role: 'viewer',
             password: "Let-M3-In!",
             password_confirmation: "Let-M3-In!")
-User.create(email: "umdze@test.ch",
-            username: "umdze",
-            real_name: "umdze",
-            access_role: 'umdze',
+User.create(email: "host@test.ch",
+            username: "host",
+            real_name: "host",
+            access_role: 'host',
             password: "Let-M3-In!",
             password_confirmation: "Let-M3-In!")
 User.create(email: "planner@test.ch",

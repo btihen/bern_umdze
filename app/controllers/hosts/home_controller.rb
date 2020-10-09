@@ -1,4 +1,4 @@
-class Umdzes::HomeController < Umdzes::ApplicationController
+class Hosts::HomeController < Hosts::ApplicationController
   
   def index
     spaces        = Space.all
@@ -7,7 +7,7 @@ class Umdzes::HomeController < Umdzes::ApplicationController
 
     user_view     = ::UserView.new(user)
     space_views   = ::SpaceView.collection(spaces)
-    calendar_view = Umdzes::CalendarView.new(user_view, date)
+    calendar_view = Hosts::CalendarView.new(user_view, date)
 
     render :index, locals: {user_view: user_view,
                             spaces_view: space_views,
