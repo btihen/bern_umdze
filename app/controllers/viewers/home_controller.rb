@@ -1,4 +1,4 @@
-class Members::HomeController < Members::ApplicationController
+class Viewers::HomeController < Viewers::ApplicationController
 
   def index
     spaces        = Space.all
