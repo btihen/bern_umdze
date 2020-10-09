@@ -1,5 +1,5 @@
-class Members::HomeController < ApplicationController
-  
+class Members::HomeController < Members::ApplicationController
+
   def index
     spaces        = Space.all
     user          = current_user

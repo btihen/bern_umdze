@@ -6,7 +6,7 @@ class Umdzes::ApplicationController < ApplicationController
 
   def umdze_only
     unless current_user.access_role == 'umdze'
-      redirect_to :back, :alert => "Access denied."
+      redirect_back fallback_location: root_path, :alert => "Access denied."
     end
   end
 

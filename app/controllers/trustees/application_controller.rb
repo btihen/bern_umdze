@@ -6,7 +6,7 @@ class Trustees::ApplicationController < ApplicationController
 
   def trustee_only
     unless current_user.access_role == 'trustee'
-      redirect_to :back, :alert => "Access denied."
+      redirect_back fallback_location: root_path, :alert => "Access denied."
     end
   end
 
