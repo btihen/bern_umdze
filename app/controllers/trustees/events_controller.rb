@@ -1,7 +1,7 @@
 class Trustees::EventsController < Trustees::ApplicationController
 
   def index
-    events      = Event.all
+    events      = Event.all.order(event_name: :asc)
     event_views = EventView.collection(events)
 
     render :index, locals: {events: event_views}

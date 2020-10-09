@@ -2,7 +2,8 @@ module ApplicationHelper
 
   USER_ROLES_AND_PERMISSIONS = [
     {role: "trustee", permissions: "Full access"},
-    {role: "umdze",   permissions: "Update events"},
+    {role: "planner", permissions: "Create/edit Booking"},
+    {role: "umdze",   permissions: "Update Umdze/Koord."},
     {role: "member",  permissions: "Read only"},
   ]
 

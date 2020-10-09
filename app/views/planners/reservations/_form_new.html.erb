@@ -14,11 +14,43 @@
   <div class="card-content">
 
     <div class="field is-horizontal">
-      <div class="field-label is-normal">Umdze / Koord.</div>
+      <div class="field-label is-normal">Space</div>
       <div class="field-body">
         <div class="field has-addons is-grouped is-grouped-multiline">
+          <div class="control">
+            <%= form.collection_select :space_id, spaces,
+                      :id, :space_name, { include_blank: 'Select Space',
+                                          selected: reservation.space_id },
+                      {class: 'select'} %>
+            <p class="help">Required</p>
+            <%= error_message_on(form.object, :space) %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">Event</div>
+      <div class="field-body">
+        <div class="field has-addons is-grouped is-grouped-multiline">
+          <div class="control">
+            <%= form.collection_select :event_id, events,
+                      :id, :event_name, { include_blank: 'Select Event',
+                                          selected: reservation.event_id },
+                      {class: 'select'} %>
+            <p class="help">Required</p>
+            <%= error_message_on(form.object, :event) %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">Umdze / Koord.</div>
+      <div class="field-body">
+        <div class="field has-addons">
           <div class="control has-icons-left">
-            <%= form.text_field :host_name, placeholder: "(Please Volunteer)", class: "input" %>
+            <%= form.text_field :host_name, placeholder: "Umdze (wenn bekannt)", class: "input" %>
             <span class="icon is-small is-left">
               <i class="fas fa-user"></i>
             </span>

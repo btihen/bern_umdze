@@ -197,26 +197,8 @@
         <div class="field has-addons is-grouped is-grouped-multiline">
           <div class="control">
             <%= form.text_area :alert_notice, class: "textarea" %>
-            <%# form.text_area :alert_notice, value: reservation.alert_notice, class: "textarea" %>
             <p class="help">Changes or needed info about the event.</p>
             <%= error_message_on(form.object, :alert_notice) %>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="field is-horizontal">
-      <div class="field-label is-normal"></div>
-      <div class="field-body">
-        <div class="field is-grouped is-grouped-multiline">
-          <div class="control">
-            <%= form.submit("Save", class: "button is-success") %>
-          </div>
-          &nbsp;
-          <div class="control">
-            <%= link_to 'Back',
-                  root_path(date: reservation.start_date.to_s),
-                  class: 'button is-link is-light' %>
           </div>
         </div>
       </div>

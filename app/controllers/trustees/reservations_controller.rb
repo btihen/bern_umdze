@@ -50,7 +50,7 @@ class Trustees::ReservationsController < Trustees::ApplicationController
       show_date   = reservation.start_date.to_s
       reservation.save!
 
-      flash[:notice] = "#{reservation.event.event_name} event was successfully reserved."
+      flash[:notice] = "#{reservation.event.event_name} event on #{show_date} was successfully reserved."
       redirect_to root_path(date: show_date)
     else
       flash[:alert] = 'Please fix the errors'
@@ -120,10 +120,11 @@ class Trustees::ReservationsController < Trustees::ApplicationController
 
   def destroy
     reservation = Reservation.find(params[:id])
+    show_name   = reservation.event.event_name
     show_date   = reservation.start_date.to_s
     reservation.destroy
 
-    redirect_to root_path(date: show_date), notice: 'User was successfully destroyed.'
+    redirect_to root_path(date: show_date), notice: "Reservation #{show_name} on #{show_date} was successfully deleted."
   end
 
 

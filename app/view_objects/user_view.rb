@@ -18,6 +18,9 @@ class UserView < ViewBase
   end
 
   def access_permissions
+    # first version allowed default access blank
+    return "member" if username.present? && access_role.blank?
+
     ApplicationHelper::USER_ROLES_AND_PERMISSIONS
                       .detect{ |rp| rp[:role].eql?(access_role)}[:permissions]
   end

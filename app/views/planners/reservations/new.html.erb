@@ -6,36 +6,28 @@
   <meta name="turbolinks-visit-control" content="reload">
 <% end %>
 
-<p hidden id='trustee-edit-resevation-<%= reservation.id %>' class='pageName'>Trustee Edit Reservation <%= reservation.id %></p>
+<p hidden id='trustee-new-resevation-<%= reservation.id %>' class='pageName'>Trustee New Reservation <%= reservation.id %></p>
 
-<h1 class="sub-title is-size-4">
-  Edit Event: <strong><%= event.event_name %></strong>
-</h1>
-
-<h2 class="sub-title is-size-6">
-  Place: <strong><%= reservation_view.space_name %></strong><br>
-  From: <strong><%= reservation_view.date_range_string %></strong>
-</h2>
+<h1 class="sub-title is-size-4">New Reservation</h1>
 <br>
-
 <%= form_for( reservation, local: true,
-              url: trustees_reservation_path(reservation),    # PATH MUST BE SINGULAR!!!
-              id: "edit-reservation-form", class: "reservation" ) do |form|  %>
+              url: planners_reservations_path,  # MUST BE PLURAL
+              id: "new-reservation-form", class: "reservation" ) do |form|  %>
 
   <div class="tile is-ancestor">
     <div class="tile is-vertical is-full">
 
       <div class="tile">
         <div class="tile is-parent is-vertical">
-        <%= render 'form_edit', form: form, reservation: reservation,
-                                spaces: spaces %>
+        <%= render 'form_new',  form: form, reservation: reservation,
+                                spaces: spaces, events: events %>
         </div>
       </div>
 
       <!-- load button on the form-defintion level to prevent caching problems -->
       <div class="tile">
         <div class="tile is-parent is-vertical">
-        <%= render 'actions_edit', form: form, reservation: reservation %>
+        <%= render 'actions_new', form: form, reservation: reservation %>
         </div>
       </div>
 

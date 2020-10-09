@@ -17,9 +17,8 @@
   From: <strong><%= reservation_view.date_range_string %></strong>
 </h2>
 <br>
-
 <%= form_for( reservation, local: true,
-              url: trustees_reservation_path(reservation),    # PATH MUST BE SINGULAR!!!
+              url: planners_reservation_path(reservation),    # PATH MUST BE SINGULAR!!!
               id: "edit-reservation-form", class: "reservation" ) do |form|  %>
 
   <div class="tile is-ancestor">
@@ -28,7 +27,7 @@
       <div class="tile">
         <div class="tile is-parent is-vertical">
         <%= render 'form_edit', form: form, reservation: reservation,
-                                spaces: spaces %>
+                                spaces: spaces, events: events %>
         </div>
       </div>
 
