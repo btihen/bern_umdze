@@ -4,8 +4,8 @@
     <div class="field has-addons is-grouped is-grouped-multiline">
       <div class="control">
         <%= form.date_select :start_date,
-                              {selected: reservation.start_date},
-                              class: 'select' %>
+                              { selected: reservation.start_date },
+                              class: 'select is-medium' %>
         <p class="help">Required</p>
         <%= error_message_on(form.object, :start_date) %>
       </div>
@@ -19,8 +19,9 @@
     <div class="field has-addons is-grouped is-grouped-multiline">
       <div class="control">
         <%= form.time_select :start_time,
-                              {selected: reservation.start_time, minute_step: 15},
-                              class: 'select' %>
+                              { selected: reservation.start_time,
+                                minute_step: 15 },
+                              class: 'select is-medium' %>
         <p class="help">Required</p>
         <%= error_message_on(form.object, :start_time) %>
       </div>
@@ -34,8 +35,8 @@
     <div class="field has-addons is-grouped is-grouped-multiline">
       <div class="control">
         <%= form.date_select :end_date,
-                              {selected: reservation.end_date},
-                              class: 'select' %>
+                              { selected: reservation.end_date },
+                              class: 'select is-medium' %>
         <p class="help">Required</p>
         <%= error_message_on(form.object, :end_date) %>
       </div>
@@ -49,8 +50,9 @@
     <div class="field has-addons is-grouped is-grouped-multiline">
       <div class="control">
         <%= form.time_select :end_time,
-                              {selected: reservation.end_time, minute_step: 15},
-                              class: 'select' %>
+                              { selected: reservation.end_time,
+                                minute_step: 15 },
+                              class: 'select is-medium' %>
         <p class="help">Required</p>
         <%= error_message_on(form.object, :end_time) %>
       </div>

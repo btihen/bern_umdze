@@ -1,0 +1,48 @@
+<div class="field is-horizontal">
+  <div class="field-label is-normal">Repeats</div>
+  <div class="field-body">
+
+    <div class="box">
+
+      <div class="field has-addons is-grouped">
+        <div class="control">
+          <%= form.label "Every" %>
+          <%= form.number_field :frequency_every, value: reservation.frequency_every || 0, class: "input", style: "width: 25%;" %>
+          <%= error_message_on(form.object, :frequency_every) %>
+          &nbsp;
+          <%= form.collection_select :frequency_unit,
+                  Managers::ReservationForm.frequency_units_list,
+                  :value, :display_name, {include_blank: '-- select --',
+                                          selected: reservation.frequency_unit || ''},
+                  class: 'select is-medium' %>
+          <%= form.label "On" %>
+          <%# <p class="help">Frequency</p> %>
+          <%= error_message_on(form.object, :frequency_unit) %>
+        </div>
+      </div>
+      <br>
+      <div class="field has-addons is-grouped">
+        <div class="control has-addons">
+          <%= form.label "the" %>&nbsp;
+          <%= form.collection_select :frequency_ordinal,
+                  Managers::ReservationForm.frequency_ordinals_list,
+                  :value, :display_name, {include_blank: '-- select --',
+                                          selected: reservation.frequency_ordinal || ''},
+                  class: 'select is-medium' %>
+          <%# <p class="help">on Week</p> %>
+          <%= error_message_on(form.object, :frequency_ordinal) %>
+
+          <%= form.collection_select :frequency_day,
+                  Managers::ReservationForm.frequency_days_list,
+                  :value, :display_name, {include_blank: '-- select --',
+                                          selected: reservation.frequency_day || ''},
+                  class: 'select is-medium' %>
+          <%# <p class="help">day / date</p> %>
+          <%= error_message_on(form.object, :frequency_day) %>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

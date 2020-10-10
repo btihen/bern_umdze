@@ -1,126 +1,13 @@
-<% if reservation.errors.any? %>
-<div id="error_explanation" class="notification is-danger is-light">
-  <h2><%= pluralize(reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
-
-  <ul>
-    <% reservation.errors.full_messages.each do |message| %>
-    <li><%= message %></li>
-    <% end %>
-  </ul>
-</div>
-<% end %>
+<%= render 'shared/reservations/form_errors', reservation: reservation %>
 
 <div class="card">
   <div class="card-content">
 
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">Umdze / Koord.</div>
-      <div class="field-body">
-        <div class="field has-addons is-grouped is-grouped-multiline">
-          <div class="control has-icons-left">
-            <%= form.text_field :host_name,
-                                placeholder: "(Please Volunteer)",
-                                class: "input" %>
-            <span class="icon is-small is-left">
-              <i class="fas fa-user"></i>
-            </span>
-            <p class="help">Optional</p>
-            <%= error_message_on(form.object, :host_name) %>
-          </div>
-        </div>
-      </div>
-    </div>
+    <%= render 'shared/reservations/form_host_name',    form: form,
+                                                        reservation: reservation %>
 
-    <!--
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">Start Date</div>
-      <div class="field-body">
-        <div class="field has-addons is-grouped is-grouped-multiline">
-          <div class="control">
-            <%= form.date_select :start_date,
-                                  {selected: reservation.start_date},
-                                  class: 'select' %>
-            <p class="help">Required</p>
-            <%= error_message_on(form.object, :start_date) %>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">Start Time</div>
-      <div class="field-body">
-        <div class="field has-addons is-grouped is-grouped-multiline">
-          <div class="control">
-            <%= form.time_select :start_time,
-                                  {selected: reservation.start_time, minute_step: 15},
-                                  class: 'select' %>
-            <p class="help">Required</p>
-            <%= error_message_on(form.object, :start_time) %>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">End Date</div>
-      <div class="field-body">
-        <div class="field has-addons is-grouped is-grouped-multiline">
-          <div class="control">
-            <%= form.date_select :end_date,
-                                  {selected: reservation.end_date},
-                                  class: 'select' %>
-            <p class="help">Required</p>
-            <%= error_message_on(form.object, :end_date) %>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">End Time</div>
-      <div class="field-body">
-        <div class="field has-addons is-grouped is-grouped-multiline">
-          <div class="control">
-            <%= form.time_select :end_time,
-                                  {selected: reservation.end_time, minute_step: 15},
-                                  class: 'select' %>
-            <p class="help">Required</p>
-            <%= error_message_on(form.object, :end_time) %>
-          </div>
-        </div>
-      </div>
-    </div>
-    -->
-    <!--
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">Cancelled?</div>
-      <div class="field-body">
-        <div class="field has-addons is-grouped is-grouped-multiline">
-          <div class="control">
-            <%= form.check_box :is_cancelled,
-                                value: reservation.is_cancelled,
-                                class: "checkbox reservation" %>
-            <%= error_message_on(form.object, :is_cancelled) %>
-          </div>
-        </div>
-      </div>
-    </div>
-    -->
-
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">Notice</div>
-      <div class="field-body">
-        <div class="field has-addons is-grouped is-grouped-multiline">
-          <div class="control">
-            <%= form.text_area :alert_notice, class: "textarea" %>
-            <%# form.text_area :alert_notice, value: reservation.alert_notice, class: "textarea" %>
-            <p class="help">Changes or needed info about the event.</p>
-            <%= error_message_on(form.object, :alert_notice) %>
-          </div>
-        </div>
-      </div>
-    </div>
+    <%= render 'shared/reservations/form_notice_input', form: form,
+                                                        reservation: reservation %>
 
   </div>
 </div>

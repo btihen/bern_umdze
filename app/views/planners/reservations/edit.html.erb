@@ -8,15 +8,10 @@
 
 <p hidden id='manager-edit-resevation-<%= reservation.id %>' class='pageName'>Manager Edit Reservation <%= reservation.id %></p>
 
-<h1 class="sub-title is-size-4">
-  Edit Event: <strong><%= reservation_view.event_name %></strong>
-</h1>
+<%= render 'shared/reservations/edit_reservation_header', reservation_view: reservation_view %>
 
-<h2 class="sub-title is-size-6">
-  Place: <strong><%= reservation_view.space_name %></strong><br>
-  From: <strong><%= reservation_view.date_range_string %></strong>
-</h2>
 <br>
+
 <%= form_for( reservation, local: true,
               url: planners_reservation_path(reservation),    # PATH MUST BE SINGULAR!!!
               id: "edit-reservation-form", class: "reservation" ) do |form|  %>

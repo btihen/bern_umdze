@@ -42,7 +42,6 @@ ActiveRecord::Schema.define(version: 2020_10_27_083641) do
     t.bigint "space_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "repeat_uuid_key"
     t.bigint "repeat_booking_id"
     t.index ["end_date"], name: "index_reservations_on_end_date"
     t.index ["event_id", "space_id", "start_date_time", "end_date_time"], name: "index_reservation_unique", unique: true
@@ -83,7 +82,7 @@ ActiveRecord::Schema.define(version: 2020_10_27_083641) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "real_name", null: false
     t.string "username", null: false
-    t.string "access_role", default: "member", null: false
+    t.string "access_role", default: "viewer", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

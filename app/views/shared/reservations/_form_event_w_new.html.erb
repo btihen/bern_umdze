@@ -7,7 +7,7 @@
     <section>
       <div class="card">
         <header class="card-header">
-          <p class="card-header-title">Choose an Event</p>
+          <p class="card-header-title">Choose Event</p>
           <a class="card-header-icon card-toggle" id="existingEventToggle">
             <i class="fa fa-angle-down"></i>
           </a>
@@ -19,7 +19,7 @@
               <%= form.collection_select :event_id, events,
                         :id, :event_name, { include_blank: 'Select Event',
                                             selected: reservation.event&.id },
-                        {class: 'select'} %>
+                        class: 'select is-medium' %>
               <p class="help">Select the Event</p>
               <%= error_message_on(form.object, :event_id) %>
             </div>

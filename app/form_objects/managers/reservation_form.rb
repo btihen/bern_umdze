@@ -64,10 +64,10 @@ class Managers::ReservationForm < FormBase
   end
 
   # https://stackoverflow.com/questions/11962192/convert-a-hash-into-a-struct
-  FrequencyWeekday = Struct.new(:value, :display_name, keyword_init: true)
-  def self.frequency_weekdays_list
-    ApplicationHelper::FREQUENCY_WEEKDAYS.map do |units_hash|
-      FrequencyWeekday.new(units_hash)
+  FrequencyDay = Struct.new(:value, :display_name, keyword_init: true)
+  def self.frequency_days_list
+    ApplicationHelper::FREQUENCY_DAYS.map do |units_hash|
+      FrequencyDay.new(units_hash)
     end
   end
 
@@ -83,7 +83,7 @@ class Managers::ReservationForm < FormBase
   attribute :frequency_every,     :integer
   attribute :frequency_unit,      :squished_string
   attribute :frequency_ordinal,   :squished_string
-  attribute :frequency_weekday,   :squished_string
+  attribute :frequency_day,       :squished_string
   attribute :host_name,           :squished_string
   attribute :event_name,          :squished_string
   attribute :event_description,   :squished_string

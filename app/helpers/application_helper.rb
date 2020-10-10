@@ -1,10 +1,10 @@
 module ApplicationHelper
 
   FREQUENCY_UNITS = [
-    # {value: "yearly",  display_name: "Yearly"},
-    {value: "monthly", display_name: "Monthly"},
-    # {value: "weekly",  display_name: "Weekly"},
-    # {value: "daily",   display_name: "Daily"},
+    # {value: "year",    display_name: "Year"},
+    {value: "month",   display_name: "Month"},
+    # {value: "week",    display_name: "Week"},
+    # {value: "day",     display_name: "Day"},
   ]
   VALID_FREQUENCY_UNITS = FREQUENCY_UNITS.map { |f| f[:value] }
 
@@ -18,16 +18,18 @@ module ApplicationHelper
   ]
   VALID_FREQUENCY_WEEK_ORDINALS = FREQUENCY_ORDINALS.map { |f| f[:value] }
 
-  FREQUENCY_WEEKDAYS = [
-    {value: "mon",     display_name: "on Mondays"},
-    {value: "tue",     display_name: "on Tuesdays"},
-    {value: "wed",     display_name: "on Wednesdays"},
-    {value: "thu",     display_name: "on Thursdays"},
-    {value: "fri",     display_name: "on Fridays"},
-    {value: "sat",     display_name: "on Saturdays"},
-    {value: "sun",     display_name: "on Sundays"},
+  FREQUENCY_DAYS = [
+    {value: "mon",     display_name: "Monday"},
+    {value: "tue",     display_name: "Tuesday"},
+    {value: "wed",     display_name: "Wednesday"},
+    {value: "thu",     display_name: "Thursday"},
+    {value: "fri",     display_name: "Friday"},
+    {value: "sat",     display_name: "Saturday"},
+    {value: "sun",     display_name: "Sunday"},
+    {value: "date",    display_name: "Date"},
+    {value: "day",     display_name: "Day"},
   ]
-  VALID_FREQUENCY_WEEKDAYS = FREQUENCY_WEEKDAYS.map { |f| f[:value] }
+  VALID_FREQUENCY_DAYS = FREQUENCY_DAYS.map { |f| f[:value] }
 
   USER_ROLES_AND_PERMISSIONS = [
     {role: "manager",  permissions: "Full Manager Access"},

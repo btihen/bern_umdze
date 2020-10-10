@@ -1,0 +1,11 @@
+<% if reservation.errors.any? %>
+<div id="error_explanation" class="notification is-danger is-light">
+  <h2><%= pluralize(reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
+
+  <ul>
+    <% reservation.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
