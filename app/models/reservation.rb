@@ -11,9 +11,11 @@ class Reservation < ApplicationRecord
 
   before_validation :create_date_times
 
-  validates :space,           presence: true
-  validates :event,           presence: true
-  # simplifies user input
+  # seems to validate the presence of the belongs to objects now
+  # validates :space,           presence: true
+  # validates :event,           presence: true
+
+  # simplifies user input (maybe remove?)
   validates :start_date,      presence: true
   validates :end_date,        presence: true
   validates :start_time,      presence: true
