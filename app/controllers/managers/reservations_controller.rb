@@ -43,12 +43,15 @@ class Managers::ReservationsController < Managers::ApplicationController
 
     render :edit, locals: { reservation: reservation,
                             reservation_view: reservation_view,
-                            spaces: SpaceView.collection(Space.all)}
+                            events: EventView.collection(Event.all),
+                            spaces: SpaceView.collection(Space.all) }
   end
 
   def update
     reservation      = Reservation.find_by(id: params[:id])
-    reservation_view = ReservationView.new(reservation)
+    # want the original for event/ space name (for titles)
+    # dup to keep original info incase info is emptied
+    reservation_view = ReservationView.new(reservation.dup)
 
     update_params    = reservation_params.transform_values(&:squish)
     reservation.assign_attributes(update_params)
@@ -63,6 +66,7 @@ class Managers::ReservationsController < Managers::ApplicationController
       flash[:alert]  = 'Please fix the errors'
       render :edit, locals: { reservation: reservation,
                               reservation_view: reservation_view,
+                              events: EventView.collection(Event.all),
                               spaces: SpaceView.collection(Space.all) }
     end
   end
@@ -98,7 +102,7 @@ class Managers::ReservationsController < Managers::ApplicationController
                                             :space_id, :space_name, :space_location,
                                             :event_id, :event_name, :event_description,
                                             :frequency_every, :frequency_unit,
-                                            :frequency_ordinal, :frequency_weekday,
+                                            :frequency_ordinal, :frequency_day,
                                             :repeat_booking_id )
     # in controller - this should work too:
     # https://stackoverflow.com/questions/13605598/how-to-get-a-date-from-date-select-or-select-date-in-rails
