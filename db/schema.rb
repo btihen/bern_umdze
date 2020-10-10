@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_27_083639) do
+ActiveRecord::Schema.define(version: 2020_10_27_083641) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,6 +18,12 @@ ActiveRecord::Schema.define(version: 2020_10_27_083639) do
   create_table "events", force: :cascade do |t|
     t.string "event_name", null: false
     t.string "event_description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "repeat_bookings", force: :cascade do |t|
+    t.json "settings"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -36,9 +42,12 @@ ActiveRecord::Schema.define(version: 2020_10_27_083639) do
     t.bigint "space_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "repeat_uuid_key"
+    t.bigint "repeat_booking_id"
     t.index ["end_date"], name: "index_reservations_on_end_date"
     t.index ["event_id", "space_id", "start_date_time", "end_date_time"], name: "index_reservation_unique", unique: true
     t.index ["event_id"], name: "index_reservations_on_event_id"
+    t.index ["repeat_booking_id"], name: "index_reservations_on_repeat_booking_id"
     t.index ["space_id"], name: "index_reservations_on_space_id"
     t.index ["start_date"], name: "index_reservations_on_start_date"
   end
@@ -74,7 +83,7 @@ ActiveRecord::Schema.define(version: 2020_10_27_083639) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "real_name", null: false
     t.string "username", null: false
-    t.string "access_role", default: "viewer", null: false
+    t.string "access_role", default: "member", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -83,5 +92,6 @@ ActiveRecord::Schema.define(version: 2020_10_27_083639) do
   end
 
   add_foreign_key "reservations", "events"
+  add_foreign_key "reservations", "repeat_bookings"
   add_foreign_key "reservations", "spaces"
 end

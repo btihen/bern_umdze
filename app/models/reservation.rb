@@ -1,16 +1,23 @@
 class Reservation < ApplicationRecord
+
   belongs_to :space
   belongs_to :event
+  # had to update migration to allow null!
+  belongs_to :repeat_booking, optional: true
+
+  accepts_nested_attributes_for :space
   accepts_nested_attributes_for :event
+  accepts_nested_attributes_for :repeat_booking
 
   before_validation :create_date_times
-  validates :space,      presence: true
-  validates :event,      presence: true
+
+  validates :space,           presence: true
+  validates :event,           presence: true
   # simplifies user input
-  validates :start_date, presence: true
-  validates :end_date,   presence: true
-  validates :start_time, presence: true
-  validates :end_time,   presence: true
+  validates :start_date,      presence: true
+  validates :end_date,        presence: true
+  validates :start_time,      presence: true
+  validates :end_time,        presence: true
   # simplifies sorting (build in model)
   validates :start_date_time, presence: true
   validates :end_date_time,   presence: true

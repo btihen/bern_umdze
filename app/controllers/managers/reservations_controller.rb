@@ -84,16 +84,22 @@ class Managers::ReservationsController < Managers::ApplicationController
           .permit(:start_date, :end_date, :start_time, :end_time,
                   :event_id, :event_name, :event_description,
                   :host_name, :is_cancelled, :alert_notice,
-                  :space_id, :space_name, :space_location)
+                  :space_id, :space_name, :space_location,
+                  :frequency_every, :frequency_unit,
+                  :frequency_ordinal, :frequency_weekday,
+                  :repeat_booking_id)
   end
 
   # https://hashrocket.com/blog/posts/datetime-select-in-cucumber
   # https://stackoverflow.com/questions/7430343/ruby-easiest-way-to-filter-hash-keys
   def reservation_form_params
     form_params = reservation_params.transform_values(&:squish)
-                                    .slice(:host_name, :is_cancelled, :alert_notice,
+                                    .slice( :host_name, :is_cancelled, :alert_notice,
                                             :space_id, :space_name, :space_location,
-                                            :event_id, :event_name, :event_description )
+                                            :event_id, :event_name, :event_description,
+                                            :frequency_every, :frequency_unit,
+                                            :frequency_ordinal, :frequency_weekday,
+                                            :repeat_booking_id )
     # in controller - this should work too:
     # https://stackoverflow.com/questions/13605598/how-to-get-a-date-from-date-select-or-select-date-in-rails
     # form_params[:start_date] = Date.new(*params[:start_date].sort.map(&:last).map(&:to_i))

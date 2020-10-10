@@ -9,7 +9,8 @@ class Managers::ReservationForm < FormBase
   # end
   delegate :id, :persisted?, to: :reservation,  allow_nil: true
 
-  delegate  :host_name, :event, :space, :start_date_time, :end_date_time,
+  delegate  :host_name, :event, :space, :repeat_booking,
+            :start_date_time, :end_date_time,
             :start_date, :end_date, :start_time, :end_time,
             to: :reservation,  allow_nil: true
 
@@ -39,10 +40,35 @@ class Managers::ReservationForm < FormBase
                       alert_notice: reservation.alert_notice,
                       end_date_time: reservation.end_date_time,
                       start_date_time: reservation.start_date_time,
+                      repeat_booking: reservation.repeat_booking,
                     }
       attribs = attribs.merge(attribs_init)
     end
     new(attribs)
+  end
+
+  # https://stackoverflow.com/questions/11962192/convert-a-hash-into-a-struct
+  FrequencyUnit = Struct.new(:value, :display_name, keyword_init: true)
+  def self.frequency_units_list
+    ApplicationHelper::FREQUENCY_UNITS.map do |units_hash|
+      FrequencyUnit.new(units_hash)
+    end
+  end
+
+  # https://stackoverflow.com/questions/11962192/convert-a-hash-into-a-struct
+  FrequencyOrdinal = Struct.new(:value, :display_name, keyword_init: true)
+  def self.frequency_ordinals_list
+    ApplicationHelper::FREQUENCY_ORDINALS.map do |units_hash|
+      FrequencyOrdinal.new(units_hash)
+    end
+  end
+
+  # https://stackoverflow.com/questions/11962192/convert-a-hash-into-a-struct
+  FrequencyWeekday = Struct.new(:value, :display_name, keyword_init: true)
+  def self.frequency_weekdays_list
+    ApplicationHelper::FREQUENCY_WEEKDAYS.map do |units_hash|
+      FrequencyWeekday.new(units_hash)
+    end
   end
 
   attribute :end_date,            :date, default: Date.today
@@ -53,10 +79,15 @@ class Managers::ReservationForm < FormBase
   attribute :start_date_time,     :datetime
   attribute :event_id,            :integer
   attribute :space_id,            :integer
-  attribute :alert_notice,        :trimmed_text
+  attribute :repeat_booking_id,   :integer
+  attribute :frequency_every,     :integer
+  attribute :frequency_unit,      :squished_string
+  attribute :frequency_ordinal,   :squished_string
+  attribute :frequency_weekday,   :squished_string
   attribute :host_name,           :squished_string
   attribute :event_name,          :squished_string
   attribute :event_description,   :squished_string
+  attribute :alert_notice,        :trimmed_text
   attribute :is_cancelled,        :boolean, default: false
 
   validate :validate_space
