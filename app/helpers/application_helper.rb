@@ -2,7 +2,7 @@ module ApplicationHelper
 
   USER_ROLES_AND_PERMISSIONS = [
     {role: "manager", permissions: "Full Manager Access"},
-    {role: "planner", permissions: "Create/Edit bookings"},
+    {role: "planner", permissions: "Create/Edit Bookings"},
     {role: "host",    permissions: "Update Coordinators"},
     {role: "viewer",  permissions: "View Calendar Plan"},
     # {role: "umdze",   permissions: "Update (Depricated)"},

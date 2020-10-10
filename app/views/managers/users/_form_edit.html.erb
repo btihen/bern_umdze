@@ -2,7 +2,9 @@
 
   <% if user.errors.any? %>
     <div id="error_explanation" class="notification is-danger is-light">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+      <h2><%= pluralize(user.errors.count, "error") %>
+        prohibited this user from being saved:
+      </h2>
 
       <ul>
         <% user.errors.full_messages.each do |message| %>
@@ -52,7 +54,8 @@
   <div class="field">
     <label class="label">Email</label>
     <div class="control">
-      <%= form.email_field :email, placeholder: "e-mail address", class: 'input' %>
+      <%= form.email_field :email,
+                            placeholder: "e-mail address", class: 'input' %>
     </div>
     <p class="help">MUST be all LOWERCASE</p>
     <%= error_message_on(form.object, :email) %>
