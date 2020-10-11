@@ -10,7 +10,7 @@ class Managers::ReservationsController < Managers::ApplicationController
     start_time       = Time.parse("#{(Time.now + 1.hour).hour}:00", date)
     space            = Space.find_by(id: params[:space_id])
     new_params       = {space: space,
-                        start_date: date, end_date: date,
+                        start_date: date,       end_date: date,
                         start_time: start_time, end_time: end_time}
     reservation_form = Managers::ReservationForm.new(new_params)
 
@@ -21,12 +21,13 @@ class Managers::ReservationsController < Managers::ApplicationController
 
   def create
     reservation_form = Managers::ReservationForm.new(reservation_form_params)
-    reservation      = reservation_form.reservation
+    # reservation      = reservation_form.reservation
 
-    if reservation_form.valid? && reservation.save
-      show_date      = reservation.start_date.to_s
+    if reservation_form.valid?
+      show_date      = reservation_form.start_date.to_s
+      reservation    = Managers::ReservationsCreateCommand.new(reservation_form).run
 
-      flash[:notice] = "#{reservation.event.event_name} event on #{show_date} was successfully reserved."
+      flash[:notice] = "#{reservation.event.event_name} event on #{show_date} was successfully reserved#{" each #{reservation_form.repeat_unit}" if reservation_form.repeat_every > 0}."
       redirect_to root_path(date: show_date)
 
     else
@@ -85,47 +86,49 @@ class Managers::ReservationsController < Managers::ApplicationController
   # Only allow a list of trusted parameters through.
   def reservation_params
     params.require(:reservation)
-          .permit(:start_date, :end_date, :start_time, :end_time,
-                  :event_id, :event_name, :event_description,
-                  :host_name, :is_cancelled, :alert_notice,
-                  :space_id, :space_name, :space_location,
-                  :frequency_every, :frequency_unit,
-                  :frequency_ordinal, :frequency_weekday,
-                  :repeat_booking_id)
+          .permit(:start_date,    :end_date,         :start_time,       :end_time,
+                  :host_name,     :is_cancelled,     :alert_notice,
+                  :space_id,      :space_name,       :space_location,
+                  :event_id,      :event_name,       :event_description,
+                  :repeat_every,  :repeat_unit,      :repeat_ordinal,
+                  :repeat_choice, :repeat_end_date,  :repeat_month,
+                  :repeat_day,    :repeat_booking_id)
   end
 
   # https://hashrocket.com/blog/posts/datetime-select-in-cucumber
   # https://stackoverflow.com/questions/7430343/ruby-easiest-way-to-filter-hash-keys
   def reservation_form_params
     form_params = reservation_params.transform_values(&:squish)
-                                    .slice( :host_name, :is_cancelled, :alert_notice,
-                                            :space_id, :space_name, :space_location,
-                                            :event_id, :event_name, :event_description,
-                                            :frequency_every, :frequency_unit,
-                                            :frequency_ordinal, :frequency_day,
-                                            :repeat_booking_id )
+                                    .slice( :host_name,     :is_cancelled,     :alert_notice,
+                                            :space_id,      :space_name,       :space_location,
+                                            :event_id,      :event_name,       :event_description,
+                                            :repeat_every,  :repeat_unit,      :repeat_ordinal,
+                                            :repeat_choice, :repeat_booking_id )
     # in controller - this should work too:
     # https://stackoverflow.com/questions/13605598/how-to-get-a-date-from-date-select-or-select-date-in-rails
-    # form_params[:start_date] = Date.new(*params[:start_date].sort.map(&:last).map(&:to_i))
-    form_params[:start_date] = Date.new(reservation_params["start_date(1i)"].to_i,
-                                        reservation_params["start_date(2i)"].to_i,
-                                        reservation_params["start_date(3i)"].to_i)
-    # form_params[:end_date]   = Date.new(*params[:end_date].sort.map(&:last).map(&:to_i))
-    form_params[:end_date]   = Date.new(reservation_params["end_date(1i)"].to_i,
-                                        reservation_params["end_date(2i)"].to_i,
-                                        reservation_params["end_date(3i)"].to_i)
-    # form_params[:start_time] = Time.new(*params[:start_time].sort.map(&:last).map(&:to_i))
-    form_params[:start_time] = Time.new(reservation_params["start_time(1i)"].to_i,
-                                        reservation_params["start_time(2i)"].to_i,
-                                        reservation_params["start_time(3i)"].to_i,
-                                        reservation_params["start_time(4i)"].to_i,
-                                        reservation_params["start_time(5i)"].to_i)
-    # form_params[:end_time]   = Time.new(*params[:end_time].sort.map(&:last).map(&:to_i))
-    form_params[:end_time]   = Time.new(reservation_params["end_time(1i)"].to_i,
-                                        reservation_params["end_time(2i)"].to_i,
-                                        reservation_params["end_time(3i)"].to_i,
-                                        reservation_params["end_time(4i)"].to_i,
-                                        reservation_params["end_time(5i)"].to_i)
+    # form_params[:start_date] = Date.new(*params[:start_date].sort.map(&:last).map(&:to_i))  # doesn't work params[:start_date] = nil
+    # form_params[:end_time]   = Time.new(*reservation_params[:end_time].sort.map(&:last).map(&:to_i))
+    form_params[:start_date]       = Date.new(reservation_params["start_date(1i)"].to_i,
+                                              reservation_params["start_date(2i)"].to_i,
+                                              reservation_params["start_date(3i)"].to_i)
+    form_params[:end_date]         = Date.new(reservation_params["end_date(1i)"].to_i,
+                                              reservation_params["end_date(2i)"].to_i,
+                                              reservation_params["end_date(3i)"].to_i)
+    form_params[:start_time]       = Time.new(reservation_params["start_time(1i)"].to_i,
+                                              reservation_params["start_time(2i)"].to_i,
+                                              reservation_params["start_time(3i)"].to_i,
+                                              reservation_params["start_time(4i)"].to_i,
+                                              reservation_params["start_time(5i)"].to_i)
+    form_params[:end_time]         = Time.new(reservation_params["end_time(1i)"].to_i,
+                                              reservation_params["end_time(2i)"].to_i,
+                                              reservation_params["end_time(3i)"].to_i,
+                                              reservation_params["end_time(4i)"].to_i,
+                                              reservation_params["end_time(5i)"].to_i)
+    form_params[:repeat_month]     = Date.new(reservation_params["start_date(2i)"].to_i
+    form_params[:repeat_day]       = Date.new(reservation_params["start_date(3i)"].to_i
+    form_params[:repeat_end_date]  = Date.new(reservation_params["repeat_end_date(1i)"].to_i,
+                                              reservation_params["repeat_end_date(2i)"].to_i,
+                                              reservation_params["repeat_end_date(3i)"].to_i)
     form_params
   end
 

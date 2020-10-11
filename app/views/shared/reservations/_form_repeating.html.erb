@@ -6,39 +6,59 @@
 
       <div class="field has-addons is-grouped">
         <div class="control">
-          <%= form.label "Every" %>
-          <%= form.number_field :frequency_every, value: reservation.frequency_every || 0, class: "input", style: "width: 25%;" %>
-          <%= error_message_on(form.object, :frequency_every) %>
+          <%= form.label "Every" %>&nbsp;
+          <%= form.number_field :repeat_every,
+                                value: reservation.repeat_every || 0,
+                                min: ApplicationHelper::VALID_REPEAT_EVERY.first,
+                                max: ApplicationHelper::VALID_REPEAT_EVERY.last,
+                                class: "input",
+                                style: "width: 25%;" %>
+          <%= error_message_on(form.object, :repeat_every) %>
           &nbsp;
-          <%= form.collection_select :frequency_unit,
-                  Managers::ReservationForm.frequency_units_list,
+          <%= form.collection_select :repeat_unit,
+                  Managers::ReservationForm.repeat_units_list,
                   :value, :display_name, {include_blank: '-- select --',
-                                          selected: reservation.frequency_unit || ''},
+                                          selected: reservation.repeat_unit || ''},
                   class: 'select is-medium' %>
           <%= form.label "On" %>
-          <%# <p class="help">Frequency</p> %>
-          <%= error_message_on(form.object, :frequency_unit) %>
+          <%= error_message_on(form.object, :repeat_unit) %>
+          <p class="help"><strong>0</strong> = <strong>not</strong> reapeating</p>
         </div>
       </div>
+
       <br>
+
       <div class="field has-addons is-grouped">
         <div class="control has-addons">
           <%= form.label "the" %>&nbsp;
-          <%= form.collection_select :frequency_ordinal,
-                  Managers::ReservationForm.frequency_ordinals_list,
+          <%= form.collection_select :repeat_ordinal,
+                  Managers::ReservationForm.repeat_ordinals_list,
                   :value, :display_name, {include_blank: '-- select --',
-                                          selected: reservation.frequency_ordinal || ''},
+                                          selected: reservation.repeat_ordinal || ''},
                   class: 'select is-medium' %>
           <%# <p class="help">on Week</p> %>
-          <%= error_message_on(form.object, :frequency_ordinal) %>
+          <%= error_message_on(form.object, :repeat_ordinal) %>
 
-          <%= form.collection_select :frequency_day,
-                  Managers::ReservationForm.frequency_days_list,
+          <%= form.collection_select :repeat_choice,
+                  Managers::ReservationForm.repeat_choices_list,
                   :value, :display_name, {include_blank: '-- select --',
-                                          selected: reservation.frequency_day || ''},
+                                          selected: reservation.repeat_choice || ''},
                   class: 'select is-medium' %>
           <%# <p class="help">day / date</p> %>
-          <%= error_message_on(form.object, :frequency_day) %>
+          <%= error_message_on(form.object, :repeat_choice) %>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="field has-addons is-grouped">
+        <div class="control has-addons">
+          <%= form.label "until" %>&nbsp;
+          <%= form.date_select :repeat_until_date,
+                                { selected: reservation.repeat_until_date },
+                                class: 'select is-medium' %>
+          <%# <p class="help">Required</p> %>
+          <%= error_message_on(form.object, :repeat_until_date) %>
         </div>
       </div>
 

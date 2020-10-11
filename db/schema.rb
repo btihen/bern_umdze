@@ -23,9 +23,25 @@ ActiveRecord::Schema.define(version: 2020_10_27_083641) do
   end
 
   create_table "repeat_bookings", force: :cascade do |t|
-    t.json "settings"
+    t.integer "repeat_every", null: false
+    t.string "repeat_unit", null: false
+    t.string "repeat_ordinal", null: false
+    t.string "repeat_choice", null: false
+    t.date "repeat_until_date", null: false
+    t.string "host_name"
+    t.text "alert_notice"
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.time "start_time", null: false
+    t.time "end_time", null: false
+    t.datetime "start_date_time", null: false
+    t.datetime "end_date_time", null: false
+    t.bigint "event_id", null: false
+    t.bigint "space_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_repeat_bookings_on_event_id"
+    t.index ["space_id"], name: "index_repeat_bookings_on_space_id"
   end
 
   create_table "reservations", force: :cascade do |t|
@@ -90,6 +106,8 @@ ActiveRecord::Schema.define(version: 2020_10_27_083641) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "repeat_bookings", "events"
+  add_foreign_key "repeat_bookings", "spaces"
   add_foreign_key "reservations", "events"
   add_foreign_key "reservations", "repeat_bookings"
   add_foreign_key "reservations", "spaces"
