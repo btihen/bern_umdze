@@ -40,8 +40,12 @@ class Reservation < ApplicationRecord
 
   # https://stackoverflow.com/questions/12181444/ruby-combine-date-and-time-objects-into-a-datetime
   def create_date_times
-    self.start_date_time = start_date.to_datetime + start_time.seconds_since_midnight.seconds
-    self.end_date_time = end_date.to_datetime + end_time.seconds_since_midnight.seconds
+    unless start_date_time.is_a? DateTime
+      self.start_date_time = start_date.to_datetime + start_time.seconds_since_midnight.seconds
+    end
+    unless end_date_time.is_a? DateTime
+      self.end_date_time = end_date.to_datetime + end_time.seconds_since_midnight.seconds
+    end
   end
 
   def validate_start_date_time_before_end_date_time

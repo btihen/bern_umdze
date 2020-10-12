@@ -96,6 +96,7 @@ class Managers::ReservationForm < FormBase
   validate :validate_space
   validate :validate_event
   validate :validate_reservation
+  validate :validate_repeat_booking
 
   def reservation
     @reservation     ||= assign_reservation_attribs
@@ -146,19 +147,29 @@ class Managers::ReservationForm < FormBase
   end
 
   def assign_repeat_attribs
-binding.pry
-    return RepeatBooking.find(repeat_booking_id) if repeat_booking_id.present?
-    return nil  if repeat_every == 0 && repeat_booking_id.blank?
-binding.pry
+    return nil   if repeat_every == 0 && repeat_booking_id.blank?
+    new_repeat = RepeatBooking.find(repeat_booking_id) || RepeatBooking.new
+
     # create a new event if no other info available
-    new_repeat = RepeatBooking.new
-    new_repeat.repeat_day      = repeat_day   || start_date.day
-    new_repeat.repeat_month    = repeat_month || start_date.month
     new_repeat.repeat_every    = repeat_every
     new_repeat.repeat_unit     = repeat_unit
     new_repeat.repeat_ordinal  = repeat_ordinal
     new_repeat.repeat_choice   = repeat_choice
     new_repeat.repeat_end_date = repeat_end_date
+
+    # template repeat_booking info (original could get deleted)
+    new_repeat.event           = event
+    new_repeat.space           = space
+    new_repeat.repeat_booking  = repeat_booking
+    new_repeat.host_name       = host_name
+    new_repeat.start_date      = start_date   || attributes["start_date"]
+    new_repeat.start_time      = start_time   || attributes["start_time"]
+    new_repeat.end_date        = end_date     || attributes["end_date"]
+    new_repeat.end_time        = end_time     || attributes["end_time"]
+    new_repeat.start_date_time = calculate_start_date_time
+    new_repeat.end_date_time   = calculate_end_date_time
+    new_repeat.alert_notice    = alert_notice
+    new_repeat.is_cancelled    = is_cancelled
     new_repeat
   end
 
@@ -216,6 +227,18 @@ binding.pry
     return if reservation.valid?
 
     reservation.errors.each do |attribute_name, desc|
+      next if attribute_name.to_s.eql?("event.event_name") ||
+              attribute_name.to_s.eql?("space.space_name") ||
+              attribute_name.to_s.eql?("id")  # id should always be valid - but just in case
+      errors.add(attribute_name.to_sym, desc)
+    end
+  end
+
+  def validate_repeat_booking
+    return if repeat_booking.nil?
+    return if repeat_booking.valid?
+
+    repeat_booking.errors.each do |attribute_name, desc|
       next if attribute_name.to_s.eql?("event.event_name") ||
               attribute_name.to_s.eql?("space.space_name") ||
               attribute_name.to_s.eql?("id")  # id should always be valid - but just in case
