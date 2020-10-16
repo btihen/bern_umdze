@@ -28,9 +28,12 @@ class Managers::ReservationsCreateCommand
 
     if repeat_booking.present? && (form.repeat_every > 0)
       # reservation allows event and space to be created - don't create again!
-      repeat_bookings.event = reservation.event
-      repeat_bookings.space = reservation.space
-      repeat_bookings.save!
+      repeat_booking.event = reservation.event
+      repeat_booking.space = reservation.space
+      repeat_booking.save!
+
+      reservation.repeat_booking = repeat_booking
+      reservation.save
 
       # now that all is saved and validated we can create additional reservations
       Managers::RepeatBookingsCreateCommand.new(repeat_bookings).run

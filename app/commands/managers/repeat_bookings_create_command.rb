@@ -4,13 +4,16 @@ class Managers::RepeatBookingsCreateError < StandardError; end
 
 class Managers::RepeatBookingsCreateCommand
 
-  attr_reader :repeat_booking,
-              :start_date,     :repeat_unit,    :repeat_every,
+  attr_reader :start_date, :end_date, :start_time, :end_time,
+              :repeat_booking, :repeat_unit, :repeat_every,
               :repeat_choice,  :repeat_ordinal, :repeat_until_date
 
   def initialize(repeat_booking)
     @repeat_booking    = repeat_booking
+    @end_date          = repeat_booking.end_date
     @start_date        = repeat_booking.start_date
+    @end_time          = repeat_booking.end_time
+    @start_time        = repeat_booking.start_time
     @repeat_unit       = repeat_booking.repeat_unit
     @repeat_every      = repeat_booking.repeat_every
     @repeat_choice     = repeat_booking.repeat_choice
@@ -31,28 +34,42 @@ class Managers::RepeatBookingsCreateCommand
   private
 
   def create_repeat_reservations
-    repeat_increment_index = 1
+    repeat_increment_index = 0
     repeat_until_max_date  = repeat_until_date + 1
-    next_start_date        = calculate_next_date(repeat_increment_index)
+    next_start_date        = start_date.dup
 
     while (next_start_date < repeat_until_max_date) do
-      next_reservation = build_next_reservation(next_start_date)
-      next_reservation.save
+      create_next_reservation(next_start_date)
 
       repeat_increment_index += 1
       next_start_date         = calculate_next_date(repeat_increment_index)
     end
   end
 
-  def build_next_reservation(start_date)
-    booking_params = repeat_booking.attributes
+  def create_next_reservation(next_start_date)
+    booking_params = repeat_booking.attributes.with_indifferent_access
     next_params    = booking_params.slice(:host_name, :alert_notice, :is_cancelled,
-                                          :start_time, :end_time, :event_is, :space_id )
-    next_params[:repeat_booking] = repeat_booking
-    next_params[:start_time]     = start_date
-    next_params[:end_time]       = start_date + next_date_dalta
+                                          :start_time, :end_time, :event_id, :space_id)
+    next_params[:repeat_booking_id] = repeat_booking.id
+    next_params[:start_date]     = next_start_date
+    next_params[:end_date]       = next_end_date(next_start_date)
+    next_params[:start_time]     = start_time
+    next_params[:end_time]       = end_time
 
-    next_reservation = Resevation.new(next_params)
+    next_reservation = Reservation.new(**next_params)
+
+    if next_reservation.valid?
+      test_params = next_params.except(:host_name, :alert_notice, :is_cancelled)
+      next_reservation.save if Reservation.where(**test_params).blank?
+    else
+      raise Managers::RepeatBookingsCreateError(next_reservation.errors.messages.to_s)
+    end
+  end
+
+  def next_end_date(next_start_date)
+    time_delte        = repeat_booking.end_date_time - repeat_booking.start_date_time
+    new_end_date_time = next_start_date + time_delte.seconds
+    Date.new(new_end_date_time.year, new_end_date_time.month, new_end_date_time.day)
   end
 
   def calculate_next_date(repeat_increment_index)
@@ -103,7 +120,7 @@ class Managers::RepeatBookingsCreateCommand
     end
   end
 
-  def weekdays_offset(reference_date)
+  def days_offset(reference_date)
     case repeat_choice
     when "mon"
       return 0  if reference_date.cwday == 1  # monday    + 0.days = mon

@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2020_10_27_083641) do
     t.time "end_time", null: false
     t.datetime "start_date_time", null: false
     t.datetime "end_date_time", null: false
+    t.boolean "is_cancelled", default: false, null: false
     t.bigint "event_id", null: false
     t.bigint "space_id", null: false
     t.datetime "created_at", precision: 6, null: false
