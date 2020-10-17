@@ -38,6 +38,23 @@ RSpec.describe RepeatBooking, type: :model do
       it { is_expected.to validate_inclusion_of(:repeat_ordinal).in_array(ApplicationHelper::VALID_REPEAT_ORDINALS).allow_blank }
 
       context "valid repeat input combinations" do
+        # test units
+        ############
+        it "with unit-week takes no ordinal" do
+          params = FactoryBot.attributes_for :repeat_booking, :fri_every_3_weeks
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be true
+        end
+        it "with unit-day takes no further inputs" do
+          params = FactoryBot.attributes_for :repeat_booking, :every_4_days
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be true
+        end
+
+        # test ordinal-this & choice-date
+        #################################
         it "with unit-year and ordinal-this to be used with choice-date" do
           params = FactoryBot.attributes_for :repeat_booking, :same_date_each_year
           model  = described_class.new(params)
@@ -50,9 +67,80 @@ RSpec.describe RepeatBooking, type: :model do
 
           expect(model.valid?).to be true
         end
-
       end
+
       context "invalid repeat input combinations" do
+        # test unit-day
+        ###############
+        it "with unit-week takes no ordinal" do
+          params = FactoryBot.attributes_for :repeat_booking, :fri_every_3_weeks
+          params[:repeat_ordinal] = "first"
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be false
+        end
+        it "with unit-week takes only weekday choices not ''" do
+          params = FactoryBot.attributes_for :repeat_booking, :fri_every_3_weeks
+          params[:repeat_choice] = "first"
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be false
+        end
+        it "with unit-week takes only weekday choices not 'date'" do
+          params = FactoryBot.attributes_for :repeat_booking, :fri_every_3_weeks
+          params[:repeat_choice] = "date"
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be false
+        end
+        ###############
+        it "with unit-day and an ordinal input" do
+          params = FactoryBot.attributes_for :repeat_booking, :every_4_days
+          params[:repeat_ordinal] = "first"
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be false
+        end
+        it "with unit-day and an choice input" do
+          params = FactoryBot.attributes_for :repeat_booking, :every_4_days
+          params[:repeat_choice] = "wed"
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be false
+        end
+
+        # test ordinal-this with choice-date
+        ####################################
+        it "with unit-year; ordinal may not be blank" do
+          params = FactoryBot.attributes_for :repeat_booking, :first_mon_each_year
+          params[:repeat_ordinal] = ""
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be false
+        end
+        it "with unit-year; choice may not be blank" do
+          params = FactoryBot.attributes_for :repeat_booking, :first_mon_each_year
+          params[:repeat_choice] = ""
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be false
+        end
+
+        it "with unit-month; ordinal may not be blank" do
+          params = FactoryBot.attributes_for :repeat_booking, :second_wed_every_3_months
+          params[:repeat_ordinal] = ""
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be false
+        end
+        it "with unit-month; choice may not be blank" do
+          params = FactoryBot.attributes_for :repeat_booking, :second_wed_every_3_months
+          params[:repeat_choice] = ""
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be false
+        end
+
         it "with unit-week and ordinal-this to be used with choice-date" do
           params = FactoryBot.attributes_for :repeat_booking, :same_date_each_year
           params[:repeat_unit] = "week"
@@ -81,7 +169,6 @@ RSpec.describe RepeatBooking, type: :model do
 
           expect(model.valid?).to be false
         end
-        
       end
     end
   end

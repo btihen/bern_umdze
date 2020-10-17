@@ -28,7 +28,7 @@ FactoryBot.define do
 
     trait :first_mon_each_year do
       repeat_every      { 1 }
-      repeat_unit       { "month" }  # year, month, week, day
+      repeat_unit       { "year" }  # year, month, week, day
       repeat_ordinal    { "first" }  # first, second, third, fourth, fifth, last, this (date)
       repeat_choice     { "mon" }  # mon, tue, wed, thu, fri, sat, sun, day, date (this reservation date of month / year)
     end
