@@ -104,11 +104,17 @@ class Managers::RepeatBookingsCreateCommand
   end
 
   def calculate_next_start_date_day(increment_date)
-    return increment_date if repeat_ordinal.eql?("this")
+    return increment_date    if repeat_ordinal.eql?("this") && repeat_choice.eql?("date")
 
     reference_date = increment_date.at_beginning_of_month
 
     case repeat_ordinal
+    when ""
+      return increment_date             if repeat_unit.eql?("day")
+      return increment_date + days_offset(increment_date).days  if repeat_unit.eql?("week")
+
+      raise Managers::RepeatBookingsCreateError("ordinal '' must be used with unit 'day' or 'week'") # shouldn't happen - raise error?
+
     when "first"
       return (reference_date + 0.days)  if repeat_ordinal.eql?("day")
 

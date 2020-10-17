@@ -8,8 +8,8 @@ class RepeatBooking < ApplicationRecord
   # specific to repeat_booking
   validates  :repeat_every,      presence: true, inclusion: { in: ApplicationHelper::VALID_REPEAT_EVERY }
   validates  :repeat_unit,       presence: true, inclusion: { in: ApplicationHelper::VALID_REPEAT_UNITS }
-  validates  :repeat_ordinal,    presence: true, inclusion: { in: ApplicationHelper::VALID_REPEAT_ORDINALS }
-  validates  :repeat_choice,     presence: true, inclusion: { in: ApplicationHelper::VALID_REPEAT_CHOICES }
+  validates  :repeat_ordinal,    inclusion: { in: ApplicationHelper::VALID_REPEAT_ORDINALS }, allow_blank: true
+  validates  :repeat_choice,     inclusion: { in: ApplicationHelper::VALID_REPEAT_CHOICES },  allow_blank: true
   validates  :repeat_until_date, presence: true
 
   # same as for reservation (template info)

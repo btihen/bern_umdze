@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Managers::RepeatBookingsCreateCommand do
   let(:command)           { described_class.new(repeat_booking) }
 
-  context "repeat every 1 year on the first day of the year from 22:00 until 23:30" do
+  context "'every 1-year-on this-date (from 22:00 -> 00:30 nexy day)'" do
     let(:event_start_date){ Date.new(2021, 1, 1) }
     let(:event_end_date)  { Date.new(2021, 1, 2) }
     let(:repeat_booking)  { FactoryBot.create :repeat_booking,
@@ -18,9 +18,7 @@ RSpec.describe Managers::RepeatBookingsCreateCommand do
                                               repeat_choice:      "date",
                                               repeat_until_date:  event_start_date + 2.years }
 
-    it "creates repeating reservations on appropriate days with the correct times" do
-      # correct creations are first sat every two months from 09:30 Sat until 18:30 Sun
-
+    it "expected repeat reservations created" do
       expect(command.run).to be
       reservations = Reservation.where(repeat_booking_id: repeat_booking.id).order(start_date: :asc)
 
@@ -29,7 +27,6 @@ RSpec.describe Managers::RepeatBookingsCreateCommand do
       expect(reservations.all?{ |r| r.end_time.strftime("%H:%M") == "00:30" }).to be true
       expect(reservations.all?{ |r| r.start_date == (r.end_date - 1.day) }).to be true
 
-      # stopping just shy of one year
       expect(reservations.count).to eq 3
 
       expect(reservations[0].start_date.strftime("%Y-%m-%d")).to  eq "2021-01-01"
@@ -38,7 +35,7 @@ RSpec.describe Managers::RepeatBookingsCreateCommand do
     end
   end
 
-  context "repeat every 2 months on the first sat from 08:30 until sun 18:30" do
+  context "'every 2-month-on first-saturday (through sun)'" do
     let(:event_start_date){ Date.new(2021, 1, 2) }
     let(:event_end_date)  { Date.new(2021, 1, 3) }
     let(:repeat_booking)  { FactoryBot.create :repeat_booking,
@@ -53,9 +50,7 @@ RSpec.describe Managers::RepeatBookingsCreateCommand do
                                               repeat_choice:      "sat",
                                               repeat_until_date:  event_start_date + 1.year }
 
-    it "creates repeating reservations on appropriate days with the correct times" do
-      # correct creations are first sat every two months from 09:30 Sat until 18:30 Sun
-
+    it "expected repeat reservations created" do
       expect(command.run).to be
       reservations = Reservation.where(repeat_booking_id: repeat_booking.id).order(start_date: :asc)
 
@@ -90,7 +85,7 @@ RSpec.describe Managers::RepeatBookingsCreateCommand do
     end
   end
 
-  context "repeat every 1 months on the second Weds from 17:30 until 19:30" do
+  context "'every 1-month-on second-Wednesday' from 17:30 until 19:30" do
     let(:event_start_date){ Date.new(2021, 1, 2) }
     let(:event_end_date)  { Date.new(2021, 1, 2) }
     let(:repeat_booking)  { FactoryBot.create :repeat_booking,
@@ -105,9 +100,7 @@ RSpec.describe Managers::RepeatBookingsCreateCommand do
                                               repeat_choice:      "wed",
                                               repeat_until_date:  event_start_date + 1.year - 2.days }
 
-    it "creates repeating reservations on appropriate days with the correct times" do
-      # correct creations are first sat every two months from 09:30 Sat until 18:30 Sun
-
+    it "expected repeat reservations created" do
       expect(command.run).to be
       reservations = Reservation.where(repeat_booking_id: repeat_booking.id).order(start_date: :asc)
 
@@ -116,7 +109,6 @@ RSpec.describe Managers::RepeatBookingsCreateCommand do
       expect(reservations.all?{ |r| r.end_time.strftime("%H:%M") == "20:00" }).to be true
       expect(reservations.all?{ |r| r.start_date == r.end_date }).to be true
 
-      # stopping just shy of one year
       expect(reservations.count).to eq 12
 
       expect(reservations[0].start_date.strftime("%Y-%m-%d")).to  eq "2021-01-13"
@@ -131,6 +123,73 @@ RSpec.describe Managers::RepeatBookingsCreateCommand do
       expect(reservations[9].end_date.strftime("%Y-%m-%d")).to    eq "2021-10-13"
       expect(reservations[10].start_date.strftime("%Y-%m-%d")).to eq "2021-11-10"
       expect(reservations[11].end_date.strftime("%Y-%m-%d")).to   eq "2021-12-08"
+    end
+  end
+
+  context "'every 3-week-on mondays (no ordinals)' from 11:30 until 13:30" do
+    let(:event_start_date){ Date.new(2021, 2, 2) }
+    let(:event_end_date)  { Date.new(2021, 2, 2) }
+    let(:repeat_booking)  { FactoryBot.create :repeat_booking,
+                                              start_date:         event_start_date,
+                                              end_date:           event_end_date,
+                                              start_time:         Time.parse("11:30", event_start_date),
+                                              end_time:           Time.parse("13:30", event_end_date),
+                                              host_name:          "Toni",
+                                              repeat_every:       3,
+                                              repeat_unit:        "week",
+                                              repeat_ordinal:     "",
+                                              repeat_choice:      "mon",
+                                              repeat_until_date:  event_start_date + 2.months }
+
+    it "expected repeat reservations created" do
+      expect(command.run).to be
+      reservations = Reservation.where(repeat_booking_id: repeat_booking.id).order(start_date: :asc)
+
+      expect(reservations.all?{ |r| r.repeat_booking_id == repeat_booking.id }).to be true
+      expect(reservations.all?{ |r| r.start_time.strftime("%H:%M") == "11:30" }).to be true
+      expect(reservations.all?{ |r| r.end_time.strftime("%H:%M") == "13:30" }).to be true
+      expect(reservations.all?{ |r| r.start_date == r.end_date }).to be true
+
+      expect(reservations.count).to eq 3
+
+      expect(reservations[0].start_date.strftime("%Y-%m-%d")).to  eq "2021-02-08"
+      expect(reservations[1].end_date.strftime("%Y-%m-%d")).to    eq "2021-03-01"
+      expect(reservations[2].start_date.strftime("%Y-%m-%d")).to  eq "2021-03-22"
+    end
+  end
+
+  context "repeat every 4 days on the first day of the year from 12:00 until 13:30" do
+    let(:event_start_date){ Date.new(2021, 2, 2) }
+    let(:event_end_date)  { Date.new(2021, 2, 2) }
+    let(:repeat_booking)  { FactoryBot.create :repeat_booking,
+                                              start_date:         event_start_date,
+                                              end_date:           event_end_date,
+                                              start_time:         Time.parse("12:00", event_start_date),
+                                              end_time:           Time.parse("13:30", event_end_date),
+                                              host_name:          "Toni",
+                                              repeat_every:       4,
+                                              repeat_unit:        "day",
+                                              repeat_ordinal:     "",
+                                              repeat_choice:      "",
+                                              repeat_until_date:  event_start_date + 2.weeks }
+
+    it "creates repeating reservations on appropriate days with the correct times" do
+      # correct creations are first sat every two months from 09:30 Sat until 18:30 Sun
+
+      expect(command.run).to be
+      reservations = Reservation.where(repeat_booking_id: repeat_booking.id).order(start_date: :asc)
+
+      expect(reservations.all?{ |r| r.repeat_booking_id == repeat_booking.id }).to be true
+      expect(reservations.all?{ |r| r.start_time.strftime("%H:%M") == "12:00" }).to be true
+      expect(reservations.all?{ |r| r.end_time.strftime("%H:%M") == "13:30" }).to be true
+      expect(reservations.all?{ |r| r.start_date == r.end_date }).to be true
+
+      expect(reservations.count).to eq 4
+
+      expect(reservations[0].start_date.strftime("%Y-%m-%d")).to  eq "2021-02-02"
+      expect(reservations[1].end_date.strftime("%Y-%m-%d")).to    eq "2021-02-06"
+      expect(reservations[2].start_date.strftime("%Y-%m-%d")).to  eq "2021-02-10"
+      expect(reservations[3].end_date.strftime("%Y-%m-%d")).to    eq "2021-02-14"
     end
   end
 

@@ -16,8 +16,8 @@ module ApplicationHelper
   REPEAT_UNITS = [
     {value: "year",    display_name: "Year"},
     {value: "month",   display_name: "Month"},
-    # {value: "week",    display_name: "Week"},
-    # {value: "day",     display_name: "Day"},
+    {value: "week",    display_name: "Week"},
+    {value: "day",     display_name: "Day"},
   ]
   VALID_REPEAT_UNITS = REPEAT_UNITS.map { |f| f[:value] }
 
@@ -26,8 +26,8 @@ module ApplicationHelper
     {value: "second",  display_name: "Second"},
     {value: "third",   display_name: "Third"},
     {value: "fourth",  display_name: "Fourth"},
-    {value: "fifth",   display_name: "Fifth"},
-    {value: "last",    display_name: "Last"},
+    # {value: "fifth",   display_name: "Fifth"},
+    # {value: "last",    display_name: "Last"},
     {value: "this",    display_name: "This (date)"},
   ]
   VALID_REPEAT_ORDINALS = REPEAT_ORDINALS.map { |f| f[:value] }
@@ -40,7 +40,7 @@ module ApplicationHelper
     {value: "fri",     display_name: "Friday"},
     {value: "sat",     display_name: "Saturday"},
     {value: "sun",     display_name: "Sunday"},
-    {value: "day",     display_name: "Day"},
+    # {value: "day",     display_name: "Day"},   # for 'last' day of 'month/year'
     {value: "date",    display_name: "Date"},
   ]
   VALID_REPEAT_CHOICES = REPEAT_CHOICES.map { |f| f[:value] }
