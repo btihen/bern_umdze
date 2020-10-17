@@ -37,7 +37,50 @@ RSpec.describe RepeatBooking, type: :model do
       it { is_expected.to validate_inclusion_of(:repeat_choice).in_array(ApplicationHelper::VALID_REPEAT_CHOICES).allow_blank }
       it { is_expected.to validate_inclusion_of(:repeat_ordinal).in_array(ApplicationHelper::VALID_REPEAT_ORDINALS).allow_blank }
 
-      context "validate repeat input combinations" do
+      context "valid repeat input combinations" do
+        it "with unit-year and ordinal-this to be used with choice-date" do
+          params = FactoryBot.attributes_for :repeat_booking, :same_date_each_year
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be true
+        end
+        it "with unit-month and ordinal-this to be used with choice-date" do
+          params = FactoryBot.attributes_for :repeat_booking, :same_date_every_2_months
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be true
+        end
+
+      end
+      context "invalid repeat input combinations" do
+        it "with unit-week and ordinal-this to be used with choice-date" do
+          params = FactoryBot.attributes_for :repeat_booking, :same_date_each_year
+          params[:repeat_unit] = "week"
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be false
+        end
+        it "with unit-day and ordinal-this to be used with choice-date" do
+          params = FactoryBot.attributes_for :repeat_booking, :same_date_every_2_months
+          params[:repeat_unit] = "day"
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be false
+        end
+        it "with unit-year and ordinal-this to be used with choice-not date" do
+          params = FactoryBot.attributes_for :repeat_booking, :same_date_each_year
+          params[:repeat_choice] = "mon"
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be false
+        end
+        it "with unit-month and ordinal-not date to be used with choice-date" do
+          params = FactoryBot.attributes_for :repeat_booking, :same_date_every_2_months
+          params[:repeat_ordinal] = "first"
+          model  = described_class.new(params)
+
+          expect(model.valid?).to be false
+        end
         
       end
     end

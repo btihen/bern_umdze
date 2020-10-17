@@ -40,8 +40,15 @@ FactoryBot.define do
       repeat_choice     { "date" }  # mon, tue, wed, thu, fri, sat, sun, #day, date (this reservation date of month / year)
     end
 
-    trait :second_wed_every_2_months do
+    trait :same_date_every_2_months do
       repeat_every      { 2 }
+      repeat_unit       { "month" }  # year, month, week, day
+      repeat_ordinal    { "this" }  # first, second, third, fourth, #fifth, #last, this (date)
+      repeat_choice     { "date" }  # mon, tue, wed, thu, fri, sat, sun, #day, date (this reservation date of month / year)
+    end
+
+    trait :second_wed_every_3_months do
+      repeat_every      { 3 }
       repeat_unit       { "month" }  # year, month, week, day
       repeat_ordinal    { "second" }  # first, second, third, fourth, fifth, last, this (date)
       repeat_choice     { "wed" }  # mon, tue, wed, thu, fri, sat, sun, day, date (this reservation date of month / year)

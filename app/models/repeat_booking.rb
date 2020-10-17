@@ -69,4 +69,16 @@ class RepeatBooking < ApplicationRecord
     end
   end
 
+  def validate_repeat_input_combinations
+    # test allowed combinations of 'this' 'date'
+    return  if %w[year month].include?(repeat_unit) && repeat_ordinal.eql?("this") && repeat_choice.eql?("date")
+    if repeat_ordinal.eql?("this")
+      errors.add(:repeat_ordinal, "'this' must be used with unit-'year or month' and choice-'date'")
+    end
+    if repeat_choice.eql?("date")
+      errors.add(:repeat_choice, "'date' must be used with unit-'year or month' and ordinal-'this'")
+    end
+
+  end
+
 end
