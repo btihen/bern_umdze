@@ -3,6 +3,41 @@ require 'rails_helper'
 RSpec.describe Managers::RepeatBookingsCreateCommand do
   let(:command)           { described_class.new(repeat_booking) }
 
+  context "repeat every 1 year on the first day of the year from 22:00 until 23:30" do
+    let(:event_start_date){ Date.new(2021, 1, 1) }
+    let(:event_end_date)  { Date.new(2021, 1, 2) }
+    let(:repeat_booking)  { FactoryBot.create :repeat_booking,
+                                              start_date:         event_start_date,
+                                              end_date:           event_end_date,
+                                              start_time:         Time.parse("22:00", event_start_date),
+                                              end_time:           Time.parse("00:30", event_end_date),
+                                              host_name:          "Toni",
+                                              repeat_every:       1,
+                                              repeat_unit:        "year",
+                                              repeat_ordinal:     "this",
+                                              repeat_choice:      "date",
+                                              repeat_until_date:  event_start_date + 2.years }
+
+    it "creates repeating reservations on appropriate days with the correct times" do
+      # correct creations are first sat every two months from 09:30 Sat until 18:30 Sun
+
+      expect(command.run).to be
+      reservations = Reservation.where(repeat_booking_id: repeat_booking.id).order(start_date: :asc)
+
+      expect(reservations.all?{ |r| r.repeat_booking_id == repeat_booking.id }).to be true
+      expect(reservations.all?{ |r| r.start_time.strftime("%H:%M") == "22:00" }).to be true
+      expect(reservations.all?{ |r| r.end_time.strftime("%H:%M") == "00:30" }).to be true
+      expect(reservations.all?{ |r| r.start_date == (r.end_date - 1.day) }).to be true
+
+      # stopping just shy of one year
+      expect(reservations.count).to eq 3
+
+      expect(reservations[0].start_date.strftime("%Y-%m-%d")).to  eq "2021-01-01"
+      expect(reservations[1].end_date.strftime("%Y-%m-%d")).to    eq "2022-01-02"
+      expect(reservations[2].start_date.strftime("%Y-%m-%d")).to  eq "2023-01-01"
+    end
+  end
+
   context "repeat every 2 months on the first sat from 08:30 until sun 18:30" do
     let(:event_start_date){ Date.new(2021, 1, 2) }
     let(:event_end_date)  { Date.new(2021, 1, 3) }
@@ -27,37 +62,31 @@ RSpec.describe Managers::RepeatBookingsCreateCommand do
       expect(reservations.all?{ |r| r.repeat_booking_id == repeat_booking.id }).to be true
       expect(reservations.all?{ |r| r.start_time.strftime("%H:%M") == "09:30" }).to be true
       expect(reservations.all?{ |r| r.end_time.strftime("%H:%M") == "18:30" }).to be true
+      expect(reservations.all?{ |r| r.start_date == (r.end_date - 1.day) }).to be true
 
       # makes 7 reservations (first isn't there & then one in the new year)
       expect(reservations.count).to eq 7
-
       # first   - jan 2-3, 2021
       expect(reservations[0].start_date.strftime("%Y-%m-%d")).to eq "2021-01-02"
-      expect(reservations[0].end_date.strftime("%Y-%m-%d")).to eq "2021-01-03"
-
+      expect(reservations[0].end_date.strftime("%Y-%m-%d")).to   eq "2021-01-03"
       # second  - mar 6-7, 2021
       expect(reservations[1].start_date.strftime("%Y-%m-%d")).to eq "2021-03-06"
-      expect(reservations[1].end_date.strftime("%Y-%m-%d")).to eq "2021-03-07"
-
+      expect(reservations[1].end_date.strftime("%Y-%m-%d")).to   eq "2021-03-07"
       # third   - may 1-2, 2021
       expect(reservations[2].start_date.strftime("%Y-%m-%d")).to eq "2021-05-01"
-      expect(reservations[2].end_date.strftime("%Y-%m-%d")).to eq "2021-05-02"
-
+      expect(reservations[2].end_date.strftime("%Y-%m-%d")).to   eq "2021-05-02"
       # fourth  - jul 3-4, 2021
       expect(reservations[3].start_date.strftime("%Y-%m-%d")).to eq "2021-07-03"
-      expect(reservations[3].end_date.strftime("%Y-%m-%d")).to eq "2021-07-04"
-
+      expect(reservations[3].end_date.strftime("%Y-%m-%d")).to   eq "2021-07-04"
       # fifth   - sep 4-5, 2021
       expect(reservations[4].start_date.strftime("%Y-%m-%d")).to eq "2021-09-04"
-      expect(reservations[4].end_date.strftime("%Y-%m-%d")).to eq "2021-09-05"
-
+      expect(reservations[4].end_date.strftime("%Y-%m-%d")).to   eq "2021-09-05"
       # sixth   - nov 6-7, 2021
       expect(reservations[5].start_date.strftime("%Y-%m-%d")).to eq "2021-11-06"
-      expect(reservations[5].end_date.strftime("%Y-%m-%d")).to eq "2021-11-07"
-
+      expect(reservations[5].end_date.strftime("%Y-%m-%d")).to   eq "2021-11-07"
       # seventh - jan 1-2, 2022
       expect(reservations[6].start_date.strftime("%Y-%m-%d")).to eq "2022-01-01"
-      expect(reservations[6].end_date.strftime("%Y-%m-%d")).to eq "2022-01-02"
+      expect(reservations[6].end_date.strftime("%Y-%m-%d")).to   eq "2022-01-02"
     end
   end
 

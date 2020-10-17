@@ -62,15 +62,18 @@ class Managers::RepeatBookingsCreateCommand
 
     if next_reservation.valid?
       test_params = next_params.except(:host_name, :alert_notice, :is_cancelled)
-      next_reservation.save if Reservation.where(**test_params).blank?  # if the repeat reservation already exists - skip
+
+      # if the repeat reservation already exists - skip saving
+      next_reservation.save if Reservation.where(**test_params).blank?
     else
       raise Managers::RepeatBookingsCreateError(next_reservation.errors.messages.to_s)
     end
   end
 
   def next_end_date(next_start_date)
-    time_delte        = repeat_booking.end_date_time - repeat_booking.start_date_time
-    new_end_date_time = next_start_date + time_delte.seconds
+    time_delta           = repeat_booking.end_date_time - repeat_booking.start_date_time
+    next_start_date_time = DateTime.new(next_start_date.year, next_start_date.month, next_start_date.day, start_time.hour, start_time.min, 0)
+    new_end_date_time    = next_start_date_time + time_delta.seconds
     Date.new(new_end_date_time.year, new_end_date_time.month, new_end_date_time.day)
   end
 
