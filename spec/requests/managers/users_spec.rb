@@ -13,28 +13,31 @@
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "/managers/users", type: :request do
-  # Managers::User. As you add validations to Managers::User, be sure to
+
+  let(:manager)  { FactoryBot.create :user, access_role: "manager" }
+  before do
+    sign_in manager
+  end
+  after do
+    sign_out manager
+  end
+
+  # User. As you add validations to Managers::User, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    FactoryBot.attributes_for :user
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    params = FactoryBot.attributes_for :user
+    params[:username] = nil
+    params
   }
 
   describe "GET /index" do
     it "renders a successful response" do
-      Managers::User.create! valid_attributes
+      User.create! valid_attributes
       get managers_users_url
-      expect(response).to be_successful
-    end
-  end
-
-  describe "GET /show" do
-    it "renders a successful response" do
-      user = Managers::User.create! valid_attributes
-      get managers_user_url(managers_user)
       expect(response).to be_successful
     end
   end
@@ -48,8 +51,8 @@ RSpec.describe "/managers/users", type: :request do
 
   describe "GET /edit" do
     it "render a successful response" do
-      user = Managers::User.create! valid_attributes
-      get edit_managers_user_url(managers_user)
+      user = User.create! valid_attributes
+      get edit_managers_user_url(user)
       expect(response).to be_successful
     end
   end
@@ -58,25 +61,25 @@ RSpec.describe "/managers/users", type: :request do
     context "with valid parameters" do
       it "creates a new Managers::User" do
         expect {
-          post managers_users_url, params: { managers_user: valid_attributes }
-        }.to change(Managers::User, :count).by(1)
+          post managers_users_url, params: { user: valid_attributes }
+        }.to change(User, :count).by(1)
       end
 
       it "redirects to the created managers_user" do
-        post managers_users_url, params: { managers_user: valid_attributes }
-        expect(response).to redirect_to(managers_user_url(@managers_user))
+        post managers_users_url, params: { user: valid_attributes }
+        expect(response).to redirect_to(managers_users_url)
       end
     end
 
     context "with invalid parameters" do
       it "does not create a new Managers::User" do
         expect {
-          post managers_users_url, params: { managers_user: invalid_attributes }
-        }.to change(Managers::User, :count).by(0)
+          post managers_users_url, params: { user: invalid_attributes }
+        }.to change(User, :count).by(0)
       end
 
       it "renders a successful response (i.e. to display the 'new' template)" do
-        post managers_users_url, params: { managers_user: invalid_attributes }
+        post managers_users_url, params: { user: invalid_attributes }
         expect(response).to be_successful
       end
     end
@@ -85,44 +88,54 @@ RSpec.describe "/managers/users", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { username: "new_usernane" }
       }
 
       it "updates the requested managers_user" do
-        user = Managers::User.create! valid_attributes
-        patch managers_user_url(managers_user), params: { managers_user: new_attributes }
+        user = User.create! valid_attributes
+        patch managers_user_url(user), params: { user: new_attributes }
         user.reload
-        skip("Add assertions for updated state")
+        expect(user.username).to eq new_attributes[:username]
       end
 
-      it "redirects to the managers_user" do
-        user = Managers::User.create! valid_attributes
-        patch managers_user_url(managers_user), params: { managers_user: new_attributes }
+      it "redirects to the managers_user index page" do
+        user = User.create! valid_attributes
+        patch managers_user_url(user), params: { user: new_attributes }
         user.reload
-        expect(response).to redirect_to(managers_user_url(user))
+        expect(response).to redirect_to(managers_users_url)
       end
     end
 
     context "with invalid parameters" do
       it "renders a successful response (i.e. to display the 'edit' template)" do
-        user = Managers::User.create! valid_attributes
-        patch managers_user_url(managers_user), params: { managers_user: invalid_attributes }
+        user_1 = User.create! valid_attributes
+
+        user_2_attribs = valid_attributes.dup
+        user_2_attribs[:username] = "u_name"
+        user_2_attribs[:email]    = "u@test.ch"
+        user_2 = User.create! user_2_attribs
+
+        # try to reuse user_2 data for user_1 (invalid)
+        patch managers_user_url(user_1), params: { user: user_2_attribs }
+
         expect(response).to be_successful
+        # back to the edit page (until good params are sent)
+        expect(response.body).to include "<p hidden id='manager-edit-user-#{user_1.id}' class='pageName'>Manager Edit User#{user_1.id}</p>"
       end
     end
   end
 
   describe "DELETE /destroy" do
     it "destroys the requested managers_user" do
-      user = Managers::User.create! valid_attributes
+      user = User.create! valid_attributes
       expect {
-        delete managers_user_url(managers_user)
-      }.to change(Managers::User, :count).by(-1)
+        delete managers_user_url(user)
+      }.to change(User, :count).by(-1)
     end
 
     it "redirects to the managers_users list" do
-      user = Managers::User.create! valid_attributes
-      delete managers_user_url(managers_user)
+      user = User.create! valid_attributes
+      delete managers_user_url(user)
       expect(response).to redirect_to(managers_users_url)
     end
   end
