@@ -40,6 +40,8 @@ class Reservation < ApplicationRecord
 
   # https://stackoverflow.com/questions/12181444/ruby-combine-date-and-time-objects-into-a-datetime
   def create_date_times
+    return  if start_date.blank? || start_time.blank? || end_date.blank? || end_time.blank?
+
     unless start_date_time.is_a? DateTime
       self.start_date_time = start_date.to_datetime + start_time.seconds_since_midnight.seconds
     end
@@ -49,7 +51,9 @@ class Reservation < ApplicationRecord
   end
 
   def validate_start_date_time_before_end_date_time
-    return if start_date_time < end_date_time
+    return  if start_date_time.blank? || end_date_time.blank?
+    return  if start_date.blank? || start_time.blank? || end_date.blank? || end_time.blank?
+    return  if start_date_time < end_date_time
 
     if start_date > end_date
       errors.add(:start_date, "must be before end-date")

@@ -40,7 +40,7 @@ module ApplicationHelper
     {value: "fri",     display_name: "Friday"},
     {value: "sat",     display_name: "Saturday"},
     {value: "sun",     display_name: "Sunday"},
-    # {value: "day",     display_name: "Day"},   # for 'last' day of 'month/year'
+    # {value: "day",     display_name: "Day"},   # for 'first/last' day of 'month/year'
     {value: "date",    display_name: "Date"},
   ]
   VALID_REPEAT_CHOICES = REPEAT_CHOICES.map { |f| f[:value] }

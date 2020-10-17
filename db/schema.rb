@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2020_10_27_083641) do
     t.string "event_description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_name"], name: "index_events_on_event_name", unique: true
   end
 
   create_table "repeat_bookings", force: :cascade do |t|
