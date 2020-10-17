@@ -34,15 +34,17 @@ class Managers::RepeatBookingsCreateCommand
   private
 
   def create_repeat_reservations
-    repeat_increment_index = 0
+    increment_index        = 0
     repeat_until_max_date  = repeat_until_date + 1
-    next_start_date        = start_date.dup
+
+    # if the beginning of the year is entered, we still need to find the first defined repeat date
+    next_start_date        = calculate_next_date(increment_index)
 
     while (next_start_date < repeat_until_max_date) do
       create_next_reservation(next_start_date)
 
-      repeat_increment_index += 1
-      next_start_date         = calculate_next_date(repeat_increment_index)
+      increment_index     += 1
+      next_start_date      = calculate_next_date(increment_index)
     end
   end
 
@@ -51,16 +53,16 @@ class Managers::RepeatBookingsCreateCommand
     next_params    = booking_params.slice(:host_name, :alert_notice, :is_cancelled,
                                           :start_time, :end_time, :event_id, :space_id)
     next_params[:repeat_booking_id] = repeat_booking.id
-    next_params[:start_date]     = next_start_date
-    next_params[:end_date]       = next_end_date(next_start_date)
-    next_params[:start_time]     = start_time
-    next_params[:end_time]       = end_time
+    next_params[:start_date]        = next_start_date
+    next_params[:end_date]          = next_end_date(next_start_date)
+    next_params[:start_time]        = start_time
+    next_params[:end_time]          = end_time
 
     next_reservation = Reservation.new(**next_params)
 
     if next_reservation.valid?
       test_params = next_params.except(:host_name, :alert_notice, :is_cancelled)
-      next_reservation.save if Reservation.where(**test_params).blank?
+      next_reservation.save if Reservation.where(**test_params).blank?  # if the repeat reservation already exists - skip
     else
       raise Managers::RepeatBookingsCreateError(next_reservation.errors.messages.to_s)
     end
@@ -72,20 +74,29 @@ class Managers::RepeatBookingsCreateCommand
     Date.new(new_end_date_time.year, new_end_date_time.month, new_end_date_time.day)
   end
 
-  def calculate_next_date(repeat_increment_index)
-    increment_date = calculate_date_increment(repeat_increment_index)
+  def calculate_next_date(increment_index)
+    increment_date = calculate_date_increment(increment_index)
     calculate_next_start_date_day(increment_date)
   end
 
   # always start wtih the the original date because (Jan 30 + 1.month = Feb 28)
-  def calculate_date_increment(repeat_increment_index)
+  def calculate_date_increment(increment_index)
     case repeat_unit
     when "year"
-      start_date + (repeat_increment_index * repeat_every).year
+      start_date + (1 * increment_index * repeat_every).year
+
     when "month"
-      start_date + (repeat_increment_index * repeat_every).month
+      start_date + (1 * increment_index * repeat_every).month
+
+    when "week"   # 7 days = 1 week
+      start_date + (7 * increment_index * repeat_every).days
+
     when "day"
-      start_date + (repeat_increment_index * repeat_every).day
+      start_date + (1 * increment_index * repeat_every).day
+
+    else
+      raise Managers::RepeatBookingsCreateError("shouldn't get here - bad choice") # shouldn't happen - raise error?
+
     end
   end
 
@@ -101,7 +112,7 @@ class Managers::RepeatBookingsCreateCommand
       reference_date + days_offset(reference_date).days # first monday in month
 
     when "second"
-      return (reference_date + 1.day)   if epeat_ordinal.eql?("day")
+      return (reference_date + 1.day)   if repeat_ordinal.eql?("day")
 
       reference_date + (days_offset(reference_date) + 7).days
 
@@ -117,6 +128,9 @@ class Managers::RepeatBookingsCreateCommand
 
     # when "fifth"
     # when "last"
+    else
+      raise Managers::RepeatBookingsCreateError("shouldn't get here - bad choice") # shouldn't happen - raise error?
+
     end
   end
 
