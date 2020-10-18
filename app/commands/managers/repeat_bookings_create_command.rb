@@ -119,22 +119,22 @@ class Managers::RepeatBookingsCreateCommand
       raise Managers::RepeatBookingsCreateError("ordinal 'this' must be used with 'date'") # shouldn't happen - raise error?
 
     when "first"
-      return (reference_date + 0.days)  if repeat_ordinal.eql?("day")
+      # return (reference_date + 0.days)  if repeat_ordinal.eql?("day")
 
       reference_date + days_offset(reference_date).days # first monday in month
 
     when "second"
-      return (reference_date + 1.day)   if repeat_ordinal.eql?("day")
+      # return (reference_date + 1.day)   if repeat_ordinal.eql?("day")
 
       reference_date + (days_offset(reference_date) + 7).days
 
     when "third"
-      return (reference_date + 2.days)  if repeat_ordinal.eql?("day")
+      # return (reference_date + 2.days)  if repeat_ordinal.eql?("day")
 
       reference_date + (days_offset(reference_date) + 14).days
 
     when "forth"
-      return (reference_date + 3.days)  if repeat_ordinal.eql?("day")
+      # return (reference_date + 3.days)  if repeat_ordinal.eql?("day")
 
       reference_date + (days_offset(reference_date) + 21).days
 
