@@ -8,8 +8,8 @@ FactoryBot.define do
     # simplifies input
     start_date        { Date.new(2021, 1, 2) }
     end_date          { Date.new(2021, 1, 2) }
-    start_time        { Time.parse("09:30", start_date) }
-    end_time          { Time.parse("18:30", end_date) }
+    start_time        { Time.parse("09:30") }
+    end_time          { Time.parse("18:30") }
 
     host_name         { "Marianne" }
     alert_notice      { nil }

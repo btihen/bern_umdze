@@ -1,9 +1,5 @@
 class Managers::ReservationsController < Managers::ApplicationController
 
-  def index
-
-  end
-
   def new
     date             = params[:date].to_s.to_date || Date.today # will crash if date invalid
     end_time         = Time.parse("#{(Time.now + 2.hour).hour}:00", date)
@@ -86,24 +82,28 @@ class Managers::ReservationsController < Managers::ApplicationController
   # Only allow a list of trusted parameters through.
   def reservation_params
     params.require(:reservation)
-          .permit(:start_date,    :end_date,         :start_time,       :end_time,
-                  :host_name,     :is_cancelled,     :alert_notice,
-                  :space_id,      :space_name,       :space_location,
-                  :event_id,      :event_name,       :event_description,
-                  :repeat_every,  :repeat_unit,      :repeat_ordinal,
-                  :repeat_choice, :repeat_end_date,  :repeat_month,
-                  :repeat_day,    :repeat_booking_id)
+          .permit(:start_date,    :end_date,
+                  :start_time,    :end_time,
+                  :host_name,     :is_cancelled,      :alert_notice,
+                  :space_id,      :space_name,        :space_location,
+                  :event_id,      :event_name,        :event_description,
+                  :repeat_every,  :repeat_unit,       :repeat_ordinal,
+                  :repeat_choice, :repeat_end_date,   :repeat_month,
+                  :repeat_day,    :repeat_until_date, :repeat_booking_id)
   end
 
   # https://hashrocket.com/blog/posts/datetime-select-in-cucumber
   # https://stackoverflow.com/questions/7430343/ruby-easiest-way-to-filter-hash-keys
   def reservation_form_params
-    form_params = reservation_params.transform_values(&:squish)
-                                    .slice( :host_name,     :is_cancelled,     :alert_notice,
-                                            :space_id,      :space_name,       :space_location,
-                                            :event_id,      :event_name,       :event_description,
-                                            :repeat_every,  :repeat_unit,      :repeat_ordinal,
-                                            :repeat_choice, :repeat_booking_id )
+    form_params =
+      reservation_params.to_h
+                        .compact
+                        .transform_values(&:squish)
+                        .slice( :host_name,     :is_cancelled,      :alert_notice,
+                                :space_id,      :space_name,        :space_location,
+                                :event_id,      :event_name,        :event_description,
+                                :repeat_every,  :repeat_unit,       :repeat_ordinal,
+                                :repeat_choice, :repeat_until_date, :repeat_booking_id )
     # in controller - this should work too:
     # https://stackoverflow.com/questions/13605598/how-to-get-a-date-from-date-select-or-select-date-in-rails
     # form_params[:start_date] = Date.new(*params[:start_date].sort.map(&:last).map(&:to_i))  # doesn't work params[:start_date] = nil
@@ -124,11 +124,11 @@ class Managers::ReservationsController < Managers::ApplicationController
                                               reservation_params["end_time(3i)"].to_i,
                                               reservation_params["end_time(4i)"].to_i,
                                               reservation_params["end_time(5i)"].to_i)
-    form_params[:repeat_month]     = Date.new(reservation_params["start_date(2i)"].to_i
-    form_params[:repeat_day]       = Date.new(reservation_params["start_date(3i)"].to_i
-    form_params[:repeat_end_date]  = Date.new(reservation_params["repeat_end_date(1i)"].to_i,
-                                              reservation_params["repeat_end_date(2i)"].to_i,
-                                              reservation_params["repeat_end_date(3i)"].to_i)
+    # form_params[:repeat_month]     = Date.new(reservation_params["start_date(2i)"].to_i
+    # form_params[:repeat_day]       = Date.new(reservation_params["start_date(3i)"].to_i
+    form_params[:repeat_until_date]= Date.new(reservation_params["repeat_until_date(1i)"].to_i,
+                                              reservation_params["repeat_until_date(2i)"].to_i,
+                                              reservation_params["repeat_until_date(3i)"].to_i)
     form_params
   end
 

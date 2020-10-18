@@ -9,7 +9,7 @@
           <%= form.label "Every" %>&nbsp;
           <%= form.number_field :repeat_every,
                                 value: reservation.repeat_every || 0,
-                                min: ApplicationHelper::VALID_REPEAT_EVERY.first,
+                                min: 0, # allow 0 for no repeating!
                                 max: ApplicationHelper::VALID_REPEAT_EVERY.last,
                                 class: "input",
                                 style: "width: 25%;" %>

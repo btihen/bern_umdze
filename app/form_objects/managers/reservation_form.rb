@@ -66,7 +66,7 @@ class Managers::ReservationForm < FormBase
   # https://stackoverflow.com/questions/11962192/convert-a-hash-into-a-struct
   FrequencyDay = Struct.new(:value, :display_name, keyword_init: true)
   def self.repeat_choices_list
-    ApplicationHelper::REPEAT_DAYS.map do |units_hash|
+    ApplicationHelper::REPEAT_CHOICES.map do |units_hash|
       FrequencyDay.new(units_hash)
     end
   end
@@ -82,8 +82,8 @@ class Managers::ReservationForm < FormBase
   attribute :space_id,            :integer
   attribute :repeat_booking_id,   :integer
   attribute :repeat_every,        :integer, default: 0
-  attrtbute :repeat_choice,       :integer, default: Date.today.day   # should be the day from start_date
-  attrtbute :repeat_month,        :integer, default: Date.today.month # should be the month from start_date
+  # attribute :repeat_day,          :integer, default: Date.today.day   # should be the day from start_date
+  # attribute :repeat_month,        :integer, default: Date.today.month # should be the month from start_date
   attribute :repeat_unit,         :squished_string
   attribute :repeat_ordinal,      :squished_string
   attribute :repeat_choice,       :squished_string
@@ -114,16 +114,16 @@ class Managers::ReservationForm < FormBase
     @space           ||= (Space.find_by(id: space_id) || Space.new)
   end
 
-  def repeat_hash
-    { repeat_day:      repeat_day,      # only relevant with choice = date and unit = month
-      repeat_month:    repeat_month,    # only relevant with choice = date and unit = year
-      repeat_every:    repeat_every,    # repeat every: 1 month, 2 months, ...
-      repeat_unit:     repeat_unit,     # year, month, week, day
-      repeat_ordinal:  repeat_ordinal,  # first, second, third, fourth, fifth, last, this (date)
-      repeat_choice:   repeat_choice,   # mon, tue, wed, thu, fri, sat, sun, day, date (this reservation date of month / year)
-      repeat_end_date: repeat_end_date, # default one year from today
-    }
-  end
+  # def repeat_hash
+  #   { repeat_day:        repeat_day,      # only relevant with choice = date and unit = month
+  #     repeat_month:      repeat_month,    # only relevant with choice = date and unit = year
+  #     repeat_every:      repeat_every,    # repeat every: 1 month, 2 months, ...
+  #     repeat_unit:       repeat_unit,     # year, month, week, day
+  #     repeat_ordinal:    repeat_ordinal,  # first, second, third, fourth, fifth, last, this (date)
+  #     repeat_choice:     repeat_choice,   # mon, tue, wed, thu, fri, sat, sun, day, date (this reservation date of month / year)
+  #     repeat_until_date: repeat_until_date, # default one year from today
+  #   }
+  # end
 
   private
 
@@ -147,20 +147,19 @@ class Managers::ReservationForm < FormBase
   end
 
   def assign_repeat_attribs
-    return nil   if repeat_every == 0 && repeat_booking_id.blank?
-    new_repeat = RepeatBooking.find(repeat_booking_id) || RepeatBooking.new
+    return nil   if repeat_every == 0 # && repeat_booking_id.blank?
+    new_repeat = RepeatBooking.find_by(id: repeat_booking_id) || RepeatBooking.new
 
     # create a new event if no other info available
-    new_repeat.repeat_every    = repeat_every
-    new_repeat.repeat_unit     = repeat_unit
-    new_repeat.repeat_ordinal  = repeat_ordinal
-    new_repeat.repeat_choice   = repeat_choice
-    new_repeat.repeat_end_date = repeat_end_date
+    new_repeat.repeat_every      = repeat_every
+    new_repeat.repeat_unit       = repeat_unit
+    new_repeat.repeat_ordinal    = repeat_ordinal
+    new_repeat.repeat_choice     = repeat_choice
+    new_repeat.repeat_until_date = repeat_until_date
 
     # template repeat_booking info (original could get deleted)
     new_repeat.event           = event
     new_repeat.space           = space
-    new_repeat.repeat_booking  = repeat_booking
     new_repeat.host_name       = host_name
     new_repeat.start_date      = start_date   || attributes["start_date"]
     new_repeat.start_time      = start_time   || attributes["start_time"]
@@ -235,6 +234,7 @@ class Managers::ReservationForm < FormBase
   end
 
   def validate_repeat_booking
+    return if repeat_every == 0
     return if repeat_booking.nil?
     return if repeat_booking.valid?
 
