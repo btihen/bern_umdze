@@ -111,12 +111,12 @@ class Managers::RepeatBookingsCreateCommand
       return increment_date                                     if repeat_unit.eql?("day")
       return increment_date + days_offset(increment_date).days  if repeat_unit.eql?("week")
 
-      raise Managers::RepeatBookingsCreateError("ordinal '' must be used with unit 'day' or 'week'") # shouldn't happen - raise error?
+      raise Managers::RepeatBookingsCreateError("only 'day' or 'week' units can user '' ordinal")
 
     when "this"
       return increment_date             if repeat_choice.eql?("date")
 
-      raise Managers::RepeatBookingsCreateError("ordinal 'this' must be used with 'date'") # shouldn't happen - raise error?
+      raise Managers::RepeatBookingsCreateError("only 'year' or 'month' can user ordinal 'this' with 'date' unit")
 
     when "first"
       # return (reference_date + 0.days)  if repeat_ordinal.eql?("day")
