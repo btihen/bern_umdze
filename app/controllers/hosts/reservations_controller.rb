@@ -1,7 +1,7 @@
 class Hosts::ReservationsController < Hosts::ApplicationController
 
   def edit
-    reservation   = Reservation.find(params[:id])
+    reservation      = Reservation.find(params[:id])
     reservation_view = ReservationView.new(reservation)
 
     render :edit, locals: { reservation: reservation,
@@ -14,7 +14,7 @@ class Hosts::ReservationsController < Hosts::ApplicationController
     # dup to keep original info in case info is emptied
     reservation_view = ReservationView.new(reservation.dup)
 
-    update_params = reservation_params.transform_values(&:squish)
+    update_params = reservation_params.compact.transform_values(&:squish)
     reservation.assign_attributes(update_params)
 
     # no submodels involved (hence no form_object)
@@ -37,5 +37,6 @@ class Hosts::ReservationsController < Hosts::ApplicationController
       params.require(:reservation)
             .permit(:host_name, :space_id, :is_cancelled, :alert_notice,
                     :start_date, :end_date, :start_time, :end_time)
+            .to_h
     end
 end
