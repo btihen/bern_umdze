@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :space do
-    space_name { Faker::Educator.campus }
+    sequence(:space_name)   { |n| "#{Faker::Educator.campus} #{n}" }
   end
 end

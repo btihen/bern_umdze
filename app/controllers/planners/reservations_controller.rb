@@ -16,7 +16,7 @@ class Planners::ReservationsController < Planners::ApplicationController
   end
 
   def create
-    create_params  = reservation_params.transform_values(&:squish)
+    create_params  = reservation_params.compact.transform_values(&:squish)
     reservation    = Reservation.new(create_params)
 
     if reservation.save
@@ -50,7 +50,7 @@ class Planners::ReservationsController < Planners::ApplicationController
     # dup to keep original info in case info is emptied
     reservation_view = ReservationView.new(reservation.dup)
 
-    update_params = reservation_params.transform_values(&:squish)
+    update_params = reservation_params.compact.transform_values(&:squish)
     reservation.assign_attributes(update_params)
 
     if reservation.save
@@ -84,6 +84,7 @@ class Planners::ReservationsController < Planners::ApplicationController
           .permit(:is_cancelled, :alert_notice,
                   :host_name, :space_id, :event_id,
                   :start_date, :end_date, :start_time, :end_time)
+          .to_h
   end
 
 end
