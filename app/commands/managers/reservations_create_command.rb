@@ -19,7 +19,7 @@ class Managers::ReservationsCreateCommand
 
   # always return a truthy for success and raise error when doesn't work (or a falsy if a soft error is possible)
   def run
-    raise Managers::ReservationsCreateError(form.errors.messages.to_s)  unless form.valid?
+    raise Managers::ReservationsCreateError.new(form.errors.messages.to_s)  unless form.valid?
 
     reservation.save
 

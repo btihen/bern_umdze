@@ -66,7 +66,7 @@ class Managers::RepeatBookingsCreateCommand
       # if the repeat reservation already exists - skip saving
       next_reservation.save if Reservation.where(**test_params).blank?
     else
-      raise Managers::RepeatBookingsCreateError(next_reservation.errors.messages.to_s)
+      raise Managers::RepeatBookingsCreateError.new(next_reservation.errors.messages.to_s)
     end
   end
 
@@ -98,7 +98,7 @@ class Managers::RepeatBookingsCreateCommand
       start_date + (1 * increment_index * repeat_every).day
 
     else
-      raise Managers::RepeatBookingsCreateError("shouldn't get here - bad choice") # shouldn't happen - raise error?
+      raise Managers::RepeatBookingsCreateError.new("shouldn't get here - bad choice") # shouldn't happen - raise error?
 
     end
   end
@@ -111,12 +111,12 @@ class Managers::RepeatBookingsCreateCommand
       return increment_date                                     if repeat_unit.eql?("day")
       return increment_date + days_offset(increment_date).days  if repeat_unit.eql?("week")
 
-      raise Managers::RepeatBookingsCreateError("only 'day' or 'week' units can user '' ordinal")
+      raise Managers::RepeatBookingsCreateError.new("only 'day' or 'week' units can user '' ordinal")
 
     when "this"
       return increment_date             if repeat_choice.eql?("date")
 
-      raise Managers::RepeatBookingsCreateError("only 'year' or 'month' can user ordinal 'this' with 'date' unit")
+      raise Managers::RepeatBookingsCreateError.new("only 'year' or 'month' can user ordinal 'this' with 'date' unit")
 
     when "first"
       # return (reference_date + 0.days)  if repeat_ordinal.eql?("day")
@@ -141,7 +141,7 @@ class Managers::RepeatBookingsCreateCommand
     # when "fifth"
     # when "last"
     else
-      raise Managers::RepeatBookingsCreateError("shouldn't get here - bad choice") # shouldn't happen - raise error?
+      raise Managers::RepeatBookingsCreateError.new("#{repeat_ordinal} is an unsupported reapeat_ordinal")
 
     end
   end
@@ -212,7 +212,7 @@ class Managers::RepeatBookingsCreateCommand
       return 0  if reference_date.cwday == 7  # sunday    + 0.days = sun
 
     else
-      raise Managers::RepeatBookingsCreateError("shouldn't get here - bad choice") # shouldn't happen - raise error?
+      raise Managers::RepeatBookingsCreateError.new("#{repeat_choice} is an unsupported repeat_choise was enteren")
     end
   end
 
