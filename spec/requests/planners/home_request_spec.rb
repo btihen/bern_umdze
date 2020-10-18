@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Planners::Home - route '/'", type: :request do
+RSpec.describe "route '/' for planners", type: :request do
 
   describe "logged in as planner" do
     let(:planner)  { FactoryBot.create :user, access_role: "planner" }

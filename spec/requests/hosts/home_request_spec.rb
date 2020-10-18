@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Host::Home - route '/'", type: :request do
+RSpec.describe "route '/' (for hosts)", type: :request do
 
   describe "'host' logged in" do
     let(:host)  { FactoryBot.create :user, access_role: "host" }

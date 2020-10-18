@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Managers::Home - route '/'", type: :request do
+RSpec.describe "route '/' for (managers)", type: :request do
 
   describe "logged in as manager" do
     let(:manager)  { FactoryBot.create :user, access_role: "manager" }

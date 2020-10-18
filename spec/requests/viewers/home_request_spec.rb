@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Viewers::Home - route '/'", type: :request do
+RSpec.describe "route '/' - for viewers", type: :request do
 
   describe "logged in as a 'viewer'" do
     let(:viewer)  { FactoryBot.create :user, access_role: "viewer" }
