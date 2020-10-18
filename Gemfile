@@ -54,6 +54,9 @@ gem 'devise'
 # DEV / TESTS
 #############
 group :development, :test do
+  # if error: implicit declaration of function 'thin_http_parser_init' is invalid in C99
+  # bundle config build.thin --with-cflags="-Wno-error=implicit-function-declaration"
+  # gem 'thin'                 # single threading in testing is easier
   gem 'awesome_print'        # formats pry (& irb outputs into readable formats)
 
   gem 'pry-rails'
