@@ -3,12 +3,12 @@ require 'rails_helper'
 RSpec.describe "/planners/reservations", type: :request do
 
   # only: [:edit, :update, :new, :create, :destroy]
-  #     planners_reservations  POST   /planners/reservations(.:format)                                                         planners/reservations#create
-  #   new_planners_reservation GET    /planners/reservations/new(.:format)                                                     planners/reservations#new
-  # edit_planners_reservation  GET    /planners/reservations/:id/edit(.:format)                                                planners/reservations#edit
-  #       planners_reservation PATCH  /planners/reservations/:id(.:format)                                                     planners/reservations#update
-  #                            PUT    /planners/reservations/:id(.:format)                                                     planners/reservations#update
-  #                            DELETE /planners/reservations/:id(.:format)                                                     planners/reservations#destroy
+  #     planners_reservations  POST   /planners/reservations(.:format)
+  #   new_planners_reservation GET    /planners/reservations/new(.:format)
+  # edit_planners_reservation  GET    /planners/reservations/:id/edit(.:format)
+  #       planners_reservation PATCH  /planners/reservations/:id(.:format)
+  #                            PUT    /planners/reservations/:id(.:format)
+  #                            DELETE /planners/reservations/:id(.:format)
 
   let(:planner)  { FactoryBot.create :user, access_role: "planner" }
   before do
