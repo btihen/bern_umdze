@@ -6,40 +6,31 @@ class Planners::ReservationsController < Planners::ApplicationController
     start_time   = Time.parse("#{(Time.now + 1.hour).hour}:00", date)
     space        = Space.find_by(id: params[:space_id]) || Space.first
 
-    user_view    = UserView.new(current_user)
-    events_views = EventView.collection(Event.all)
-    spaces_views = SpaceView.collection(Space.all)
-
     reservation  = Reservation.new( space_id: space.id,
                                     start_date: date, end_date: date,
                                     start_time: start_time, end_time: end_time )
 
-    render :new, locals: {user: user_view,
-                          events: events_views,
-                          spaces: spaces_views,
-                          reservation: reservation}
+    render :new, locals: {reservation: reservation,
+                          events: EventView.collection(Event.all),
+                          spaces: SpaceView.collection(Space.all)}
   end
 
   def create
-    create_params  = reservation_params.transform_values(&:squish)
+    create_params  = reservation_params.compact.transform_values(&:squish)
     reservation    = Reservation.new(create_params)
 
     if reservation.save
       show_date    = reservation.start_date.to_s
 
-      flash[:notice] = "#{reservation.event.event_name} event was successfully reserved."
+      flash[:notice] = "#{reservation.event.event_name} on #{show_date} was successfully created."
       redirect_to root_path(date: show_date)
 
     else
-      user_view     = UserView.new(current_user)
-      events_views  = EventView.collection(Event.all)
-      spaces_views  = SpaceView.collection(Space.all)
-
       flash[:alert] = 'Please fix the errors'
-      render :new, locals: {user: user_view,
-                            events: events_views,
-                            spaces: spaces_views,
-                            reservation: reservation}
+      render :new, locals: {# user: user_view,
+                            reservation: reservation,
+                            events: EventView.collection(Event.all),
+                            spaces: SpaceView.collection(Space.all)}
     end
   end
 
@@ -47,26 +38,19 @@ class Planners::ReservationsController < Planners::ApplicationController
     reservation      = Reservation.find(params[:id])
     reservation_view = ReservationView.new(reservation)
 
-    user_view        = UserView.new(current_user)
-    event_view       = EventView.new(reservation.event)
-    space_view       = SpaceView.new(reservation.space)
-    events_views     = EventView.collection(Event.all)
-    spaces_views     = SpaceView.collection(Space.all)
-
-    render :edit, locals: { user: user_view,
-                            event: event_view,
-                            space: space_view,
-                            spaces: spaces_views,
-                            events: events_views,
-                            reservation: reservation,
-                            reservation_view: reservation_view }
+    render :edit, locals: { reservation: reservation,
+                            reservation_view: reservation_view,
+                            events: EventView.collection(Event.all),
+                            spaces: SpaceView.collection(Space.all) }
   end
 
   def update
     reservation      = Reservation.find_by(id: params[:id])
-    reservation_view = ReservationView.new(reservation)
+    # want the original for event/ space name (for titles)
+    # dup to keep original info in case info is emptied
+    reservation_view = ReservationView.new(reservation.dup)
 
-    update_params = reservation_params.transform_values(&:squish)
+    update_params = reservation_params.compact.transform_values(&:squish)
     reservation.assign_attributes(update_params)
 
     if reservation.save
@@ -76,20 +60,11 @@ class Planners::ReservationsController < Planners::ApplicationController
       redirect_to root_path(date: show_date)
 
     else
-      user_view        = UserView.new(current_user)
-      event_view       = EventView.new(reservation.event)
-      space_view       = SpaceView.new(reservation.space)
-      events_views     = EventView.collection(Event.all)
-      spaces_views     = SpaceView.collection(Space.all)
-
       flash[:alert] = 'Please fix the errors'
-      render :edit, locals: { user: user_view,
-                              event: event_view,
-                              space: space_view,
-                              events: events_views,
-                              spaces: spaces_views,
-                              reservation: reservation,
-                              reservation_view: reservation_view }
+      render :edit, locals: { reservation: reservation,
+                              reservation_view: reservation_view,
+                              events: EventView.collection(Event.all),
+                              spaces: SpaceView.collection(Space.all) }
     end
   end
 
@@ -106,9 +81,10 @@ class Planners::ReservationsController < Planners::ApplicationController
   # Only allow a list of trusted parameters through.
   def reservation_params
     params.require(:reservation)
-          .permit(:host_name, :space_id, :event_id,
-                  :is_cancelled, :alert_notice,
+          .permit(:is_cancelled, :alert_notice,
+                  :host_name, :space_id, :event_id,
                   :start_date, :end_date, :start_time, :end_time)
+          .to_h
   end
 
 end

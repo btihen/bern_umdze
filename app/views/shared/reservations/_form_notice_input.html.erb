@@ -1,0 +1,15 @@
+<div class="field is-horizontal">
+  <div class="field-label is-normal">Notice</div>
+  <div class="field-body">
+    <div class="field has-addons is-grouped is-grouped-multiline">
+      <div class="control">
+        <%# form.text_area :alert_notice, class: "textarea is-large" %>
+        <%= form.text_area :alert_notice,
+                            value: reservation.alert_notice,
+                            class: "textarea is-large" %>
+        <p class="help">Changes or needed info about the event.</p>
+        <%= error_message_on(form.object, :alert_notice) %>
+      </div>
+    </div>
+  </div>
+</div>

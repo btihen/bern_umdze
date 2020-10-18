@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     resources :users,           only: [:edit, :update, :new, :create, :index, :destroy]
     resources :events,          only: [:edit, :update, :new, :create, :index, :destroy]
     resources :reservations,    only: [:edit, :update, :new, :create, :destroy]
-    resources :repeat_bookings, only: [:edit, :update, :new, :create, :destroy]
+    resources :repeat_bookings, only: [:edit, :update, :new, :create, :index, :destroy]
   end
 
   devise_for :users
@@ -55,12 +55,12 @@ Rails.application.routes.draw do
   root to: 'landing#index',       as: :landing_root, constraints: lambda { |request| !request.env['warden'].user }
   root to: 'viewers/home#index',  as: :user_root,    constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
   root to: 'hosts/home#index',    as: :host_root,    constraints: lambda { |request|  request.env['warden'].user.access_role == 'host' }
-  root to: 'hosts/home#index',    as: :umdze_root,   constraints: lambda { |request|  request.env['warden'].user.access_role == 'umdze' }
   root to: 'viewers/home#index',  as: :viewer_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'viewer' }
-  root to: 'viewers/home#index',  as: :member_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'member' }
   root to: 'planners/home#index', as: :planner_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'planner' }
   root to: 'managers/home#index', as: :manager_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'manager' }
-  root to: 'managers/home#index', as: :trustee_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'trustee' }
+  # root to: 'hosts/home#index',    as: :umdze_root,   constraints: lambda { |request|  request.env['warden'].user.access_role == 'umdze' }
+  # root to: 'viewers/home#index',  as: :member_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'member' }
+  # root to: 'managers/home#index', as: :trustee_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'trustee' }
   root to: "landing#index"
 
 end

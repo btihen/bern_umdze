@@ -2,7 +2,7 @@
 
 // https://siongui.github.io/2018/09/27/vuejs-bulma-modal/
 // https://siongui.github.io/2018/02/11/bulma-modal-with-javascript/
-
+// https://www.sitepoint.com/jquery-document-ready-plain-javascript/
 document.addEventListener('DOMContentLoaded', function () {
 
   // Modals

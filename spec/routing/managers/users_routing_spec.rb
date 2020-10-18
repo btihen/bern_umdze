@@ -10,9 +10,9 @@ RSpec.describe Managers::UsersController, type: :routing do
       expect(get: "/managers/users/new").to route_to("managers/users#new")
     end
 
-    it "routes to #show" do
-      expect(get: "/managers/users/1").to route_to("managers/users#show", id: "1")
-    end
+    # it "routes to #show" do
+    #   expect(get: "/managers/users/1").to route_to("managers/users#show", id: "1")
+    # end
 
     it "routes to #edit" do
       expect(get: "/managers/users/1/edit").to route_to("managers/users#edit", id: "1")

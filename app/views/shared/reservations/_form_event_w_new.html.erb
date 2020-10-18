@@ -1,0 +1,74 @@
+<%= javascript_pack_tag 'reservation' %>
+
+<div class="field is-horizontal">
+  <div class="field-label is-normal">Event</div>
+  <div class="field-body">
+
+    <section>
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">Choose Event</p>
+          <a class="card-header-icon card-toggle" id="existingEventToggle">
+            <i class="fa fa-angle-down"></i>
+          </a>
+        </header>
+        <div class="card-content" id="existingEventContent">
+          <div class="content">
+            <div class="field">
+            <div class="control has-addons">
+              <%= form.collection_select :event_id, events,
+                        :id, :event_name, { include_blank: 'Select Event',
+                                            selected: reservation.event&.id },
+                        class: 'select is-medium' %>
+              <p class="help">Select the Event</p>
+              <%= error_message_on(form.object, :event_id) %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">Create New Event</p>
+          <a class="card-header-icon card-toggle" id="newEventToggle">
+            <i class="fa fa-angle-down"></i>
+          </a>
+        </header>
+
+        <div class="card-content is-hidden" id="newEventContent">
+          <div class="content">
+            <div class="field is-horizontal">
+              <%# form.fields_for :event do |f|%>
+              <div class="control has-icons-left">
+                <%= form.text_field :event_name,
+                                  placeholder: "Event Name",
+                                  class: "input" %>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-user"></i>
+                </span>
+                <p class="help">Event Name Required</p>
+                <%= error_message_on(form.object, :event_name) %>
+              </div>
+            </div>
+            <!--
+            <div class="field is-horizontal">
+              <div class="control has-icons-left">
+                <%= form.text_field :event_description,
+                                  placeholder: "Event Description (Optional)",
+                                  class: "input" %>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-user"></i>
+                </span>
+                <p class="help">Optional</p>
+                <%= error_message_on(form.object, :event_description) %>
+              </div>
+              <%# end %>
+            </div>
+            -->
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</div>

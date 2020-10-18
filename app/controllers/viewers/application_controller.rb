@@ -5,7 +5,7 @@ class Viewers::ApplicationController < ApplicationController
   private
 
   def viewer_only
-    unless current_user.access_role == 'viewer' || current_user.access_role == 'member'
+    unless current_user.access_role == 'viewer' # || current_user.access_role == 'member'
       redirect_back fallback_location: landing_path, :alert => "Access denied."
     end
   end

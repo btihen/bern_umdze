@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.1'
+ruby '2.7.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.3'
@@ -54,6 +54,9 @@ gem 'devise'
 # DEV / TESTS
 #############
 group :development, :test do
+  # if error: implicit declaration of function 'thin_http_parser_init' is invalid in C99
+  # bundle config build.thin --with-cflags="-Wno-error=implicit-function-declaration"
+  # gem 'thin'                 # single threading in testing is easier
   gem 'awesome_print'        # formats pry (& irb outputs into readable formats)
 
   gem 'pry-rails'

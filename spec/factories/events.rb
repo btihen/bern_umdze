@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :event do
-    event_name { Faker::Educator.subject }
+    sequence(:event_name)   { |n| "#{Faker::Educator.subject} #{n}" }
   end
 end

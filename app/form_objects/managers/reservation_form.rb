@@ -9,7 +9,8 @@ class Managers::ReservationForm < FormBase
   # end
   delegate :id, :persisted?, to: :reservation,  allow_nil: true
 
-  delegate  :host_name, :event, :space, :start_date_time, :end_date_time,
+  delegate  :host_name, :event, :space, :repeat_booking,
+            :start_date_time, :end_date_time,
             :start_date, :end_date, :start_time, :end_time,
             to: :reservation,  allow_nil: true
 
@@ -39,32 +40,70 @@ class Managers::ReservationForm < FormBase
                       alert_notice: reservation.alert_notice,
                       end_date_time: reservation.end_date_time,
                       start_date_time: reservation.start_date_time,
+                      repeat_booking: reservation.repeat_booking,
                     }
       attribs = attribs.merge(attribs_init)
     end
     new(attribs)
   end
 
+  # https://stackoverflow.com/questions/11962192/convert-a-hash-into-a-struct
+  FrequencyUnit = Struct.new(:value, :display_name, keyword_init: true)
+  def self.repeat_units_list
+    ApplicationHelper::REPEAT_UNITS.map do |units_hash|
+      FrequencyUnit.new(units_hash)
+    end
+  end
+
+  # https://stackoverflow.com/questions/11962192/convert-a-hash-into-a-struct
+  FrequencyOrdinal = Struct.new(:value, :display_name, keyword_init: true)
+  def self.repeat_ordinals_list
+    ApplicationHelper::REPEAT_ORDINALS.map do |units_hash|
+      FrequencyOrdinal.new(units_hash)
+    end
+  end
+
+  # https://stackoverflow.com/questions/11962192/convert-a-hash-into-a-struct
+  FrequencyDay = Struct.new(:value, :display_name, keyword_init: true)
+  def self.repeat_choices_list
+    ApplicationHelper::REPEAT_CHOICES.map do |units_hash|
+      FrequencyDay.new(units_hash)
+    end
+  end
+
   attribute :end_date,            :date, default: Date.today
   attribute :start_date,          :date, default: Date.today
-  attribute :end_time,            :time, default: Time.parse("#{(Time.now + 2.hours).hour}:00", Time.now)
-  attribute :start_time,          :time, default: Time.parse("#{(Time.now + 1.hour).hour}:00", Time.now)
+  attribute :repeat_until_date,   :date, default: Date.today + 12.months
+  attribute :end_time,            :time, default: Time.parse("#{(Time.now + 3.hours).hour}:00", Time.now)
+  attribute :start_time,          :time, default: Time.parse("#{(Time.now + 2.hour).hour}:00", Time.now)
   attribute :end_date_time,       :datetime
   attribute :start_date_time,     :datetime
   attribute :event_id,            :integer
   attribute :space_id,            :integer
-  attribute :alert_notice,        :trimmed_text
+  attribute :repeat_booking_id,   :integer
+  attribute :repeat_every,        :integer, default: 0
+  # attribute :repeat_day,          :integer, default: Date.today.day   # should be the day from start_date
+  # attribute :repeat_month,        :integer, default: Date.today.month # should be the month from start_date
+  attribute :repeat_unit,         :squished_string
+  attribute :repeat_ordinal,      :squished_string
+  attribute :repeat_choice,       :squished_string
   attribute :host_name,           :squished_string
   attribute :event_name,          :squished_string
   attribute :event_description,   :squished_string
+  attribute :alert_notice,        :trimmed_text
   attribute :is_cancelled,        :boolean, default: false
 
   validate :validate_space
   validate :validate_event
   validate :validate_reservation
+  validate :validate_repeat_booking
 
   def reservation
     @reservation     ||= assign_reservation_attribs
+  end
+
+  def repeat_booking
+    @repeat_booking  ||= assign_repeat_attribs
   end
 
   def event
@@ -75,25 +114,62 @@ class Managers::ReservationForm < FormBase
     @space           ||= (Space.find_by(id: space_id) || Space.new)
   end
 
+  # def repeat_hash
+  #   { repeat_day:        repeat_day,      # only relevant with choice = date and unit = month
+  #     repeat_month:      repeat_month,    # only relevant with choice = date and unit = year
+  #     repeat_every:      repeat_every,    # repeat every: 1 month, 2 months, ...
+  #     repeat_unit:       repeat_unit,     # year, month, week, day
+  #     repeat_ordinal:    repeat_ordinal,  # first, second, third, fourth, fifth, last, this (date)
+  #     repeat_choice:     repeat_choice,   # mon, tue, wed, thu, fri, sat, sun, day, date (this reservation date of month / year)
+  #     repeat_until_date: repeat_until_date, # default one year from today
+  #   }
+  # end
+
   private
 
   def assign_reservation_attribs
-    # get / create instance
     new_reservation = Reservation.find_by(id: id) || Reservation.new
 
     # update reservation attributes
-    new_reservation.event            = event
-    new_reservation.space            = space
-    new_reservation.host_name        = host_name
-    new_reservation.start_date       = start_date || attributes["start_date"]
-    new_reservation.end_date         = end_date   || attributes["end_date"]
-    new_reservation.start_time       = start_time || attributes["start_time"]
-    new_reservation.end_time         = end_time   || attributes["end_time"]
-    new_reservation.start_date_time  = calculate_start_date_time
-    new_reservation.end_date_time    = calculate_end_date_time
-    new_reservation.alert_notice     = alert_notice
-    new_reservation.is_cancelled     = is_cancelled
+    new_reservation.event           = event
+    new_reservation.space           = space
+    new_reservation.repeat_booking  = repeat_booking
+    new_reservation.host_name       = host_name
+    new_reservation.start_date      = start_date   || attributes["start_date"]
+    new_reservation.start_time      = start_time   || attributes["start_time"]
+    new_reservation.end_date        = end_date     || attributes["end_date"]
+    new_reservation.end_time        = end_time     || attributes["end_time"]
+    new_reservation.start_date_time = calculate_start_date_time
+    new_reservation.end_date_time   = calculate_end_date_time
+    new_reservation.alert_notice    = alert_notice
+    new_reservation.is_cancelled    = is_cancelled
     new_reservation
+  end
+
+  def assign_repeat_attribs
+    return nil   if repeat_every == 0 # && repeat_booking_id.blank?
+    new_repeat = RepeatBooking.find_by(id: repeat_booking_id) || RepeatBooking.new
+
+    # create a new event if no other info available
+    new_repeat.repeat_every      = repeat_every
+    new_repeat.repeat_unit       = repeat_unit
+    new_repeat.repeat_ordinal    = repeat_ordinal
+    new_repeat.repeat_choice     = repeat_choice
+    new_repeat.repeat_until_date = repeat_until_date
+
+    # template repeat_booking info (original could get deleted)
+    new_repeat.event           = event
+    new_repeat.space           = space
+    new_repeat.host_name       = host_name
+    new_repeat.start_date      = start_date   || attributes["start_date"]
+    new_repeat.start_time      = start_time   || attributes["start_time"]
+    new_repeat.end_date        = end_date     || attributes["end_date"]
+    new_repeat.end_time        = end_time     || attributes["end_time"]
+    new_repeat.start_date_time = calculate_start_date_time
+    new_repeat.end_date_time   = calculate_end_date_time
+    new_repeat.alert_notice    = alert_notice
+    new_repeat.is_cancelled    = is_cancelled
+    new_repeat
   end
 
   def assign_event_attribs
@@ -150,6 +226,19 @@ class Managers::ReservationForm < FormBase
     return if reservation.valid?
 
     reservation.errors.each do |attribute_name, desc|
+      next if attribute_name.to_s.eql?("event.event_name") ||
+              attribute_name.to_s.eql?("space.space_name") ||
+              attribute_name.to_s.eql?("id")  # id should always be valid - but just in case
+      errors.add(attribute_name.to_sym, desc)
+    end
+  end
+
+  def validate_repeat_booking
+    return if repeat_every == 0
+    return if repeat_booking.nil?
+    return if repeat_booking.valid?
+
+    repeat_booking.errors.each do |attribute_name, desc|
       next if attribute_name.to_s.eql?("event.event_name") ||
               attribute_name.to_s.eql?("space.space_name") ||
               attribute_name.to_s.eql?("id")  # id should always be valid - but just in case

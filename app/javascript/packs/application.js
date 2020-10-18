@@ -11,8 +11,8 @@ require("@rails/activestorage").start()
 require("channels")
 
 // import globally - almost every page has a calendar
-require("calendar/event_modal")
-
+// require("calendars/event_modal")
+// require("reservations/event_card_toggle")
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)

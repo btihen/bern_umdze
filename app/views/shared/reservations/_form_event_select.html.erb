@@ -1,0 +1,15 @@
+<div class="field is-horizontal">
+  <div class="field-label is-normal">Event</div>
+  <div class="field-body">
+    <div class="field has-addons is-grouped is-grouped-multiline">
+      <div class="control">
+        <%= form.collection_select :event_id, events,
+                        :id, :event_name, { include_blank: 'Select Event',
+                                            selected: reservation.event&.id },
+                        class: 'select is-medium' %>
+        <p class="help">Required</p>
+        <%= error_message_on(form.object, :event) %>
+      </div>
+    </div>
+  </div>
+</div>

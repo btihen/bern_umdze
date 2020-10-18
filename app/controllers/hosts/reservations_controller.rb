@@ -1,43 +1,20 @@
 class Hosts::ReservationsController < Hosts::ApplicationController
 
   def edit
-    user          = current_user
-    reservation   = Reservation.find(params[:id])
-    space         = Space.find_by(id: reservation.space_id)
-    spaces        = Space.all
-    event         = Event.find_by(id: reservation.event_id)
-
-    user_view     = UserView.new(user)
-    event_view    = EventView.new(event)
-    space_view    = SpaceView.new(space)
-    spaces_views  = SpaceView.collection(spaces)
+    reservation      = Reservation.find(params[:id])
     reservation_view = ReservationView.new(reservation)
-    # reservation_form = Hosts::ReservationForm.new_from(reservation)
 
-    render :edit, locals: { user: user_view,
-                            event: event_view,
-                            space: space_view,
-                            spaces: spaces_views,
-                            reservation: reservation,
+    render :edit, locals: { reservation: reservation,
                             reservation_view: reservation_view }
   end
 
   def update
-    user          = current_user
-    reservation   = Reservation.find_by(id: params[:id])
-    space         = Space.find_by(id: reservation.space_id)
-    spaces        = Space.all
-    event         = Event.find_by(id: reservation.event_id)
+    reservation      = Reservation.find_by(id: params[:id])
+    # want the original for event/ space name (for titles)
+    # dup to keep original info in case info is emptied
+    reservation_view = ReservationView.new(reservation.dup)
 
-    user_view     = UserView.new(user)
-    event_view    = EventView.new(event)
-    space_view    = SpaceView.new(space)
-    spaces_views  = SpaceView.collection(spaces)
-    reservation_view = ReservationView.new(reservation)
-
-    # udpated_attrs = reservation_params.merge(id: params[:id])
-    # reservation   = Hosts::ReservationForm.new(udpated_attrs)
-    update_params = reservation_params.transform_values(&:squish)
+    update_params = reservation_params.compact.transform_values(&:squish)
     reservation.assign_attributes(update_params)
 
     # no submodels involved (hence no form_object)
@@ -46,13 +23,10 @@ class Hosts::ReservationsController < Hosts::ApplicationController
 
       flash[:notice] = "#{reservation.event.event_name} on #{show_date} was successfully updated."
       redirect_to root_path(date: show_date)
+
     else
       flash[:alert] = 'Please fix the errors'
-      render :edit, locals: { user: user_view,
-                              event: event_view,
-                              space: space_view,
-                              spaces: spaces_views,
-                              reservation: reservation,
+      render :edit, locals: { reservation: reservation,
                               reservation_view: reservation_view }
     end
   end
@@ -63,5 +37,6 @@ class Hosts::ReservationsController < Hosts::ApplicationController
       params.require(:reservation)
             .permit(:host_name, :space_id, :is_cancelled, :alert_notice,
                     :start_date, :end_date, :start_time, :end_time)
+            .to_h
     end
 end
