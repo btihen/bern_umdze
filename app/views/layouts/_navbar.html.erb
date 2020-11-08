@@ -14,31 +14,31 @@
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
 
-      <% if current_user&.access_role.eql?("manager") || current_user&.access_role.eql?("trustee") %>
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          Manager
-        </a>
 
-        <div class="navbar-dropdown">
-          <a class="navbar-item">
-            <%= link_to "Agenda", root_path, class: 'navbar-item' %>
-          </a>
-          <a class="navbar-item">
-            <%= link_to "Users", managers_users_path, class: 'navbar-item' %>
-          </a>
-          <a class="navbar-item">
-            <%= link_to "Events", managers_events_path, class: 'navbar-item' %>
-          </a>
-          <a class="navbar-item">
-            <%# link_to "Repeating", managers_repeat_bookings_path, class: 'navbar-item' %>
-          </a>
-        </div>
-      </div>
-      <% elsif current_user %>
+      <% if current_user %>
         <a class="navbar-item">
           <%= link_to "Agenda", root_path, class: 'navbar-item' %>
         </a>
+        <% if current_user.access_role.eql?("manager") ||
+              current_user.access_role.eql?("trustee") %>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Management
+          </a>
+
+          <div class="navbar-dropdown">
+            <a class="navbar-item">
+              <%= link_to "Users", managers_users_path, class: 'navbar-item' %>
+            </a>
+            <a class="navbar-item">
+              <%= link_to "Events", managers_events_path, class: 'navbar-item' %>
+            </a>
+            <a class="navbar-item">
+              <%= link_to "Repeat Bookings", managers_repeat_bookings_path, class: 'navbar-item' %>
+            </a>
+          </div>
+        </div>
+        <% end %>
       <% end %>
 
     </div>

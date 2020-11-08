@@ -1,0 +1,13 @@
+<% if repeat_booking.errors.any? %>
+  <div id="error_explanation" class="notification is-danger is-light">
+    <h2><%= pluralize(repeat_booking.errors.count, "error") %>
+      prohibited this repeat-booking from being saved:
+    </h2>
+
+    <ul>
+      <% repeat_booking.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

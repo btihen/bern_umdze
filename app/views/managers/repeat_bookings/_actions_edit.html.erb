@@ -1,0 +1,24 @@
+<div class="field is-horizontal">
+  <div class="field-label is-normal"></div>
+  <div class="field-body">
+    <div class="field is-grouped">
+      <div class="control">
+        <%= form.submit("Save",
+              class: "button is-link is-success") %>
+      </div>
+      &nbsp;
+      <div class="control">
+        <%= link_to 'Back',
+              managers_repeat_bookings_path,
+              class: 'button is-link is-light' %>
+      </div>
+      &nbsp;
+      <div class="control">
+        <%= link_to "Delete",
+              managers_repeat_booking_path(repeat_booking),
+              method: :delete, data: {confirm: "Are you sure?"},
+              class: "button is-danger is-light" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<%= render 'form_errors', repeat_booking: repeat_booking %>
+
+<div class="card">
+  <div class="card-content">
+    <%= render 'form_spaces', form: form, spaces: spaces,
+                              repeat_booking: repeat_booking %>
+    <%= render 'form_events', form: form, events: events,
+                              repeat_booking: repeat_booking %>
+    <%= render 'form_repeats',form: form,
+                              repeat_booking: repeat_booking %>
+    <%= render 'form_booking',form: form,
+                              repeat_booking: repeat_booking %>
+  </div>
+</div>

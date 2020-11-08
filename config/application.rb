@@ -26,6 +26,7 @@ module BernUmdze
 
     config.time_zone = "Zurich"
     # hoping to ignore timezones and just display time entered
+    # https://makandracards.com/makandra/46009-working-with-or-without-time-zones-in-rails-applications
     config.active_record.default_timezone = :local
     config.active_record.time_zone_aware_attributes = false
     # Settings in config/environments/* take precedence over those specified here.

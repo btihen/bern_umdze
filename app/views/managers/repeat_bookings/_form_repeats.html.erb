@@ -1,0 +1,68 @@
+<div class="field is-horizontal">
+  <div class="field-label is-normal">Repeats</div>
+  <div class="field-body">
+
+    <div class="box">
+
+      <div class="field has-addons is-grouped">
+        <div class="control">
+          <%= form.label "Every" %>&nbsp;
+          <%= form.number_field :repeat_every,
+                                value: repeat_booking.repeat_every || 1,
+                                min: 1, # allow 0 for no repeating!
+                                max: ApplicationHelper::VALID_REPEAT_EVERY.last,
+                                class: "input",
+                                style: "width: 25%;" %>
+          <%= error_message_on(form.object, :repeat_every) %>
+          &nbsp;
+          <%= form.collection_select :repeat_unit,
+                  Managers::ReservationForm.repeat_units_list,
+                  :value, :display_name,
+                  { include_blank: '-- select --',
+                    selected: repeat_booking.repeat_unit || '' },
+                  class: 'select is-medium' %>
+          <%= form.label "On" %>
+          <%= error_message_on(form.object, :repeat_unit) %>
+          <%# <p class="help"><strong>0</strong> = <strong>not</strong> reapeating</p> %>
+        </div>
+      </div>
+
+      <br>
+      <div class="field has-addons is-grouped">
+        <div class="control has-addons">
+          <%= form.label "the" %>&nbsp;
+          <%= form.collection_select :repeat_ordinal,
+                  Managers::ReservationForm.repeat_ordinals_list,
+                  :value, :display_name,
+                  { include_blank: '-- select --',
+                    selected: repeat_booking.repeat_ordinal || '' },
+                  class: 'select is-medium' %>
+          <%= error_message_on(form.object, :repeat_ordinal) %>
+
+          <%= form.collection_select :repeat_choice,
+                  Managers::ReservationForm.repeat_choices_list,
+                  :value, :display_name,
+                  { include_blank: '-- select --',
+                    selected: repeat_booking.repeat_choice || '' },
+                  class: 'select is-medium' %>
+          <%= error_message_on(form.object, :repeat_choice) %>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="field has-addons is-grouped">
+        <div class="control has-addons">
+          <%= form.label "until" %>&nbsp;
+          <%= form.date_select :repeat_until_date,
+                                { selected: repeat_booking.repeat_until_date },
+                                class: 'select is-medium' %>
+          <%# <p class="help">Required</p> %>
+          <%= error_message_on(form.object, :repeat_until_date) %>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
