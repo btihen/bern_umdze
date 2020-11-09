@@ -8,39 +8,59 @@
 
 <p hidden id='manager-repeat-bookings-index' class='pageName'>Manager Repeat Bookings Index</p>
 
-<h1 class="sub-title is-size-4">New Reservation</h1>
+<h1 class="sub-title is-size-4">Repeating Reservations</h1>
 <br>
-
+<%= link_to 'New Repeat',
+            new_managers_repeat_booking_path,
+            class: 'button is-link is-light' %>
+<br><br>
 <div class="table-container">
-  <table class="table is-bordered is-striped">
+  <table class="table is-bordered is-striped is-narrow">
     <thead class="has-text-centered">
       <tr>
         <th>Actions</th>
         <th>Name</th>
+        <th>Host</th>
+        <th>Times</th>
         <th>Every</th>
         <th>Unit</th>
-        <th>On the</th>
+        <th>On</th>
         <th>Day</th>
-        <th>Until</th>
+        <th>Date-Span</th>
       </tr>
     </thead>
 
-    <tbody>
+    <tbody class="has-text-centered">
       <% repeat_bookings.each do |booking| %>
-        <tr>
+        <% days_long = ((booking.end_date_time - booking.start_date_time) / (3600 * 24)).to_i %>
+        <% days_text = (days_long == 0 ? 'on same day' : "+ #{days_long} #{'day'.pluralize(days_long)}") %>
+        <tr valign= "middle">
           <td>
             <%= link_to 'Manage',
                         edit_managers_repeat_booking_path(booking),
                         class: "button is-success is-light is-small"  %>
           </td>
           <td><%= booking.event.event_name %></td>
+          <td><%= booking.host_name %></td>
+          <td>
+            from: <b><%= booking.start_time.strftime('%H:%M') %></b><br>
+            until: <b><%= booking.end_time.strftime('%H:%M') %></b><br>
+            <%= days_text %>
+          </td>
           <td><%= booking.repeat_every %></td>
           <td><%= booking.repeat_unit %></td>
           <td><%= booking.repeat_ordinal %></td>
           <td><%= booking.repeat_choice %></td>
-          <td><%= booking.repeat_until_date %></td>
+          <td>
+            first: <b><%= booking.start_date %></b><br>
+            last: <b><%= booking.repeat_until_date %></b>
+          </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 </div>
+
+<%= link_to 'New Repeat',
+            new_managers_reservation_path,
+            class: 'button is-link is-light' %>

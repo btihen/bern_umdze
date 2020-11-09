@@ -1,5 +1,5 @@
 class Managers::HomeController < Managers::ApplicationController
-  
+
   def index
     spaces        = Space.all
     user          = current_user

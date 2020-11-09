@@ -38,13 +38,13 @@ class Managers::RepeatBookingsCreateCommand
     repeat_until_max_date  = repeat_until_date + 1
 
     # if the beginning of the year is entered, we still need to find the first defined repeat date
-    next_start_date        = calculate_next_date(increment_index)
+    next_start_date = calculate_next_date(increment_index)
 
     while (next_start_date < repeat_until_max_date) do
       create_next_reservation(next_start_date)
 
-      increment_index     += 1
-      next_start_date      = calculate_next_date(increment_index)
+      increment_index += 1
+      next_start_date  = calculate_next_date(increment_index)
     end
   end
 
@@ -133,7 +133,7 @@ class Managers::RepeatBookingsCreateCommand
 
       reference_date + (days_offset(reference_date) + 14).days
 
-    when "forth"
+    when "fourth"
       # return (reference_date + 3.days)  if repeat_ordinal.eql?("day")
 
       reference_date + (days_offset(reference_date) + 21).days

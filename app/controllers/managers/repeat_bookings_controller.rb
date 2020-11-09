@@ -21,7 +21,8 @@ class Managers::RepeatBookingsController < Managers::ApplicationController
     create_params = repeat_booking_params.transform_values(&:squish)
     repeat        = RepeatBooking.new(create_params)
 
-    if repeat.valid? && Managers::RepeatBookingsCreateCommand.new(repeat).run
+    if repeat.save
+      Managers::RepeatBookingsCreateCommand.new(repeat).run
       redirect_to managers_repeat_bookings_path,
                   notice: "Repeat Booking for #{repeat.event.event_name} was successfully updated."
 
@@ -43,9 +44,11 @@ class Managers::RepeatBookingsController < Managers::ApplicationController
   def update
     update_params = repeat_booking_params.transform_values(&:squish)
     repeat        = RepeatBooking.find(params[:id])
-    repeat.assign_attributes(update_params)
 
-    if repeat.valid? && Managers::RepeatBookingsUpdateCommand.new(repeat).run
+    if repeat.update(update_params)
+      Reservation.where(repeat_booking_id: repeat.id).destroy_all
+      Managers::RepeatBookingsCreateCommand.new(repeat).run
+
       redirect_to managers_repeat_bookings_path,
                   notice: "Repeat Booking for #{repeat.event.event_name} was successfully updated."
 
@@ -59,10 +62,10 @@ class Managers::RepeatBookingsController < Managers::ApplicationController
   def destroy
     repeat = RepeatBooking.find(params[:id])
     name   = repeat.event.event_name
-    # Reservation.where(repeat_booking_id: repeat_booking.id).destroy_all
-    repeat.destroy  # check that delete dependents work!
+    Reservation.where(repeat_booking_id: repeat.id).destroy_all
+    repeat.destroy    # check that delete dependents work!
 
-    redirect_to managers_events_path,
+    redirect_to managers_repeat_bookings_path,
                 notice: "Repeat Booking for #{repeat.event.event_name} was successfully deleted."
   end
 
@@ -75,7 +78,7 @@ class Managers::RepeatBookingsController < Managers::ApplicationController
                   :repeat_choice, :repeat_until_date,
                   :start_date, :end_date,
                   :start_time, :end_time,
-                  :host, :is_cancelled, :alert_notice)
+                  :host_name, :is_cancelled, :alert_notice)
   end
 
 end
