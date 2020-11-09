@@ -21,7 +21,7 @@ class Managers::RepeatBookingsController < Managers::ApplicationController
     create_params = repeat_booking_params.transform_values(&:squish)
     repeat        = RepeatBooking.new(create_params)
 
-    if repeat.save
+    if repeat.valid? && repeat.save
       Managers::RepeatBookingsCreateCommand.new(repeat).run
       redirect_to managers_repeat_bookings_path,
                   notice: "Repeat Booking for #{repeat.event.event_name} was successfully updated."
@@ -37,6 +37,7 @@ class Managers::RepeatBookingsController < Managers::ApplicationController
     repeat = RepeatBooking.find(params[:id])
 
     render :edit, locals: { repeat_booking: repeat,
+                            repeat_event: repeat.event.event_name,
                             events: Event.all,
                             spaces: Space.all }
   end
@@ -44,8 +45,10 @@ class Managers::RepeatBookingsController < Managers::ApplicationController
   def update
     update_params = repeat_booking_params.transform_values(&:squish)
     repeat        = RepeatBooking.find(params[:id])
+    repeat_event  = repeat.event.event_name
+    repeat.update(update_params)
 
-    if repeat.update(update_params)
+    if repeat.valid? && repeat.save # repeat.update(update_params)
       Reservation.where(repeat_booking_id: repeat.id).destroy_all
       Managers::RepeatBookingsCreateCommand.new(repeat).run
 
@@ -54,6 +57,7 @@ class Managers::RepeatBookingsController < Managers::ApplicationController
 
     else
       render :edit, locals: { repeat_booking: repeat,
+                              repeat_event: repeat_event,
                               events: Event.all,
                               spaces: Space.all }
     end

@@ -91,6 +91,7 @@ RSpec.describe "/planners/reservations", type: :request do
         reservation = Reservation.create! valid_attributes
         patch planners_reservation_path(reservation), params: { reservation: new_attributes }
         reservation.reload
+
         expect(reservation.start_date).to eq Date.parse(new_attributes[:start_date])
         expect(reservation.end_date).to   eq Date.parse(new_attributes[:end_date])
       end

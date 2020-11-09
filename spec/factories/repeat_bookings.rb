@@ -2,8 +2,8 @@ FactoryBot.define do
   factory :repeat_booking do
 
     # relationships
-    event             { FactoryBot.create :event, event_name: "Werma" }
-    space             { FactoryBot.create :space, space_name: "Zentrum" }
+    event             { FactoryBot.create :event }
+    space             { FactoryBot.create :space }
 
     # simplifies input
     start_date        { Date.new(2021, 1, 2) }
@@ -12,7 +12,7 @@ FactoryBot.define do
     end_time          { Time.parse("18:30") }
 
     host_name         { "Marianne" }
-    alert_notice      { nil }
+    alert_notice      { "" }
 
     # simplifies sorting (build in model)
     start_date_time   { nil }

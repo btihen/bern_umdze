@@ -110,6 +110,7 @@ RSpec.describe "/managers/reservations", type: :request do
       it "creates a new repeating reservation - the first reseration is before the pattern and thus gets a reservation too" do
         new_params[:start_date] = Date.parse('2021-01-01')
         new_params[:end_date] = Date.parse('2021-01-01')
+
         expect {
           post managers_reservations_path, params: { reservation: new_attributes }
         }.to change(Reservation, :count).by(13)
@@ -124,7 +125,7 @@ RSpec.describe "/managers/reservations", type: :request do
       let(:new_params)          { FactoryBot.attributes_for :repeat_booking }
       let(:invalid_attributes)  {
         params = new_attributes
-        params[:event_id] = ""
+        params['event_id'] = ""
         params
       }
       it "does not create a new Managers::User" do
@@ -173,7 +174,7 @@ RSpec.describe "/managers/reservations", type: :request do
     context "with valid parameters" do
       let(:update_attributes) {
         params = edit_attributes
-        params[:host_name] = "Nyima"
+        params['host_name'] = "Nyima"
         params
       }
 
@@ -181,7 +182,7 @@ RSpec.describe "/managers/reservations", type: :request do
         patch managers_reservation_path(reservation), params: { reservation: update_attributes }
         reservation.reload
 
-        expect(reservation.host_name).to eq update_attributes[:host_name]
+        expect(reservation.host_name).to eq update_attributes['host_name']
       end
 
       it "redirects to the managers_user index page" do
@@ -196,11 +197,10 @@ RSpec.describe "/managers/reservations", type: :request do
 
       let(:invalid_attributes) {
         params = edit_attributes
-        params[:event_id] = ""
+        params['event_id'] = ""
         params
       }
       it "renders a successful response (i.e. to display the 'edit' template)" do
-
         # try to reuse user_2 data for user_1 (invalid)
         patch managers_reservation_path(reservation), params: { reservation: invalid_attributes }
 
