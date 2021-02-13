@@ -83,7 +83,7 @@ class Managers::ReservationsController < Managers::ApplicationController
   def reservation_params
     params.require(:reservation)
           .permit(:start_date,    :end_date,
-                  :start_time,    :end_time,
+                  :start_time,    :end_time,          :remote_link,
                   :host_name,     :is_cancelled,      :alert_notice,
                   :space_id,      :space_name,        :space_location,
                   :event_id,      :event_name,        :event_description,
@@ -99,7 +99,7 @@ class Managers::ReservationsController < Managers::ApplicationController
       reservation_params.to_h
                         .compact
                         .transform_values(&:squish)
-                        .slice( :host_name,     :is_cancelled,      :alert_notice,
+                        .slice( :host_name, :is_cancelled, :alert_notice, :remote_link,
                                 :space_id,      :space_name,        :space_location,
                                 :event_id,      :event_name,        :event_description,
                                 :repeat_every,  :repeat_unit,       :repeat_ordinal,

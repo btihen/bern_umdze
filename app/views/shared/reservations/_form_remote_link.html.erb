@@ -1,0 +1,18 @@
+<div class="field is-horizontal">
+  <div class="field-label is-normal">Video Link</div>
+  <div class="field-body">
+    <div class="field has-addons">
+      <div class="control has-icons-left">
+        <%= form.text_field :remote_link,
+                            value: reservation.remote_link,
+                            placeholder: "Video (Zoom) Link",
+                            class: "input is-medium" %>
+        <span class="icon is-small is-left">
+          <i class="fas fa-user"></i>
+        </span>
+        <p class="help">Optional</p>
+        <%= error_message_on(form.object, :remote_link) %>
+      </div>
+    </div>
+  </div>
+</div>

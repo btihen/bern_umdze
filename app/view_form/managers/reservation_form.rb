@@ -10,15 +10,43 @@ class Managers::ReservationForm < FormBase
   delegate :id, :persisted?, to: :reservation,  allow_nil: true
 
   delegate  :host_name, :event, :space, :repeat_booking,
-            :start_date_time, :end_date_time,
+            :start_date_time, :end_date_time, :remote_link,
             :start_date, :end_date, :start_time, :end_time,
             to: :reservation,  allow_nil: true
 
   # All the models that are apart of our form should be part attr_accessor.
   # This allows the form to be initialized with existing instances.
-  attr_accessor :id, :host_name, :event, :space,
+  attr_accessor :id, :host_name, :event, :space, :remote_link,
                 :start_date, :end_date, :start_time, :end_time,
                 :start_date_time, :end_date_time
+
+  attribute :end_date,            :date, default: Date.today
+  attribute :start_date,          :date, default: Date.today
+  attribute :repeat_until_date,   :date, default: Date.today + 12.months
+  attribute :end_time,            :time, default: Time.parse("#{(Time.now + 3.hours).hour}:00", Time.now)
+  attribute :start_time,          :time, default: Time.parse("#{(Time.now + 2.hour).hour}:00", Time.now)
+  attribute :end_date_time,       :datetime
+  attribute :start_date_time,     :datetime
+  attribute :event_id,            :integer
+  attribute :space_id,            :integer
+  attribute :repeat_booking_id,   :integer
+  attribute :repeat_every,        :integer, default: 0
+  # attribute :repeat_day,          :integer, default: Date.today.day   # should be the day from start_date
+  # attribute :repeat_month,        :integer, default: Date.today.month # should be the month from start_date
+  attribute :remote_link,          :squished_string
+  attribute :repeat_unit,         :squished_string
+  attribute :repeat_ordinal,      :squished_string
+  attribute :repeat_choice,       :squished_string
+  attribute :host_name,           :squished_string
+  attribute :event_name,          :squished_string
+  attribute :event_description,   :squished_string
+  attribute :alert_notice,        :trimmed_text
+  attribute :is_cancelled,        :boolean, default: false
+
+  validate :validate_space
+  validate :validate_event
+  validate :validate_reservation
+  validate :validate_repeat_booking
 
   def self.model_name
     ActiveModel::Name.new(self, nil, 'Reservation')
@@ -32,6 +60,7 @@ class Managers::ReservationForm < FormBase
                       event: reservation.event,
                       space: reservation.space,
                       host_name: reservation.host_name,
+                      remote_link: reservation.remote_link,
                       end_date: reservation.end_date,
                       start_date: reservation.start_date,
                       end_time: reservation.end_time,
@@ -71,33 +100,6 @@ class Managers::ReservationForm < FormBase
     end
   end
 
-  attribute :end_date,            :date, default: Date.today
-  attribute :start_date,          :date, default: Date.today
-  attribute :repeat_until_date,   :date, default: Date.today + 12.months
-  attribute :end_time,            :time, default: Time.parse("#{(Time.now + 3.hours).hour}:00", Time.now)
-  attribute :start_time,          :time, default: Time.parse("#{(Time.now + 2.hour).hour}:00", Time.now)
-  attribute :end_date_time,       :datetime
-  attribute :start_date_time,     :datetime
-  attribute :event_id,            :integer
-  attribute :space_id,            :integer
-  attribute :repeat_booking_id,   :integer
-  attribute :repeat_every,        :integer, default: 0
-  # attribute :repeat_day,          :integer, default: Date.today.day   # should be the day from start_date
-  # attribute :repeat_month,        :integer, default: Date.today.month # should be the month from start_date
-  attribute :repeat_unit,         :squished_string
-  attribute :repeat_ordinal,      :squished_string
-  attribute :repeat_choice,       :squished_string
-  attribute :host_name,           :squished_string
-  attribute :event_name,          :squished_string
-  attribute :event_description,   :squished_string
-  attribute :alert_notice,        :trimmed_text
-  attribute :is_cancelled,        :boolean, default: false
-
-  validate :validate_space
-  validate :validate_event
-  validate :validate_reservation
-  validate :validate_repeat_booking
-
   def reservation
     @reservation     ||= assign_reservation_attribs
   end
@@ -135,6 +137,7 @@ class Managers::ReservationForm < FormBase
     new_reservation.space           = space
     new_reservation.repeat_booking  = repeat_booking
     new_reservation.host_name       = host_name
+    new_reservation.remote_link      = remote_link
     new_reservation.start_date      = start_date   || attributes["start_date"]
     new_reservation.start_time      = start_time   || attributes["start_time"]
     new_reservation.end_date        = end_date     || attributes["end_date"]

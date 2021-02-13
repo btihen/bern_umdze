@@ -32,6 +32,10 @@ class ReservationView < ViewBase
     @host_name ||= reservation.host_name || ""
   end
 
+  def remote_link
+    @remote_link ||= reservation.remote_link || ""
+  end
+
   def date_range_string
     @date_range_string ||=
       if is_event_one_day?

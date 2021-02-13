@@ -100,8 +100,11 @@ class CalendarView
               #{delete_button_html(dr)}
             </dt>
             <dd>
-              #{"<strike>" if dr.is_cancelled?}Event: <big><b>#{dr.event_name}</b></big><br>
-              #{dr.host_name.blank? ? "<span class='has-background-warning-light'>Host: <strong>Kein Umdze/Koordinator</strong></span>" : ("Host: <strong>" + dr.host_name + "</strong>")}#{"</strike>" if dr.is_cancelled?}
+              #{"<strike>" if dr.is_cancelled?}
+              Event: <big><b>#{dr.event_name}</b></big><br>
+              Host: #{dr.host_name.blank? ? "<span class='has-background-warning-light'><strong>Kein Umdze/Koordinator</strong></span>" : "<strong>#{dr.host_name}</strong>"}</br>
+              Remote: #{dr.remote_link.blank? ? "" : "<strong><a target='_blank' href='#{dr.remote_link}'>#{dr.remote_link}</a></strong>"}
+              #{"</strike>" if dr.is_cancelled?}
               #{alert_notice(dr)}
             </dd>
           </dl>

@@ -81,9 +81,9 @@ class Planners::ReservationsController < Planners::ApplicationController
   # Only allow a list of trusted parameters through.
   def reservation_params
     params.require(:reservation)
-          .permit(:is_cancelled, :alert_notice,
-                  :host_name, :space_id, :event_id,
-                  :start_date, :end_date, :start_time, :end_time)
+          .permit(:is_cancelled, :alert_notice, :host_name, :remote_link,
+                  :space_id, :event_id, :start_date, :end_date, :start_time,
+                  :end_time)
           .to_h
   end
 

@@ -35,8 +35,8 @@ class Hosts::ReservationsController < Hosts::ApplicationController
     # Only allow a list of trusted parameters through.
     def reservation_params
       params.require(:reservation)
-            .permit(:host_name, :space_id, :is_cancelled, :alert_notice,
-                    :start_date, :end_date, :start_time, :end_time)
+            .permit(:host_name, :remote_link, :is_cancelled, :alert_notice,
+                    :space_id, :start_date, :end_date, :start_time, :end_time)
             .to_h
     end
 end
