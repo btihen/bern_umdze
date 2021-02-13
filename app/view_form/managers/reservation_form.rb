@@ -137,7 +137,7 @@ class Managers::ReservationForm < FormBase
     new_reservation.space           = space
     new_reservation.repeat_booking  = repeat_booking
     new_reservation.host_name       = host_name
-    new_reservation.remote_link      = remote_link
+    new_reservation.remote_link     = remote_link
     new_reservation.start_date      = start_date   || attributes["start_date"]
     new_reservation.start_time      = start_time   || attributes["start_time"]
     new_reservation.end_date        = end_date     || attributes["end_date"]
@@ -210,9 +210,10 @@ class Managers::ReservationForm < FormBase
     if event_id.blank? && event_name.blank?
       errors.add(:event_id, "must be chosen or created")
     else
-      event.errors.each do |attribute_name, desc|
+      event.errors.each do |error|
+        attribute_name = error.attribute
         attribute_sym = attribute_name.to_s.eql?("id") ? :event_id : attribute_name.to_sym
-        errors.add(attribute_sym, desc)
+        errors.add(attribute_sym, error.message)
       end
     end
   end
@@ -220,19 +221,20 @@ class Managers::ReservationForm < FormBase
   def validate_space
     return if space.valid?
 
-    space.errors.each do |_attribute_name, desc|
-      errors.add(:space_id, desc)
+    space.errors.each do |error|
+      errors.add(:space_id, error.message)
     end
   end
 
   def validate_reservation
     return if reservation.valid?
 
-    reservation.errors.each do |attribute_name, desc|
+    reservation.errors.each do |error|
+      attribute_name = error.attribute
       next if attribute_name.to_s.eql?("event.event_name") ||
               attribute_name.to_s.eql?("space.space_name") ||
               attribute_name.to_s.eql?("id")  # id should always be valid - but just in case
-      errors.add(attribute_name.to_sym, desc)
+      errors.add(attribute_name.to_sym, error.message)
     end
   end
 
@@ -241,11 +243,12 @@ class Managers::ReservationForm < FormBase
     return if repeat_booking.nil?
     return if repeat_booking.valid?
 
-    repeat_booking.errors.each do |attribute_name, desc|
+    repeat_booking.errors.each do |error|
+      attribute_name = error.attribute
       next if attribute_name.to_s.eql?("event.event_name") ||
               attribute_name.to_s.eql?("space.space_name") ||
               attribute_name.to_s.eql?("id")  # id should always be valid - but just in case
-      errors.add(attribute_name.to_sym, desc)
+      errors.add(attribute_name.to_sym, error.message)
     end
   end
 
