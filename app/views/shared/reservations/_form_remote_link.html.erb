@@ -3,12 +3,13 @@
   <div class="field-body">
     <div class="field has-addons">
       <div class="control has-icons-left">
-        <%= form.text_field :remote_link,
+        <%= form.text_area :remote_link,
+                            rows: 2,
                             value: reservation.remote_link,
                             placeholder: "Video (Zoom) Link",
-                            class: "input is-medium" %>
+                            class: "textarea is-large" %>
         <span class="icon is-small is-left">
-          <i class="fas fa-user"></i>
+          <i class="fas fa-video"></i>
         </span>
         <p class="help">Optional</p>
         <%= error_message_on(form.object, :remote_link) %>
