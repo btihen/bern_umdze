@@ -18,7 +18,6 @@ RSpec.describe Managers::UsersController, type: :routing do
       expect(get: "/managers/users/1/edit").to route_to("managers/users#edit", id: "1")
     end
 
-
     it "routes to #create" do
       expect(post: "/managers/users").to route_to("managers/users#create")
     end

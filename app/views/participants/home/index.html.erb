@@ -1,0 +1,19 @@
+<!--
+  https://github.com/turbolinks/turbolinks#ensuring-specific-pages-trigger-a-full-reload
+  https://stackoverflow.com/questions/39627881/jquery-plugin-initialization-on-browser-back-button-for-turbolinks-rails-5/39801052
+  -->
+<% content_for :head do %>
+  <meta name="turbolinks-visit-control" content="reload">
+<% end %>
+
+<p hidden id='participant-home-<%= participant.id %>' class='pageName'>Participant-<%= participant.email %> Home</p>
+
+<div class="container">
+
+  <div class="columns is-centered is-multiline">
+    Show Kalendar
+  </div>
+
+  <h2 class="sub-title is-size-5 has-text-centered"><b><%= participant.fullname %></b> Events</h2>
+
+</div>

@@ -39,6 +39,10 @@ Rails.application.configure do
   # devise needs this
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
+  # mailhog config
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.smtp_settings = { address: 'localhost', port: 1025 }
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 

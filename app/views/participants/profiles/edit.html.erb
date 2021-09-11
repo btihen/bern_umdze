@@ -1,0 +1,45 @@
+<% content_for :head do %>
+  <meta name="turbolinks-visit-control" content="reload">
+<% end %>
+
+<p hidden id='participant-profile-edit-<%= participant.id %>' class='pageName'>Update Profile for <%= participant.email %></p>
+
+<h1 class="sub-title is-size-4">Update Profile</h1>
+<br>
+
+<%# render 'form', participant: participant %>
+<%= form_for(participant, local: true,
+              url: participants_profile_path(participant),    # PATH MUST BE SINGULAR!!!
+              id: "edit-participant-profile-form", class: "participant" ) do |form|  %>
+<%# form_for(:participant) do |form| %>
+  <% if participant.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(participant.errors.count, "error") %> prohibited this participant from being saved:</h2>
+
+      <ul>
+        <% participant.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <label class="label">Name für <%= participant.email %></label>
+    <div class="control">
+      <%= form.text_field :fullname, placeholder: "Name", class: 'input' %>
+    </div>
+    <p class="help"></p>
+    <%= error_message_on(form.object, :email) %>
+  </div>
+
+  <div class="control">
+    <%= form.submit("Speichern", class: "button is-success") %>
+    <%= link_to 'Kalendar', participants_home_path, class: "button is-info" %>
+    <%= link_to "Delete",
+                participants_profile_path(participant),
+                method: :delete, confirm: "Are you sure?",
+                class: "button is-danger is-pulled-right" %>
+  </div>
+<% end %>
+<br>

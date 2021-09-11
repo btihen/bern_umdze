@@ -48,11 +48,11 @@
       <div class="navbar-item">
         <div class="buttons">
           <% if current_user.nil? %>
-            <%= link_to("Einloggen", new_user_session_path,
-                        class: 'button is-info is-outlined') %>
+            <%= link_to("Verwalten", new_user_session_path,
+                        class: 'button is-info is-small is-outlined') %>
           <% else %>
             <%= link_to("Ausloggen", destroy_user_session_path,
-                        method: :delete, class: 'button is-info is-outlined') %>
+                        method: :delete, class: 'button is-info is-small is-outlined') %>
           <% end %>
         </div>
       </div>
