@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_08_083017) do
+ActiveRecord::Schema.define(version: 2021_09_11_135806) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "attendees", force: :cascade do |t|
+    t.string "location"
+    t.bigint "user_id"
+    t.bigint "participant_id"
+    t.bigint "reservation_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["participant_id"], name: "index_attendees_on_participant_id"
+    t.index ["reservation_id"], name: "index_attendees_on_reservation_id"
+    t.index ["user_id", "participant_id", "reservation_id"], name: "index_unique_attendee_per_reservation", unique: true
+    t.index ["user_id"], name: "index_attendees_on_user_id"
+  end
 
   create_table "events", force: :cascade do |t|
     t.string "event_name", null: false
@@ -121,6 +134,9 @@ ActiveRecord::Schema.define(version: 2021_09_08_083017) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "attendees", "participants"
+  add_foreign_key "attendees", "reservations"
+  add_foreign_key "attendees", "users"
   add_foreign_key "repeat_bookings", "events"
   add_foreign_key "repeat_bookings", "spaces"
   add_foreign_key "reservations", "events"

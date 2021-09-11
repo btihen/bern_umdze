@@ -35,12 +35,12 @@
           <%# date-item has reservation and within month of interest - create modal pop-ups %>
           <% if calendar_view.date_in_month_of_interest?(day) &&
                       calendar_view.date_has_reservation?(day, reservations) %>
-          <button data-html="true"
-                  data-href="https://randomuser.me/api/?results=10"
+          <button data-html="true" 
+                  data-href="https://randomuser.me/api/?results=10" 
                   data-modal-header="<%= calendar_view.choose_reservations_modal_header_html(space_view, day) %>"
-                  data-modal-body="<%= calendar_view.choose_reservations_modal_body_html(space_view, day, reservations) %>"
-                  data-target="<%= calendar_view.choose_modal_form(day, reservations) %>"
-                  data-tooltip="<%= calendar_view.date_item_tooltip_data(day, reservations) %>"
+                  data-modal-body="<%= calendar_view.choose_reservations_modal_body_html(space_view, day, reservations) %>" 
+                  data-target="<%= calendar_view.choose_modal_form(day, reservations) %>" 
+                  data-tooltip="<%= calendar_view.date_item_tooltip_data(day, reservations) %>" 
                   class="date-item <%= calendar_view.date_item_class_string(day, reservations) %>" >
             <%= day.mday %>
           </button>
@@ -48,8 +48,8 @@
           <%# date-item has reservation and NOT in month of interest - needs is-active for green dot %>
           <% elsif !calendar_view.date_in_month_of_interest?(day) &&
                       calendar_view.date_has_reservation?(day, reservations)  %>
-          <button data-html="true"
-                  data-tooltip="<%= calendar_view.date_item_tooltip_data(day, reservations) %>"
+          <button data-html="true" 
+                  data-tooltip="<%= calendar_view.date_item_tooltip_data(day, reservations) %>" 
                   class="date-item modal-button is-active">
             <%= day.mday %>
           </button>

@@ -15,12 +15,12 @@ class Participants::SessionsController < Participants::ApplicationController
     end
   end
 
-  def delete
+  def destroy
     participant = current_participant(session[:login_token])
     participant.expire_token_validity!
     session[:participant] = nil
     session[:login_token] = nil
-    redirect_to root_path
+    redirect_to landing_path
   end
 
   private

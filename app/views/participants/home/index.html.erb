@@ -11,9 +11,19 @@
 <div class="container">
 
   <div class="columns is-centered is-multiline">
-    Show Kalendar
+    <% spaces_view.each do |space_view| %>
+    <div class="column is-full-mobile is-half-tablet is-one-third-widescreen is-centered">
+      <p class="is-size-4 has-text-centered">Place: <strong><%= space_view.space_name%></strong></p>
+      <%# different paths for each user's scope in each calendar %>
+      <%= render 'calendar',  user_view: user_view,
+                              space_view: space_view,
+                              calendar_view: calendar_view,
+                              prev_month_path: root_path(date: calendar_view.prev_month_string),
+                              next_month_path: root_path(date: calendar_view.next_month_string)  %>
+    </div>
+    <% end %>
   </div>
 
-  <h2 class="sub-title is-size-5 has-text-centered"><b><%= participant.fullname %></b> Events</h2>
+  <h2 class="sub-title is-size-5 has-text-centered"><b><%= participant.fullname %></b> Events Signup</h2>
 
 </div>

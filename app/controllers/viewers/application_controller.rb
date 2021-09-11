@@ -1,5 +1,5 @@
 # https://railsapps.github.io/rails-authorization.html
-class Viewers::ApplicationController < ApplicationController
+class Viewers::ApplicationController < Users::ApplicationController
   before_action :viewer_only #, :except => :show
 
   private

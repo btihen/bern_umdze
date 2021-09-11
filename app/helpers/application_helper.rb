@@ -1,5 +1,7 @@
 module ApplicationHelper
 
+  ATTEND_LOCATIONS = %w[zentrum remote]
+
   USER_ROLES_AND_PERMISSIONS = [
     {role: "manager",  permissions: "Full Manager Access"},
     {role: "planner",  permissions: "Create/Edit Bookings"},

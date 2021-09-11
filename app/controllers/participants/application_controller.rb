@@ -1,6 +1,7 @@
 # https://railsapps.github.io/rails-authorization.html
 class Participants::ApplicationController < ApplicationController
-  skip_before_action :authenticate_user!
+  # skip_before_action :authenticate_user!
+  # skip_before_action :configure_permitted_parameters
   before_action :participant_only
 
   # find valid participants

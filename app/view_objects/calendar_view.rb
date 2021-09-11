@@ -8,14 +8,14 @@ class CalendarView
   # end
 
   private
-  attr_reader :month_begin_date, :month_end_date, :user,
+  attr_reader :month_begin_date, :month_end_date,
               :date_of_interest, :month_number, :today
 
   public
   attr_reader :year_number, :month_number
 
-  def initialize(user, date = Date.today)
-    @user               = user
+  def initialize(attendee, date = Date.today)
+    @attendee           = attendee
     @today              = Date.today
     @date_of_interest   = date
     @year_number        = date.year

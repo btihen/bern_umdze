@@ -1,5 +1,5 @@
 # https://railsapps.github.io/rails-authorization.html
-class Planners::ApplicationController < ApplicationController
+class Planners::ApplicationController < ::Users::ApplicationController
   before_action :planner_only #, :except => :show
 
   private
