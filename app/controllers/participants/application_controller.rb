@@ -17,7 +17,7 @@ class Participants::ApplicationController < ApplicationController
 
     # one if is required to avoid ensure we only render ONCE!
     if participant.blank?
-      redirect_back fallback_location: landing_path, :alert => "Access denied."
+      redirect_back fallback_location: new_participants_magic_link_path, :alert => "New Access-Link Necessary"
 
     # force user to give us their name
     # (do not re-reoute if they already going to 'participants/profiles' - to avoid an endless loop)

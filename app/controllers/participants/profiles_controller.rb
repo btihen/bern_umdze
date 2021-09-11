@@ -2,27 +2,28 @@ class Participants::ProfilesController < Participants::ApplicationController
   # before_action :set_participant, only: %i[ show edit update destroy ]
 
   def edit
-    participant = current_participant(session[:login_token])
-    respond_to do |format|
-      format.html { render :edit, locals: {participant: participant} }
-      # format.json { render :show, status: :ok, location: @participant }
-    end
+    participant = set_participant
+
+    render :edit, locals: {participant: participant}
   end
 
   def update
-    participant = current_participant(session[:login_token])
+    participant = set_participant
     participant.assign_attributes(participant_params)
-    if participant.save
+
+    if !participant_params[:fullname].blank? && participant.save
       redirect_to participants_home_path, notice: "#{participant.fullname}, was successfully updated."
       # format.json { render :show, status: :ok, location: @participant }
     else
-      render :edit, locals: {participant: participant}, status: :unprocessable_entity
+
+      flash[:alert] = "Eine Name ist nötig"
+      render :edit, locals: {participant: participant} #, status: :unprocessable_entity
       # format.json { render json: @participant.errors, status: :unprocessable_entity }
     end
   end
 
   def destroy
-    participant = current_participant(session[:login_token])
+    participant = set_participant
     fullname = participant.fullname
     participant.destroy
     session[:participant] = nil
@@ -34,10 +35,9 @@ class Participants::ProfilesController < Participants::ApplicationController
   end
 
   private
-    # # Use callbacks to share common setup or constraints between actions.
-    # def set_participant
-    #   @participant = Participant.find(params[:id])
-    # end
+    def set_participant
+      current_participant(session[:login_token])
+    end
 
     # Only allow a list of trusted parameters through.
     def participant_params

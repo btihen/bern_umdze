@@ -1,9 +1,9 @@
 class Participant < ApplicationRecord
   before_save :downcase_email
 
-  validates :ip_addr, presence: true
-  validates :email,   presence: true, uniqueness: true,
-                      format: { with: Devise::email_regexp }
+  validates :ip_addr,   presence: true
+  validates :email,     presence: true, uniqueness: true,
+                        format: { with: Devise::email_regexp }
   validate :validate_ip_address_not_abusive
 
   # participant viewmodel?
