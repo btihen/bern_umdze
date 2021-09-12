@@ -14,8 +14,9 @@ class CalendarView
   public
   attr_reader :year_number, :month_number
 
-  def initialize(attendance, date = Date.today)
-    @attendance           = attendance
+  def initialize(attendee, date = Date.today)
+
+    @attendee           = attendee
     @today              = Date.today
     @date_of_interest   = date
     @year_number        = date.year
@@ -107,9 +108,10 @@ class CalendarView
               #{"</strike>" if dr.is_cancelled?}
               #{alert_notice(dr)}
               <br>
-              #{attend_onsite_button_html(dr) unless !dr.onsite_space_available? || dr.is_cancelled? || (dr.end_date < Date.today)}
-              #{attend_remote_button_html(dr) unless dr.is_cancelled? || (dr.end_date < Date.today)}
-              #{delete_attend_button_html(dr) unless dr.is_cancelled? || (dr.end_date < Date.today)}
+              Attendance: <b>#{attendance_type(dr)}</b><br>
+              #{attend_onsite_button_html(dr) if show_onsite_attend_button?(dr)}
+              #{attend_remote_button_html(dr) if show_remote_attend_button?(dr)}
+              #{delete_attend_button_html(dr) }
               <br>
             </dd>
           </dl>
@@ -127,6 +129,30 @@ class CalendarView
 
   def delete_button_html(reservation_date)
     ""
+  end
+
+  def show_onsite_attend_button?(reservation, attendee = @attendee)
+    raise NotImplementedError
+  end
+
+  def show_remote_attend_button?(reservation, attendee = @attendee)
+    raise NotImplementedError
+  end
+
+  def show_remove_attend_button?(reservation, attendee = @attendee)
+    raise NotImplementedError
+  end
+
+  def attending?(reservation, attendee = @attendee)
+    raise NotImplementedError
+  end
+
+  def attending_onsite?(reservation, attendee = @attendee)
+    raise NotImplementedError
+  end
+
+  def attending_remote?(reservation, attendee = @attendee)
+    raise NotImplementedError
   end
 
   def attend_onsite_button_html(reservation)
