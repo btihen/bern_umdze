@@ -14,8 +14,8 @@ class CalendarView
   public
   attr_reader :year_number, :month_number
 
-  def initialize(attendee, date = Date.today)
-    @attendee           = attendee
+  def initialize(attendance, date = Date.today)
+    @attendance           = attendance
     @today              = Date.today
     @date_of_interest   = date
     @year_number        = date.year
@@ -106,6 +106,11 @@ class CalendarView
               Remote: #{dr.remote_link.blank? ? "" : "<strong><a target='_blank' href='#{dr.remote_link}'>#{dr.remote_link}</a></strong>"}
               #{"</strike>" if dr.is_cancelled?}
               #{alert_notice(dr)}
+              <br>
+              #{attend_onsite_button_html(dr) unless !dr.onsite_space_available? || dr.is_cancelled? || (dr.end_date < Date.today)}
+              #{attend_remote_button_html(dr) unless dr.is_cancelled? || (dr.end_date < Date.today)}
+              #{delete_attend_button_html(dr) unless dr.is_cancelled? || (dr.end_date < Date.today)}
+              <br>
             </dd>
           </dl>
         </div>}
@@ -121,6 +126,18 @@ class CalendarView
   end
 
   def delete_button_html(reservation_date)
+    ""
+  end
+
+  def attend_onsite_button_html(reservation)
+    ""
+  end
+
+  def attend_remote_button_html(reservation)
+    ""
+  end
+
+  def delete_attend_button_html(reservation)
     ""
   end
 

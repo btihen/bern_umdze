@@ -2,15 +2,15 @@ class Participants::HomeController < Participants::ApplicationController
 
   def index
     spaces           = Space.all
-    attendee         = set_participant
+    attendance         = set_participant
     date             = params[:date].nil? ? Date.today : params[:date].to_s.to_date
 
-    attendee_view    = ::ParticipantView.new(attendee)
+    attendance_view    = ::ParticipantView.new(attendance)
     space_views      = ::SpaceView.collection(spaces)
-    calendar_view    = Participants::CalendarView.new(attendee, date)
+    calendar_view    = Participants::CalendarView.new(attendance, date)
 
-    render :index, locals: {participant: attendee,
-                            user_view: attendee_view,
+    render :index, locals: {participant: attendance,
+                            user_view: attendance_view,
                             spaces_view: space_views,
                             calendar_view: calendar_view}
   end

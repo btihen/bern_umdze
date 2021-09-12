@@ -10,7 +10,9 @@ class ViewBase < ActionView::Base
   # html helpers
   # this works: https://stackoverflow.com/questions/12109047/is-it-possible-to-use-rails-image-tag-from-inside-a-model
   include ActionView::Helpers
-  include ActionView::Helpers::AssetTagHelper
+  # https://api.rubyonrails.org/classes/ActionView/Helpers.html
+  include ActionView::Helpers::AssetTagHelper # image_tag, javascript_include_tag, etc.
+  include ActionView::Helpers::UrlHelper      # button_to, link_to, etc.
   # alternate way is to use the full path:
   # ActionController::Base.helpers.image_tag("image.png")
 

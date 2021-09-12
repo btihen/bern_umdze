@@ -1,38 +1,38 @@
 require "rails_helper"
 
-RSpec.describe Users::AttendeesController, type: :routing do
+RSpec.describe Users::AttendancesController, type: :routing do
   describe "routing" do
     # it "routes to #index" do
-    #   expect(get: "/users/attendees").to route_to("users/attendees#index")
+    #   expect(get: "/users/attendances").to route_to("users/attendances#index")
     # end
 
     it "routes to #new" do
-      expect(get: "/users/attendees/new").to route_to("users/attendees#new")
+      expect(get: "/users/attendances/new").to route_to("users/attendances#new")
     end
 
     # it "routes to #show" do
-    #   expect(get: "/users/attendees/1").to route_to("users/attendees#show", id: "1")
+    #   expect(get: "/users/attendances/1").to route_to("users/attendances#show", id: "1")
     # end
 
     it "routes to #edit" do
-      expect(get: "/users/attendees/1/edit").to route_to("users/attendees#edit", id: "1")
+      expect(get: "/users/attendances/1/edit").to route_to("users/attendances#edit", id: "1")
     end
 
 
     it "routes to #create" do
-      expect(post: "/users/attendees").to route_to("users/attendees#create")
+      expect(post: "/users/attendances").to route_to("users/attendances#create")
     end
 
     it "routes to #update via PUT" do
-      expect(put: "/users/attendees/1").to route_to("users/attendees#update", id: "1")
+      expect(put: "/users/attendances/1").to route_to("users/attendances#update", id: "1")
     end
 
     it "routes to #update via PATCH" do
-      expect(patch: "/users/attendees/1").to route_to("users/attendees#update", id: "1")
+      expect(patch: "/users/attendances/1").to route_to("users/attendances#update", id: "1")
     end
 
     it "routes to #destroy" do
-      expect(delete: "/users/attendees/1").to route_to("users/attendees#destroy", id: "1")
+      expect(delete: "/users/attendances/1").to route_to("users/attendances#destroy", id: "1")
     end
   end
 end

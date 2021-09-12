@@ -1,6 +1,6 @@
-class CreateAttendees < ActiveRecord::Migration[6.1]
+class CreateAttendances < ActiveRecord::Migration[6.1]
   def change
-    create_table :attendees do |t|
+    create_table :attendances do |t|
       t.string :location
       t.references :user, foreign_key: true
       t.references :participant, foreign_key: true
@@ -8,8 +8,8 @@ class CreateAttendees < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
-    add_index :attendees, [:user_id, :participant_id, :reservation_id],
+    add_index :attendances, [:user_id, :participant_id, :reservation_id],
                           unique: true,
-                          name: 'index_unique_attendee_per_reservation'
+                          name: 'index_unique_attendance_per_reservation'
   end
 end

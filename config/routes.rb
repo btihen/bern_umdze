@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   namespace :users do
-    resources :attendees,       except: [:index, :show]
+    resources :attendances,       except: [:index, :show]
     resources :profiles,        only: [:edit, :update, :destroy]
   end
   namespace :hosts do
@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   namespace :participants do
     get '/home',            as: 'home',         to: 'home#index'
     get '/sessions/:token', as: 'session_auth', to: 'sessions#auth'
-    resources :attendees,   except: [:index, :show]
+    get '/attendances',     as: 'attendance',   to: 'attendances#edit'
     resources :sessions,    only: [:destroy]
     resources :magic_links, only: [:new, :create]
     resources :profiles,    only: [:edit, :update, :destroy]

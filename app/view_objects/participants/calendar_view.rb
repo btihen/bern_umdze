@@ -14,16 +14,36 @@ class Participants::CalendarView < CalendarView
     strings.join(" ")
   end
 
-  def edit_button_html(reservation)
-    %Q{ <a class="button is-primary is-pulled-right"
-            href="#{url_helpers.edit_participants_attend_path(reservation)}">
-          Attend
+  def date_attending?(date, reservations)
+
+  end
+
+  def attend_onsite_button_html(reservation)
+    %Q{ <a class="button is-primary is-small"
+            href="#{url_helpers.participants_attendance_path(reservation_id: reservation,
+                                                              location: 'onsite')}">
+          Attend On-Site
         </a>
       }
   end
 
-  def date_attending?(date, reservations)
-
+  def attend_remote_button_html(reservation)
+    %Q{ <a class="button is-info is-small"
+            href="#{url_helpers.participants_attendance_path(reservation_id: reservation,
+                                                              location: 'remote')}">
+          Attend Remotely
+        </a>
+      }
   end
+
+  def delete_attend_button_html(reservation)
+    %Q{ <a class="button is-danger is-pulled-right is-small is-outlined"
+            href="#{url_helpers.participants_attendance_path(reservation_id: reservation,
+                                                              location: 'none')}">
+          Remove Attendance
+        </a>
+      }
+  end
+
 
 end

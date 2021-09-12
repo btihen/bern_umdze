@@ -34,7 +34,7 @@ class FormBase
 
 #   # All the models that are apart of our form should be part attr_accessor.
 #   # This allows the form to be initialized with existing instances.
-#   attr_accessor :contact, :attendee, :initiative, :attendee_school
+#   attr_accessor :contact, :attendance, :initiative, :attendance_school
 #
 #   # list attributes used in the form
 #   attr_accessor :model_id

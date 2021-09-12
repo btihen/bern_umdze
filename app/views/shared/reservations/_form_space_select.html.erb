@@ -12,3 +12,18 @@
     </div>
   </div>
 </div>
+
+<div class="field is-horizontal">
+  <div class="field-label is-normal">Start Date</div>
+  <div class="field-body">
+    <div class="field has-addons is-grouped is-grouped-multiline">
+      <div class="control">
+        <%= form.number_field :onsite_limit,
+                  in: 0..100, step: 1, type: 'number',
+                  class: 'input is-medium' %>
+        <p class="help">Required</p>
+        <%= error_message_on(form.object, :onsite_limit) %>
+      </div>
+    </div>
+  </div>
+</div>

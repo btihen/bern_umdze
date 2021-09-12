@@ -5,7 +5,7 @@ class ReservationView < ViewBase
 
   # delegate to model for attributes needed
   delegate  :start_date_time, :end_date_time, :start_date, :end_date,
-            :is_cancelled?, to: :reservation
+            :is_cancelled?, :onsite_space_available?, to: :reservation
 
 
   def event_name

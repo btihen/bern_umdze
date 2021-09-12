@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  ATTEND_LOCATIONS = %w[zentrum remote]
+  LOCATIONS = %w[onsite remote]
 
   USER_ROLES_AND_PERMISSIONS = [
     {role: "manager",  permissions: "Full Manager Access"},
