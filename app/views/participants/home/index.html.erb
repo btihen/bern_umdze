@@ -18,8 +18,8 @@
       <%= render 'calendar',  user_view: user_view,
                               space_view: space_view,
                               calendar_view: calendar_view,
-                              prev_month_path: root_path(date: calendar_view.prev_month_string),
-                              next_month_path: root_path(date: calendar_view.next_month_string)  %>
+                              prev_month_path: participants_home_path(date: calendar_view.prev_month_string),
+                              next_month_path: participants_home_path(date: calendar_view.next_month_string)  %>
     </div>
     <% end %>
   </div>
