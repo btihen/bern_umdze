@@ -14,22 +14,6 @@ class Participants::CalendarView < ::CalendarView
     strings.join(" ")
   end
 
-  def show_onsite_attend_button?(reservation, participant = @attendee)
-    reservation.onsite_space_available? &&
-      !reservation.is_cancelled? &&
-        (reservation.end_date >= Date.today)
-  end
-
-  def show_remote_attend_button?(reservation, participant = @attendee)
-    !reservation.is_cancelled? &&
-      (reservation.end_date >= Date.today)
-  end
-
-  def show_remove_attend_button?(reservation, participant = @attendee)
-    !reservation.is_cancelled? &&
-      (reservation.end_date >= Date.today)
-  end
-
   def attendance_type(reservation, participant = @attendee)
     Attendance.find_by(reservation_id: reservation.id, participant_id: participant.id)
               &.location.to_s
@@ -60,34 +44,16 @@ class Participants::CalendarView < ::CalendarView
               .any?
   end
 
-  def attend_onsite_button_html(reservation)
-    %Q{<a class="button is-primary is-small is-light is-outlined#{' is-inverted' if attending_onsite?(reservation)}"
-          title="Attend On-Site"
-          #{href="#{url_helpers.participants_attendance_path(reservation_id: reservation, location: 'onsite')}" unless attending_onsite?(reservation)}
-          #{'disabled' if attending_onsite?(reservation)}>
-          Attend On-Site
-      </a>
-    }
+  def attend_onsite_url(reservation)
+    url_helpers.participants_attendance_path(reservation_id: reservation, location: 'onsite')
   end
 
-  def attend_remote_button_html(reservation)
-    %Q{<a class="button is-info is-small is-light is-outlined#{' is-inverted' if attending_remote?(reservation)}"
-          title="Attend Remotely"
-          #{href="#{url_helpers.participants_attendance_path(reservation_id: reservation, location: 'remote')}" unless attending_remote?(reservation)}
-          #{'disabled' if attending_remote?(reservation)}>
-          Attend Remotely
-      </a>
-    }
+  def attend_remote_url(reservation)
+    url_helpers.participants_attendance_path(reservation_id: reservation, location: 'remote')
   end
 
-  def delete_attend_button_html(reservation)
-    %Q{ <a class="button is-danger is-pulled-right is-small is-light is-outlined#{' is-inverted' unless attending?(reservation)}"
-          #{'disabled' unless attending?(reservation)}
-          #{href="#{url_helpers.participants_attendance_path(reservation_id: reservation, location: 'none')}" if attending?(reservation)}>
-          Remove Attendance
-        </a>
-      }
+  def attend_delete_url(reservation)
+    url_helpers.participants_attendance_path(reservation_id: reservation, location: 'delete')
   end
-
 
 end

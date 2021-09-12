@@ -109,9 +109,9 @@ class CalendarView
               #{alert_notice(dr)}
               <br>
               Attendance: <b>#{attendance_type(dr)}</b><br>
-              #{attend_onsite_button_html(dr) if show_onsite_attend_button?(dr)}
-              #{attend_remote_button_html(dr) if show_remote_attend_button?(dr)}
-              #{delete_attend_button_html(dr) }
+              #{attend_onsite_button_html(dr) if include_attend_button?(dr)}
+              #{attend_remote_button_html(dr) if include_attend_button?(dr)}
+              #{delete_attend_button_html(dr) if include_attend_button?(dr)}
               <br>
             </dd>
           </dl>
@@ -131,16 +131,8 @@ class CalendarView
     ""
   end
 
-  def show_onsite_attend_button?(reservation, attendee = @attendee)
-    raise NotImplementedError
-  end
-
-  def show_remote_attend_button?(reservation, attendee = @attendee)
-    raise NotImplementedError
-  end
-
-  def show_remove_attend_button?(reservation, attendee = @attendee)
-    raise NotImplementedError
+  def include_attend_button?(reservation)
+    !reservation.is_cancelled? && (reservation.end_date >= Date.today)
   end
 
   def attending?(reservation, attendee = @attendee)
@@ -156,15 +148,32 @@ class CalendarView
   end
 
   def attend_onsite_button_html(reservation)
-    ""
+    %Q{<a class="button is-primary is-small is-light is-outlined#{' is-inverted' if attending_onsite?(reservation)}"
+          title="Attend On-Site"
+          #{"href='#{attend_onsite_url(reservation)}'" unless attending_onsite?(reservation)}
+          #{'disabled' if attending_onsite?(reservation)}>
+          Attend On-Site
+      </a>
+    }
   end
 
   def attend_remote_button_html(reservation)
-    ""
+    %Q{<a class="button is-info is-small is-light is-outlined#{' is-inverted' if attending_remote?(reservation)}"
+          title="Attend Remotely"
+          #{"href='#{attend_remote_url(reservation)}'" unless attending_remote?(reservation)}
+          #{'disabled' if attending_remote?(reservation)}>
+          Attend Remotely
+      </a>
+    }
   end
 
   def delete_attend_button_html(reservation)
-    ""
+    %Q{ <a class="button is-danger is-pulled-right is-small is-light is-outlined#{' is-inverted' unless attending?(reservation)}"
+          #{'disabled' unless attending?(reservation)}
+          #{"href='#{attend_delete_url(reservation)}'" if attending?(reservation)}>
+          Remove Attendance
+        </a>
+      }
   end
 
   def alert_notice(reservation_date)
