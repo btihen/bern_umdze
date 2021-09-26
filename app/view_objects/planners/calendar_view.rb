@@ -1,4 +1,4 @@
-class Planners::CalendarView < CalendarView
+class Planners::CalendarView < Users::CalendarView
 
   def new_button_html(space, date)
     %Q{ <a class="button is-success"

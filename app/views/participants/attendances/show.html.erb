@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @attend.location %>
+</p>
+
+<p>
+  <strong>Participant:</strong>
+  <%= @attend.participant_id %>
+</p>
+
+<p>
+  <strong>Reservation:</strong>
+  <%= @attend.reservation_id %>
+</p>
+
+<%= link_to 'Edit', edit_attend_path(@attendance) %> |
+<%= link_to 'Back', attends_path %>

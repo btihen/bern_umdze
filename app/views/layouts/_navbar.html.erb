@@ -45,14 +45,21 @@
 
     <div class="navbar-end">
       <%= link_to "Profile - #{current_user.username}", edit_users_profile_path(current_user), class: 'navbar-item' if current_user %>
+      <%= link_to "Profile - #{session[:participant]['email']}", edit_participants_profile_path(id: session[:participant]['id']), class: 'navbar-item' if session[:participant].present? %>
       <div class="navbar-item">
         <div class="buttons">
-          <% if current_user.nil? %>
-            <%= link_to("Einloggen", new_user_session_path,
-                        class: 'button is-info is-outlined') %>
-          <% else %>
+
+          <% if current_user.blank? && session[:participant].blank? %>
+            <%= link_to("Verwalten", new_user_session_path,
+                        class: 'button is-info is-small is-outlined') %>
+            <%= link_to("Einloggen", new_participants_magic_link_path,
+                        class: 'button  is-small is-success') %>
+          <% elsif current_user.present? %>
             <%= link_to("Ausloggen", destroy_user_session_path,
-                        method: :delete, class: 'button is-info is-outlined') %>
+                        method: :delete, class: 'button is-danger is-small is-outlined') %>
+          <% elsif session[:participant].present? %>
+            <%= link_to("Ausloggen", participants_session_path(id: session[:participant]['id']),
+                        method: :delete, class: 'button is-danger is-small is-outlined') %>
           <% end %>
         </div>
       </div>

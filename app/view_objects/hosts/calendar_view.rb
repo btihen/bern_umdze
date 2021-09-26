@@ -1,4 +1,4 @@
-class Hosts::CalendarView < CalendarView
+class Hosts::CalendarView < Users::CalendarView
 
   def edit_button_html(reservation)
     %Q{ <a class="button is-primary is-pulled-right"
@@ -7,5 +7,4 @@ class Hosts::CalendarView < CalendarView
         </a>
       }
   end
-
 end

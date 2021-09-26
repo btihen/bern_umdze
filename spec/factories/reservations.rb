@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :reservation do
     event           { FactoryBot.create :event }
     space           { FactoryBot.create :space }
+    remote_link     { [Faker::Internet.url, Faker::Internet.url, Faker::Internet.url, nil].sample }
     repeat_booking  { nil }
 
     # simplifies input

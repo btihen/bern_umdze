@@ -5,6 +5,10 @@ class Reservation < ApplicationRecord
   # had to update migration to allow null!
   belongs_to :repeat_booking, optional: true
 
+  has_many   :attendances
+  # has_many   :onsite_attendances, -> { where :location => 'onsite' }
+  # has_many   :remote_attendances, -> { where :location => 'remote' }
+
   accepts_nested_attributes_for :space
   accepts_nested_attributes_for :event
   accepts_nested_attributes_for :repeat_booking
@@ -36,6 +40,19 @@ class Reservation < ApplicationRecord
                           .where("start_date_time > ?", date_time)
                           .limit(1)
                         }
+
+  def onsite_attendance_count
+    attendances.select {|a| a.location.eql?("onsite") }.count
+  end
+
+  def onsite_space_remaining
+    space.onsite_limit - onsite_attendance_count
+  end
+
+  def onsite_space_available?
+    onsite_space_remaining > 0
+  end
+
   private
 
   # https://stackoverflow.com/questions/12181444/ruby-combine-date-and-time-objects-into-a-datetime

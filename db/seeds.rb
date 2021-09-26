@@ -39,8 +39,8 @@ User.create(email: "manager@test.ch",
             password_confirmation: "Let-M3-In!")
 
 spaces = []
-spaces << Space.create(space_name: "Zentrum")
-# spaces << FactoryBot.create(:space, space_name: "Anex")
+spaces << Space.create(space_name: "Zentrum", onsite_limit: 6)
+# spaces << FactoryBot.create(:space, space_name: "Anex", [0,1,2,3,4,5,6,7,8,9].sample)
 
 # events = []
 # 5.times do

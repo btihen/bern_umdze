@@ -1,5 +1,5 @@
 # https://railsapps.github.io/rails-authorization.html
-class Managers::ApplicationController < ApplicationController
+class Managers::ApplicationController < ::Users::ApplicationController
   before_action :manager_only #, :except => :show
 
   private

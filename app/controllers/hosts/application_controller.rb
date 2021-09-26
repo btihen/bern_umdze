@@ -1,5 +1,5 @@
 # https://railsapps.github.io/rails-authorization.html
-class Hosts::ApplicationController < ApplicationController
+class Hosts::ApplicationController < ::Users::ApplicationController
   before_action :host_only #, :except => :show
 
   private

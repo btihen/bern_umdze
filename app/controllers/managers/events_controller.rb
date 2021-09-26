@@ -25,7 +25,7 @@ class Managers::EventsController < Managers::ApplicationController
   end
 
   def edit
-    event      = Event.find(params[:id])
+    event        = Event.find(params[:id])
 
     render :edit, locals: {event: event}
   end

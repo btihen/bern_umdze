@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_11_110503) do
+ActiveRecord::Schema.define(version: 2021_09_11_181216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "attendances", force: :cascade do |t|
+    t.string "location"
+    t.bigint "user_id"
+    t.bigint "participant_id"
+    t.bigint "reservation_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["participant_id"], name: "index_attendances_on_participant_id"
+    t.index ["reservation_id"], name: "index_attendances_on_reservation_id"
+    t.index ["user_id", "participant_id", "reservation_id"], name: "index_unique_attendance_per_reservation", unique: true
+    t.index ["user_id"], name: "index_attendances_on_user_id"
+  end
 
   create_table "events", force: :cascade do |t|
     t.string "event_name", null: false
@@ -21,6 +34,18 @@ ActiveRecord::Schema.define(version: 2021_04_11_110503) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["event_name"], name: "index_events_on_event_name", unique: true
+  end
+
+  create_table "participants", force: :cascade do |t|
+    t.string "fullname"
+    t.string "email", null: false
+    t.string "ip_addr", null: false
+    t.string "login_token", null: false
+    t.datetime "token_valid_until", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_participants_on_email", unique: true
+    t.index ["login_token"], name: "index_participants_on_login_token", unique: true
   end
 
   create_table "repeat_bookings", force: :cascade do |t|
@@ -76,6 +101,7 @@ ActiveRecord::Schema.define(version: 2021_04_11_110503) do
     t.boolean "publicly_visible", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "onsite_limit", default: 0, null: false
     t.index ["space_name"], name: "index_spaces_on_space_name", unique: true
   end
 
@@ -109,6 +135,9 @@ ActiveRecord::Schema.define(version: 2021_04_11_110503) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "attendances", "participants"
+  add_foreign_key "attendances", "reservations"
+  add_foreign_key "attendances", "users"
   add_foreign_key "repeat_bookings", "events"
   add_foreign_key "repeat_bookings", "spaces"
   add_foreign_key "reservations", "events"

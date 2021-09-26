@@ -137,6 +137,22 @@
   width: 2.8rem;
 }
 
+// participant colors
+.calendar .calendar-date .date-item.is-active.is-attending {
+  background: #33ffff;
+  border-width: medium;
+  color: #4b4b4b;
+}
+
+.calendar .calendar-date .date-item.is-active.is-attending.is-today {
+  background: #33ffff;
+  // border-color: #0c227e; // old nav color
+  // border-color: #414bbb;
+  border-color: #2a42a4;
+  border-width: medium;
+  color: #4b4b4b;
+}
+
 // only use border for is-today
 .calendar .calendar-date .date-item.is-active.has-missing-host {
   background: #f1f2a4;
@@ -146,14 +162,14 @@
 
 // only use border for is-today
 .calendar .calendar-date .date-item.is-active.has-cancelled {
-  background: #f7acaa;
+  background: #ffcccc;
   border-width: medium;
   color: #4b4b4b;
 }
 
 // only use border for is-today
 .calendar .calendar-date .date-item.is-active.has-notice {
-  background: #f7e0ad;
+  background: #cc99ff;
   border-width: medium;
   color: #4b4b4b;
 }
@@ -183,7 +199,7 @@
 }
 
 .calendar .calendar-date .date-item.is-active.has-cancelled.is-today {
-  background: #f7acaa;
+  background: #ffcccc;
   // border-color: #0c227e; // old nav color
   // border-color: #414bbb;
   border-color: #2a42a4;
@@ -192,7 +208,7 @@
 }
 
 .calendar .calendar-date .date-item.is-active.has-notice.is-today {
-  background: #f7e0ad;
+  background: #cc99ff;
   // border-color: #0c227e; // old nav color
   // border-color: #414bbb;
   border-color: #2a42a4;

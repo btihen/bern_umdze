@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Homes", type: :request do
+RSpec.describe "Home Pages", type: :request do
 
   describe "GET /home - NOT loged-in" do
     it "returns http success" do

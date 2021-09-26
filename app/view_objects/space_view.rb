@@ -7,7 +7,7 @@ class SpaceView < ViewBase
   # alias_method :space_path, :root_model_path
 
   # delegate to model for attributes needed
-  delegate  :id, :space_name, :time_zone, to: :space
+  delegate  :id, :onsite_limit, :space_name, :time_zone, to: :space
 
   def events
     EventView.collection(space.events)
