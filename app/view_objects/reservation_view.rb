@@ -4,9 +4,13 @@ class ReservationView < ViewBase
   alias_method :reservation,      :root_model
 
   # delegate to model for attributes needed
-  delegate  :start_date_time, :end_date_time, :start_date, :end_date,
-            :is_cancelled?, :onsite_space_available?, to: :reservation
+  delegate  :start_date_time, :end_date_time, :start_date, :end_date, :is_cancelled?,
+            :onsite_space_available?, :onsite_space_remaining, :onsite_attendance_count,
+            to: :reservation
 
+  def onsite_limit
+    reservation.space.onsite_limit
+  end
 
   def event_name
     event.event_name

@@ -1,4 +1,4 @@
-class Managers::CalendarView < CalendarView
+class Managers::CalendarView < Users::CalendarView
 
   def new_button_html(space, date)
     %Q{ <a class="button is-success"
@@ -29,6 +29,22 @@ class Managers::CalendarView < CalendarView
     #               method: :delete, confirm: "Are you sure?",
     #               class: "button is-danger is-pulled-right" %>
     #   }
+  end
+
+  def date_item_class_string(date, reservations = [])
+    strings = ["modal-button"]
+    strings << "is-today"   if date == today
+    strings << "is-active"  if date_has_reservation?(date, reservations)
+    if date_has_cancelled_event?(date, reservations)
+      strings << "has-cancelled"
+    elsif date_has_event_wo_host?(date, reservations)
+      strings << "has-missing-host"
+    elsif date_has_notice?(date, reservations)
+      strings << "has-notice"
+    elsif attending_on_date?(date, reservations)
+      strings << "is-attending"
+    end
+    strings.join(" ")
   end
 
 end

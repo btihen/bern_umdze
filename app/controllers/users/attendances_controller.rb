@@ -1,62 +1,32 @@
 class Users::AttendancesController < Users::ApplicationController
-  before_action :set_attendance, only: %i[ show edit update destroy ]
 
-  # def index
-  #   @attendances = attendance.all
-  # end
-
-  # def show
-  # end
-
-  def new
-    @attendance = attendance.new
-  end
-
+  # using edit since I can't find an easy / clear way to inject a form or button as text
   def edit
-  end
+    attendance = Attendance.find_by(attendance_params.without(:location)) || Attendance.new()
+    attendance.assign_attributes attendance_params
+    attendance_info = {
+                        attendance: attendance,
+                        location: attendance_params[:location],
+                        reservation: Reservation.find(attendance_params[:reservation_id]),
+                      }
+    flash_msg = AttendanceCommand.call(attendance_info)
 
-  def create
-    @attendance = attendance.new(attendance_params)
-
-    respond_to do |format|
-      if @attendance.save
-        format.html { redirect_to @attendance, notice: "attendance was successfully created." }
-        format.json { render :show, status: :created, location: @attendance }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @attendance.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def update
-    respond_to do |format|
-      if @attendance.update(attendance_params)
-        format.html { redirect_to @attendance, notice: "attendance was successfully updated." }
-        format.json { render :show, status: :ok, location: @attendance }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @attendance.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def destroy
-    @attendance.destroy
-    respond_to do |format|
-      format.html { redirect_to attendances_url, notice: "attendance was successfully destroyed." }
-      format.json { head :no_content }
+    if flash_msg
+      redirect_to(root_path, flash_msg)
+    else
+      # log this?
+      redirect_to(root_path, alert: "OOOPS - unexpected error")
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_attendance
-      @attendance = attendance.find(params[:id])
-    end
 
     # Only allow a list of trusted parameters through.
     def attendance_params
-      params.require(:attendance).permit(:location, :participant_id, :reservation_id)
+      {
+        user_id: current_user.id,
+        location: params[:location],
+        reservation_id: params[:reservation_id],
+      }
     end
 end

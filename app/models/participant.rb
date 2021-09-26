@@ -16,12 +16,6 @@ class Participant < ApplicationRecord
     date_time < login_token_valid_until
   end
 
-  def magic_link_data(ip_address, valid_minutes = 60)
-    self.ip_addr = ip_address
-    self.login_token = SecureRandom.hex(10)
-    self.token_valid_until = DateTime.now + (valid_minutes.to_i).minutes
-  end
-
   def expire_token_validity!
     self.token_valid_until = DateTime.now - 1.days
     save!

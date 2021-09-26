@@ -8,7 +8,7 @@ class CalendarView
   # end
 
   private
-  attr_reader :month_begin_date, :month_end_date,
+  attr_reader :month_begin_date, :month_end_date, :attendee,
               :date_of_interest, :month_number, :today
 
   public
@@ -107,16 +107,30 @@ class CalendarView
               Remote: #{dr.remote_link.blank? ? "" : "<strong><a target='_blank' href='#{dr.remote_link}'>#{dr.remote_link}</a></strong>"}
               #{"</strike>" if dr.is_cancelled?}
               #{alert_notice(dr)}
+              #{attendance_list(dr)}
               <br>
-              Attendance: <b>#{attendance_type(dr)}</b><br>
-              #{attend_onsite_button_html(dr) if include_attend_button?(dr)}
-              #{attend_remote_button_html(dr) if include_attend_button?(dr)}
-              #{delete_attend_button_html(dr) if include_attend_button?(dr)}
-              <br>
+              Your Attendance: <b>#{attendance_type(dr)}</b>
+              #{attendance_buttons(dr)}
             </dd>
           </dl>
         </div>}
     end.join
+  end
+
+  def attendance_buttons(dr)
+    return "" unless include_attend_button?(dr)
+
+    %Q{ <br>
+        #{attend_onsite_button_html(dr)}
+        #{attend_remote_button_html(dr)}
+        #{delete_attend_button_html(dr)}
+        <br>
+      }
+  end
+
+  def attendance_list(reservation)
+    ""
+    # %Q{<br>Onsite spots open: <b>#{dr.onsite_space_remaining}</b> <small>(taken: #{dr.onsite_attendance_count}; limit: #{dr.onsite_limit})</small>}
   end
 
   def new_button_html(space, date)
@@ -148,10 +162,10 @@ class CalendarView
   end
 
   def attend_onsite_button_html(reservation)
-    %Q{<a class="button is-primary is-small is-light is-outlined#{' is-inverted' if attending_onsite?(reservation)}"
+    %Q{<a class="button is-primary is-small is-light is-outlined#{' is-inverted' if attending_onsite?(reservation)  || !reservation.onsite_space_available? }"
           title="Attend On-Site"
-          #{"href='#{attend_onsite_url(reservation)}'" unless attending_onsite?(reservation)}
-          #{'disabled' if attending_onsite?(reservation)}>
+          #{"href='#{attend_onsite_url(reservation)}'" unless attending_onsite?(reservation) || !reservation.onsite_space_available? }
+          #{'disabled' if attending_onsite?(reservation) || !reservation.onsite_space_available? }>
           Attend On-Site
       </a>
     }
@@ -202,8 +216,10 @@ class CalendarView
       strings << "has-cancelled"
     elsif date_has_event_wo_host?(date, reservations)
       strings << "has-missing-host"
-    elsif date_has_notice?(date, reservations)
+    elsif date_has_notice?(date, reservations) && attending_on_date?(date, reservations)
       strings << "has-notice"
+    elsif attending_on_date?(date, reservations)
+      strings << "is-attending"
     end
     strings.join(" ")
   end

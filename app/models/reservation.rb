@@ -41,10 +41,16 @@ class Reservation < ApplicationRecord
                           .limit(1)
                         }
 
-  def onsite_space_available?
-    onsite_attendance = attendances.select {|a| a.location.eql?("onsite") }.count
+  def onsite_attendance_count
+    attendances.select {|a| a.location.eql?("onsite") }.count
+  end
 
-    onsite_attendance < space.onsite_limit
+  def onsite_space_remaining
+    space.onsite_limit - onsite_attendance_count
+  end
+
+  def onsite_space_available?
+    onsite_space_remaining > 0
   end
 
   private

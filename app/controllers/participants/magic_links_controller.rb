@@ -8,15 +8,13 @@ class Participants::MagicLinksController < Participants::ApplicationController
   end
 
   def create
-    email = participant_params[:email]
-    ip_address = request.remote_ip
-    # the participant might already exist in our db or possibly a new participant
-    participant = Participant.find_by(email: email) || Participant.new(email: email)
-    participant.magic_link_data(ip_address)
+    participant = get_or_new_participant
+    magic_params = magic_link_data(request.remote_ip)
+    participant.assign_attributes(magic_params)
 
-    if participant.valid?
-      participant.save
+    if participant.valid? && participant.save
       magic_link_url = participants_session_auth_url(token: participant.login_token)
+
       SendLinkMailer.magic_link(participant, magic_link_url).deliver_later
 
       redirect_to landing_path, notice: "Access-Link an email #{participant.email} wird geschickt."
@@ -29,6 +27,20 @@ class Participants::MagicLinksController < Participants::ApplicationController
   end
 
   private
+
+    # the participant might already exist in our db or possibly a new participant
+    def get_or_new_participant
+      email = participant_params[:email]
+      Participant.find_by(email: email) || Participant.new(email: email)
+    end
+
+    def magic_link_data(ip_address, valid_minutes = 60)
+      {
+        ip_addr: ip_address,
+        login_token: SecureRandom.hex(25),
+        token_valid_until: DateTime.now + (valid_minutes.to_i).minutes,
+      }
+    end
 
     # Only allow a list of trusted parameters through.
     def participant_params

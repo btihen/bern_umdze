@@ -1,22 +1,13 @@
 class Participants::CalendarView < ::CalendarView
 
-  def date_item_class_string(date, reservations = [])
-    strings = ["modal-button"]
-    strings << "is-today"   if date == today
-    strings << "is-active"  if date_has_reservation?(date, reservations)
-    if date_has_cancelled_event?(date, reservations)
-      strings << "has-cancelled"
-    elsif attending_on_date?(date, reservations)
-      strings << "is-attending"
-    # elsif date_has_notice?(date, reservations)
-    #   strings << "has-notice"
-    end
-    strings.join(" ")
+
+  def attendance_list(reservation)
+    %Q{<br>Onsite spots open: <b>#{reservation.onsite_space_remaining}</b> <small>(taken: #{reservation.onsite_attendance_count}; limit: #{reservation.onsite_limit})</small>}
   end
 
   def attendance_type(reservation, participant = @attendee)
     Attendance.find_by(reservation_id: reservation.id, participant_id: participant.id)
-              &.location.to_s
+              &.location || "-"
   end
 
   def attending_on_date?(date, reservations, participant = @attendee)
