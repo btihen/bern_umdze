@@ -44,7 +44,7 @@ class Participant < ApplicationRecord
                                       .where(updated_at: DateTime.now)
                                       .count
 
-    return ip_addr_todays_count < 9 if Rails.env.production?
+    return ip_addr_todays_count < 5 if Rails.env.production?
 
     ip_addr_todays_count < 100_000
   end

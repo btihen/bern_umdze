@@ -24,7 +24,7 @@ RSpec.describe "/participants/attendances", type: :request do
     skip("Add a hash of attributes invalid for your model")
   }
 
-  # describe "GET /participants/attendances/index" do
+  # describe "GET /participants/attendances/" do
   #   it "renders a successful response" do
   #     Attendance.create! valid_attributes
   #     get attends_url
@@ -47,7 +47,7 @@ RSpec.describe "/participants/attendances", type: :request do
     end
   end
 
-  describe "GET /participants/attendances/edit" do
+  describe "GET /participants/attendances/" do
     it "render a successful response" do
       attend = Attendance.create! valid_attributes
       get edit_participants_attendance_url(attendance)

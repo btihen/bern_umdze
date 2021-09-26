@@ -2,6 +2,14 @@
   <div class="container has-text-centered">
     <p>
       Copyright © 2020<br><a href="https://bern.shambhala.ch">Shambhala Meditations-Zentrum Bern</a>
+      <br>
+      <% if current_user.blank? && session[:participant].blank? %>
+        <%= link_to("Verwalten", new_user_session_path,
+                    class: 'button is-info is-small is-outlined') %>
+      <% elsif current_user.present? %>
+        <%= link_to("Ausloggen", destroy_user_session_path,
+                    method: :delete, class: 'button is-danger is-small is-outlined') %>
+      <% end %>
     </p>
   </div>
 </footer>
