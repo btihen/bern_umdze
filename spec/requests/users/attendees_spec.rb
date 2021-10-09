@@ -24,28 +24,6 @@ RSpec.describe "/users/attendances", type: :request do
     skip("Add a hash of attributes invalid for your model")
   }
 
-  # describe "GET /users/attendances/index" do
-  #   it "renders a successful response" do
-  #     Attendance.create! valid_attributes
-  #     get attends_url
-  #     expect(response).to be_successful
-  #   end
-  # end
-
-  # describe "GET /users/attendances/show" do
-  #   it "renders a successful response" do
-  #     attend = Attendance.create! valid_attributes
-  #     get users_attendance_url(attendance)
-  #     expect(response).to be_successful
-  #   end
-  # end
-
-  xdescribe "GET /users/attendances/new" do
-    it "renders a successful response" do
-      get new_users_attendance_url
-      expect(response).to be_successful
-    end
-  end
 
   describe "GET /users/attendances/edit" do
     it "render a successful response" do
@@ -55,76 +33,4 @@ RSpec.describe "/users/attendances", type: :request do
     end
   end
 
-  describe "POST /users/attendances/create" do
-    context "with valid parameters" do
-      it "creates a new Attend" do
-        expect {
-          post users_attendances_url, params: { attend: valid_attributes }
-        }.to change(Attendance, :count).by(1)
-      end
-
-      it "redirects to the created attend" do
-        post users_attendances_url, params: { attend: valid_attributes }
-        expect(response).to redirect_to(attendance_url(Attend.last))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "does not create a new Attend" do
-        expect {
-          post users_attendances_url, params: { attend: invalid_attributes }
-        }.to change(Attendance, :count).by(0)
-      end
-
-      it "renders a successful response (i.e. to display the 'new' template)" do
-        post users_attendances_url, params: { attend: invalid_attributes }
-        expect(response).to be_successful
-      end
-    end
-  end
-
-  describe "PATCH /users/attendances/update" do
-    context "with valid parameters" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested attend" do
-        attend = Attendance.create! valid_attributes
-        patch attendance_url(attendance), params: { attend: new_attributes }
-        attend.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "redirects to the attend" do
-        attend = Attendance.create! valid_attributes
-        patch attendance_url(attendance), params: { attend: new_attributes }
-        attend.reload
-        expect(response).to redirect_to(attend_url(attendance))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
-        attend = Attendance.create! valid_attributes
-        patch attendance_url(attendance), params: { attend: invalid_attributes }
-        expect(response).to be_successful
-      end
-    end
-  end
-
-  describe "DELETE /users/attendances/destroy" do
-    it "destroys the requested attend" do
-      attend = Attendance.create! valid_attributes
-      expect {
-        delete attendance_url(attendance)
-      }.to change(Attendance, :count).by(-1)
-    end
-
-    it "redirects to the attends list" do
-      attend = Attendance.create! valid_attributes
-      delete attendance_url(attendance)
-      expect(response).to redirect_to(attends_url)
-    end
-  end
 end

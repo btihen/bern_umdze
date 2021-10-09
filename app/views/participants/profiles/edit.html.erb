@@ -35,8 +35,10 @@
 
   <div class="control">
     <%= form.submit("Speichern", class: "button is-success") %>
-    <%= link_to 'Kalendar', participants_home_path, class: "button is-info" %>
-    <%= link_to "Delete",
+    <% unless participant.fullname.blank? %>
+      <%= link_to 'Kalendar', participants_home_path, class: "button is-info" %>
+    <% end %>
+    <%# link_to "Delete Account (und Reservationen)",
                 participants_profile_path(participant),
                 method: :delete, confirm: "Are you sure?",
                 class: "button is-danger is-pulled-right" %>
