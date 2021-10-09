@@ -1,11 +1,15 @@
 <p hidden id='new-participant-magic-link' class='pageName'>New Participant Magic Link</p>
 
+<h1 class="is-size-3">Einlogen <small class="is-size-4">zum reservieren</small></h1>
+<br>
+<p>Wir senden einen passwortlosen Zugangslink per E-Mail zu.</p>
+<br>
 <%= form_for(participant, local: true,
               url: participants_magic_links_path,   # NEW MUST BE PLURAL for POST
               id: "new-magic-link-form", class: "participant" ) do |form|  %>
 
   <div class="field">
-    <label class="label">Email für Access-Link</label>
+    <label class="label">Email Addresse</label>
     <div class="control">
       <%= form.email_field :email,
                             placeholder: "Email",
