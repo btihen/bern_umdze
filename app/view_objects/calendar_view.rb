@@ -103,18 +103,44 @@ class CalendarView
             <dd>
               #{"<strike>" if dr.is_cancelled?}
               Event: <big><b>#{dr.event_name}</b></big><br>
-              Host: #{dr.host_name.blank? ? "<span class='has-background-warning-light'><strong>Kein Umdze/Koordinator</strong></span>" : "<strong>#{dr.host_name}</strong>"}</br>
-              Remote: #{dr.remote_link.blank? ? "" : "<strong><a target='_blank' href='#{dr.remote_link}'>#{dr.remote_link}</a></strong>"}
+              Host: #{host_display(dr)}</br>
+              Zoom: #{zoom_link_display(dr)}
               #{"</strike>" if dr.is_cancelled?}
               #{alert_notice(dr)}
               #{attendance_list(dr)}
               <br>
-              Your Attendance: <b>#{attendance_type(dr)}</b>
+              Art der Beteiligung: <b><small>#{attendance_display(dr)}</small></b>
               #{attendance_buttons(dr)}
             </dd>
           </dl>
         </div>}
     end.join
+  end
+
+  def host_display(reservation)
+    return "<span class='has-background-warning-light'><strong>Kein Umdze/Koordinator</strong></span>" if reservation.host_name.blank?
+
+    "<strong>#{reservation.host_name}</strong>"
+  end
+
+  def zoom_link_display(reservation)
+    return "<em><small>Der Zoom-Link wird per E-Mail verschickt.</small></em>" if @attendee.is_a? Participant
+    return "" if reservation.remote_link.blank?
+
+    "<strong><a target='_blank' href='#{reservation.remote_link}'>#{reservation.remote_link}</a></strong>"
+  end
+
+  def attendance_display(reservation)
+    attendance = attendance_type(reservation, @attendee)
+
+    case attendance
+    when ""
+      "nicht angemeldet"
+    when 'onsite'
+      "angemeldet vor Ort"
+    when 'remote'
+      "angemeldet via Zoom"
+    end
   end
 
   def attendance_buttons(dr)
@@ -130,7 +156,6 @@ class CalendarView
 
   def attendance_list(reservation)
     ""
-    # %Q{<br>Onsite spots open: <b>#{dr.onsite_space_remaining}</b> <small>(taken: #{dr.onsite_attendance_count}; limit: #{dr.onsite_limit})</small>}
   end
 
   def new_button_html(space, date)
@@ -163,29 +188,30 @@ class CalendarView
 
   def attend_onsite_button_html(reservation)
     %Q{<a class="button is-primary is-small is-light is-outlined#{' is-inverted' if attending_onsite?(reservation)  || !reservation.onsite_space_available? }"
-          title="Attend On-Site"
+          title="vor Ort"
           #{"href='#{attend_onsite_url(reservation)}'" unless attending_onsite?(reservation) || !reservation.onsite_space_available? }
           #{'disabled' if attending_onsite?(reservation) || !reservation.onsite_space_available? }>
-          Attend On-Site
+          vor Ort
       </a>
     }
   end
 
   def attend_remote_button_html(reservation)
     %Q{<a class="button is-info is-small is-light is-outlined#{' is-inverted' if attending_remote?(reservation)}"
-          title="Attend Remotely"
+          title="via Zoom"
           #{"href='#{attend_remote_url(reservation)}'" unless attending_remote?(reservation)}
           #{'disabled' if attending_remote?(reservation)}>
-          Attend Remotely
+          via Zoom
       </a>
     }
   end
 
   def delete_attend_button_html(reservation)
     %Q{ <a class="button is-danger is-pulled-right is-small is-light is-outlined#{' is-inverted' unless attending?(reservation)}"
+          title="absagen"
           #{'disabled' unless attending?(reservation)}
           #{"href='#{attend_delete_url(reservation)}'" if attending?(reservation)}>
-          Remove Attendance
+          absagen
         </a>
       }
   end

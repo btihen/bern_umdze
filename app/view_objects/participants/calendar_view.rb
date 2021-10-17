@@ -1,13 +1,16 @@
 class Participants::CalendarView < ::CalendarView
 
+  def zoom_link_display(reservation)
+    "<em><small>Der Zoom-Link wird per E-Mail verschickt.</small></em>"
+  end
 
   def attendance_list(reservation)
-    %Q{<br>Onsite spots open: <b>#{reservation.onsite_space_remaining}</b> <small>(taken: #{reservation.onsite_attendance_count}; limit: #{reservation.onsite_limit})</small>}
+    %Q{<br>offene vor Ort Plätze: <b>#{reservation.onsite_space_remaining}</b> <small>(besetzt: #{reservation.onsite_attendance_count}; Limit: #{reservation.onsite_limit})</small>}
   end
 
   def attendance_type(reservation, participant = @attendee)
-    Attendance.find_by(reservation_id: reservation.id, participant_id: participant.id)
-              &.location || "-"
+    attendance = Attendance.find_by(reservation_id: reservation.id, participant_id: participant.id)
+                          &.location || ""
   end
 
   def attending_on_date?(date, reservations, participant = @attendee)

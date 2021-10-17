@@ -50,7 +50,7 @@
         <div class="buttons">
 
           <% if current_user.blank? && session[:participant].blank? %>
-            <%= link_to("Verwalten", new_user_session_path,
+            <%# link_to("Verwalten", new_user_session_path,
                         class: 'button is-info is-small is-outlined') %>
             <%= link_to("Einloggen", new_participants_magic_link_path,
                         class: 'button  is-small is-success') %>
