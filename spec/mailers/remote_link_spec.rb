@@ -1,11 +1,11 @@
 require "rails_helper"
 
-RSpec.describe SendLinkMailer, type: :mailer do
-  describe "magic_link" do
-    let(:mail) { SendLinkMailer.magic_link }
+RSpec.describe RemoteLinkMailer, type: :mailer do
+  describe "send_link" do
+    let(:mail) { RemoteLinkMailer.send_link }
 
     it "renders the headers" do
-      expect(mail.subject).to eq("Magic link")
+      expect(mail.subject).to eq("Send link")
       expect(mail.to).to eq(["to@example.org"])
       expect(mail.from).to eq(["from@example.com"])
     end

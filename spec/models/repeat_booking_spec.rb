@@ -174,7 +174,7 @@ RSpec.describe RepeatBooking, type: :model do
   end
 
   context "ActiveRecord" do
-    xdescribe "DB settings" do
+    describe "DB settings" do
       # it { is_expected.to have_db_index(:host_email) }
       # it { is_expected.to validate_uniqueness_of(:host_email) }
       # it { is_expected.to validate_uniqueness_of(:host_title).

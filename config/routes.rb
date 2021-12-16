@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   namespace :users do
+    get 'send_remote_links/:reservation_id', as: 'send_remote_links', to: 'send_remote_links#send_link'
     get '/attendances',         as: 'attendance',   to: 'attendances#edit'
     resources :profiles,        only: [:edit, :update, :destroy]
   end

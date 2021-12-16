@@ -86,17 +86,17 @@ class Users::CalendarView < CalendarView
 
     display_html = "<strong><a target='_blank' href='#{reservation.remote_link}'>#{reservation.remote_link}</a></strong>"
 
-    # attendance_count = Attendance.where(reservation_id: reservation.id).count
+    attendance_count = Attendance.where(reservation_id: reservation.id).count
 
-    # if attendance_count.positive?
-    #   display_html += %Q{
-    #                     <a class="button is-info is-pulled-right is-small is-light is-outlined"
-    #                       title="send Zoom-Link"
-    #                       href='#{url_helpers.users_send_remote_links_path(reservation_id: reservation.id)}'>
-    #                       Zoom-Link senden
-    #                     </a>
-    #                   }
-    # end
+    if attendance_count.positive?
+      display_html += %Q{
+                        <a class="button is-info is-pulled-right is-small is-light is-outlined"
+                          title="send Zoom-Link"
+                          href='#{url_helpers.users_send_remote_links_path(reservation_id: reservation.id)}'>
+                          Zoom-Link senden
+                        </a>
+                      }
+    end
 
     display_html
   end
