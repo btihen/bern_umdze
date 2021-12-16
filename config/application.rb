@@ -5,7 +5,7 @@ require "rails"
 require "active_model/railtie"
 require "active_job/railtie"
 require "active_record/railtie"
-require "active_storage/engine"
+# require "active_storage/engine"
 require "action_controller/railtie"
 require "action_mailer/railtie"
 require "action_mailbox/engine"
@@ -23,6 +23,8 @@ module BernUmdze
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
+    config.autoloader = :zeitwerk
+    # config.load_defaults 7.0
 
     config.time_zone = "Zurich"
     # hoping to ignore timezones and just display time entered
