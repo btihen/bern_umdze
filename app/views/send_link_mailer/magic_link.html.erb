@@ -1,7 +1,5 @@
-<h1>Hi <%= @participant.display_name %>,</h1>
+<h1>Hi <%= @person.display_name %>,</h1>
 
-<p><a href="<%= @magic_link_url %>">Access-Link für Bern Umdze</a></p>
+<p><a href="<%= @auth_url %>">Access-Link für Bern Umdze</a></p>
 
-<p> <%= @magic_link_url %> </p>
-
-<p>Link ist gültig bis: <%= @participant.token_valid_until %></p>
+<p> <%= @auth_url %> </p>

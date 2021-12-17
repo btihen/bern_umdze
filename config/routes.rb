@@ -26,6 +26,10 @@ Rails.application.routes.draw do
     resources :profiles,        only: [:edit, :update, :destroy]
   end
 
+  get  'tokens/:auth', as: :auth_tokens,   to: 'tokens#auth'
+  get  'tokens',       as: :new_tokens,    to: 'tokens#new'
+  post 'tokens',       as: :create_tokens, to: 'tokens#create'
+
   devise_for :users
 
   # get 'landing/index'
