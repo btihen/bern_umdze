@@ -62,6 +62,9 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "bern_umdze_production"
 
+  # mailing and urls in development mode
+  self.default_url_options = { host: 'http://bernumdze.org' }
+
   config.action_mailer.perform_caching = false
   config.action_mailer.default_url_options = { host: 'bernumdze.org' }
 
