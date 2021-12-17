@@ -1,0 +1,25 @@
+<p hidden id='new-participant-magic-link' class='pageName'>New Participant Magic Link</p>
+
+<h1 class="is-size-3">Einlogen <small class="is-size-4">zum reservieren</small></h1>
+<br>
+<p>Wir senden einen passwortlosen Zugangslink per E-Mail zu.</p>
+<br>
+<%= form_for(participant, local: true,
+                          url:   create_tokens_path, # new points to create POST
+                          id:    "new-token-form",
+                          class: "participant") do |form|  %>
+
+  <div class="field">
+    <label class="label">Email Addresse</label>
+    <div class="control">
+      <%= form.email_field(:email, placeholder: "Email", class: 'input') %>
+    </div>
+    <p class="help"></p>
+    <%= error_message_on(form.object, :email) %>
+  </div>
+
+  <div class="control">
+    <%= form.submit("Get Access-Link", class: "button is-success") %>
+  </div>
+
+<% end %>

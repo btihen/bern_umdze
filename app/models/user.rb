@@ -18,6 +18,11 @@ class User < ApplicationRecord
 
   validate  :validate_password_complexity
 
+  # for mailer
+  def display_name
+    real_name.blank? ? username : email
+  end
+
   # https://github.com/heartcombo/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
   attr_writer :login
 
@@ -25,6 +30,11 @@ class User < ApplicationRecord
   def login
     @login || username || email
     # @login || self.username || self.email
+  end
+
+  # allow token based user_authentication!
+  def password_required?
+    false # because we aren't using passwords
   end
 
   # https://github.com/heartcombo/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address

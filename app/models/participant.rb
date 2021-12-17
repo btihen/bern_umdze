@@ -40,13 +40,12 @@ class Participant < ApplicationRecord
 
   # ensure a given IP isn't creating lots of accounts (DOS attack) in production
   def ip_count_ok?
+    return true if Rails.env.test? || Rails.env.development?
+
     ip_addr_todays_count = Participant.where(ip_addr: ip_addr)
                                       .where(updated_at: DateTime.now)
                                       .count
-
-    return ip_addr_todays_count < 5 if Rails.env.production?
-
-    ip_addr_todays_count < 100_000
+    ip_addr_todays_count < 5
   end
 
 end

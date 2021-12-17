@@ -5,12 +5,12 @@ class SendLinkMailer < ApplicationMailer
   #
   #   en.send_link_mailer.magic_link.subject
   #
-  def magic_link(participant, magic_link_url)
-    @participant    = participant
-    @magic_link_url = magic_link_url
+  def magic_link(person, auth_url)
+    @person   = person
+    @auth_url = auth_url
 
-    mail( to: @participant.email,
-          from: 'access-link@bernumdze.org',
-          subject: 'Access für bernumdze.org' )
+    mail(to:      @person.email,
+         from:    'access-link@bernumdze.org',
+         subject: 'Access für bernumdze.org')
   end
 end
