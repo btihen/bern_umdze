@@ -6,8 +6,8 @@ FactoryBot.define do
     repeat_booking  { nil }
 
     # simplifies input
-    start_date      { Date.today }
-    end_date        { Date.today }
+    start_date      { Time.now - 1.hour }
+    end_date        { Time.now + 1.hour }
     start_time      { Time.now - 1.hour }
     end_time        { Time.now + 1.hour }
 

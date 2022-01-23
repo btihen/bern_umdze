@@ -189,7 +189,7 @@ RSpec.describe "/managers/reservations", type: :request do
         patch managers_reservation_path(reservation), params: { reservation: update_attributes }
         reservation.reload
 
-        expect(response).to redirect_to(root_path(date: edit_params[:start_date].to_s))
+        expect(response).to redirect_to(root_path(date: edit_params[:start_date].to_date.to_s))
       end
     end
 

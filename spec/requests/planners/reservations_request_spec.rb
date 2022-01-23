@@ -83,24 +83,25 @@ RSpec.describe "/planners/reservations", type: :request do
 
   describe "PATCH /planners/reservations/:id (update)" do
     context "with valid parameters" do
+      let(:reservation) { Reservation.create! valid_attributes }
       let(:new_attributes) {
-        { start_date: "2021-02-02", end_date: "2021-02-02" }
+        {start_date: reservation.start_date_time + 3.days, end_date: reservation.end_date_time + 3.days}
       }
 
       it "updates the requested managers_user" do
-        reservation = Reservation.create! valid_attributes
+        # reservation = Reservation.create! valid_attributes
         patch planners_reservation_path(reservation), params: { reservation: new_attributes }
         reservation.reload
 
-        expect(reservation.start_date).to eq Date.parse(new_attributes[:start_date])
-        expect(reservation.end_date).to   eq Date.parse(new_attributes[:end_date])
+        expect(reservation.start_date).to eq Date.parse(new_attributes[:start_date].to_date.to_s)
+        expect(reservation.end_date).to   eq Date.parse(new_attributes[:end_date].to_date.to_s)
       end
 
       it "redirects to the planners home page" do
-        reservation = Reservation.create! valid_attributes
+        # reservation = Reservation.create! valid_attributes
         patch planners_reservation_path(reservation), params: { reservation: new_attributes }
         reservation.reload
-        expect(response).to redirect_to(root_path(date: new_attributes[:start_date]))
+        expect(response).to redirect_to(root_path(date: new_attributes[:start_date].to_date.to_s))
       end
     end
 
