@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_23_212361) do
+ActiveRecord::Schema.define(version: 2022_01_24_200640) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -115,6 +115,7 @@ ActiveRecord::Schema.define(version: 2022_01_23_212361) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "repeat_booking_id"
     t.text "remote_link"
+    t.text "remote_info"
     t.index ["end_date"], name: "index_reservations_on_end_date"
     t.index ["event_id", "space_id", "start_date_time", "end_date_time"], name: "index_reservation_unique", unique: true
     t.index ["event_id"], name: "index_reservations_on_event_id"

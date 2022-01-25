@@ -81,7 +81,7 @@ class Users::CalendarView < CalendarView
     end
   end
 
-  def zoom_link_display(reservation)
+  def remote_link_display(reservation)
     return "" if reservation.remote_link.blank?
 
     display_html = "<strong><a target='_blank' href='#{reservation.remote_link}'>#{reservation.remote_link}</a></strong>"

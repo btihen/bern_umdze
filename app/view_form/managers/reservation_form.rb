@@ -10,13 +10,15 @@ class Managers::ReservationForm < FormBase
   delegate :id, :persisted?, to: :reservation,  allow_nil: true
 
   delegate  :host_name, :event, :space, :repeat_booking,
-            :start_date_time, :end_date_time, :remote_link,
+            :start_date_time, :end_date_time,
+            :remote_link, :remote_info,
             :start_date, :end_date, :start_time, :end_time,
             to: :reservation,  allow_nil: true
 
   # All the models that are apart of our form should be part attr_accessor.
   # This allows the form to be initialized with existing instances.
-  attr_accessor :id, :host_name, :event, :space, :remote_link,
+  attr_accessor :id, :host_name, :event, :space,
+                :remote_link, :remote_info,
                 :start_date, :end_date, :start_time, :end_time,
                 :start_date_time, :end_date_time
 
@@ -33,7 +35,8 @@ class Managers::ReservationForm < FormBase
   attribute :repeat_every,        :integer, default: 0
   # attribute :repeat_day,          :integer, default: Date.today.day   # should be the day from start_date
   # attribute :repeat_month,        :integer, default: Date.today.month # should be the month from start_date
-  attribute :remote_link,          :squished_string
+  attribute :remote_link,         :squished_string
+  attribute :remote_info,         :squished_string
   attribute :repeat_unit,         :squished_string
   attribute :repeat_ordinal,      :squished_string
   attribute :repeat_choice,       :squished_string
@@ -61,6 +64,7 @@ class Managers::ReservationForm < FormBase
                       space: reservation.space,
                       host_name: reservation.host_name,
                       remote_link: reservation.remote_link,
+                      remote_info: reservation.remote_info,
                       end_date: reservation.end_date,
                       start_date: reservation.start_date,
                       end_time: reservation.end_time,
@@ -138,6 +142,7 @@ class Managers::ReservationForm < FormBase
     new_reservation.repeat_booking  = repeat_booking
     new_reservation.host_name       = host_name
     new_reservation.remote_link     = remote_link
+    new_reservation.remote_info     = remote_info
     new_reservation.start_date      = start_date   || attributes["start_date"]
     new_reservation.start_time      = start_time   || attributes["start_time"]
     new_reservation.end_date        = end_date     || attributes["end_date"]

@@ -99,7 +99,8 @@ class Managers::ReservationsController < Managers::ApplicationController
       reservation_params.to_h
                         .compact
                         .transform_values(&:squish)
-                        .slice( :host_name, :is_cancelled, :alert_notice, :remote_link,
+                        .slice( :host_name,     :is_cancelled,      :alert_notice,
+                                :remote_link,   :remote_info,
                                 :space_id,      :space_name,        :space_location,
                                 :event_id,      :event_name,        :event_description,
                                 :repeat_every,  :repeat_unit,       :repeat_ordinal,

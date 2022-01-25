@@ -104,7 +104,7 @@ class CalendarView
               #{"<strike>" if dr.is_cancelled?}
               Event: <big><b>#{dr.event_name}</b></big><br>
               Host: #{host_display(dr)}</br>
-              Zoom: #{zoom_link_display(dr)}
+              Zoom: #{remote_link_display(dr)}
               #{"</strike>" if dr.is_cancelled?}
               #{alert_notice(dr)}
               #{attendance_list(dr)}
@@ -123,11 +123,18 @@ class CalendarView
     "<strong>#{reservation.host_name}</strong>"
   end
 
-  def zoom_link_display(reservation)
+  def remote_link_display(reservation)
     return "<em><small>Der Zoom-Link wird per E-Mail verschickt.</small></em>" if @attendee.is_a? Participant
     return "" if reservation.remote_link.blank?
 
     "<strong><a target='_blank' href='#{reservation.remote_link}'>#{reservation.remote_link}</a></strong>"
+  end
+
+  def remote_info_display(reservation)
+    # return "<em><small>Der Zoom-Link wird per E-Mail verschickt.</small></em>" if @attendee.is_a? Participant
+    return "" if reservation.remote_info.blank?
+
+    "<strong><a target='_blank' href='#{reservation.remote_info}'>#{reservation.remote_info}</a></strong>"
   end
 
   def attendance_display(reservation)

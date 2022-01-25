@@ -1,6 +1,6 @@
 class Participants::CalendarView < ::CalendarView
 
-  def zoom_link_display(reservation)
+  def remote_link_display(reservation)
     "<em><small>Der Zoom-Link wird per E-Mail verschickt.</small></em>"
   end
 

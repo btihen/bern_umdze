@@ -1,0 +1,19 @@
+<div class="field is-horizontal">
+  <div class="field-label is-normal">Additional Remote Info</div>
+  <div class="field-body">
+    <div class="field has-addons">
+      <div class="control has-icons-left">
+        <%= form.text_area :remote_info,
+                            rows: 2,
+                            value: reservation.remote_info,
+                            placeholder: "Additional Remote Info",
+                            class: "textarea is-large" %>
+        <span class="icon is-small is-left">
+          <i class="fas fa-video"></i>
+        </span>
+        <p class="help">Optional</p>
+        <%= error_message_on(form.object, :remote_info) %>
+      </div>
+    </div>
+  </div>
+</div>
