@@ -31,7 +31,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'mimemagic', '~> 0.4.3'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.4.4', require: false
+# sgem 'bootsnap' #, '>= 1.4.4', require: false
 
 
 group :production do
