@@ -18,8 +18,5 @@
   "version": "0.1.0",
   "devDependencies": {
     "webpack-dev-server": "^4.0.0"
-  },
-  "scripts": {
-    "build": "bin/rails assets:precompile"
   }
 }
