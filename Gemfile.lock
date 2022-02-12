@@ -301,7 +301,7 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   pry-stack_explorer
-  puma
+  puma (~> 5.0)
   rails (~> 7.0)
   rspec-rails
   sass-rails (>= 6)
