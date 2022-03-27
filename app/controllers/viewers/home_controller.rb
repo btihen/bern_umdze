@@ -1,17 +1,19 @@
-class Viewers::HomeController < Viewers::ApplicationController
+# frozen_string_literal: true
 
-  def index
-    spaces        = Space.all
-    attendance      = current_user
-    date          = params[:date].nil? ? Date.today : params[:date].to_s.to_date
+module Viewers
+  class HomeController < Viewers::ApplicationController
+    def index
+      spaces = Space.all
+      attendance = current_user
+      date          = params[:date].nil? ? Date.today : params[:date].to_s.to_date
 
-    user_view     = ::UserView.new(attendance)
-    space_views   = ::SpaceView.collection(spaces)
-    calendar_view = ::CalendarView.new(attendance, date)
+      user_view     = ::UserView.new(attendance)
+      space_views   = ::SpaceView.collection(spaces)
+      calendar_view = ::CalendarView.new(attendance, date)
 
-    render :index, locals: {user_view: user_view,
-                            spaces_view: space_views,
-                            calendar_view: calendar_view}
+      render :index, locals: { user_view:,
+                               spaces_view: space_views,
+                               calendar_view: }
+    end
   end
-
 end

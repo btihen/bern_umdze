@@ -1,40 +1,44 @@
-class Participants::ProfilesController < Participants::ApplicationController
-  # before_action :set_participant, only: %i[ show edit update destroy ]
+# frozen_string_literal: true
 
-  def edit
-    participant = set_participant
+module Participants
+  class ProfilesController < Participants::ApplicationController
+    # before_action :set_participant, only: %i[ show edit update destroy ]
 
-    render :edit, locals: {participant: participant}
-  end
+    def edit
+      participant = set_participant
 
-  def update
-    participant = set_participant
-    participant.assign_attributes(participant_params)
-
-    if !participant_params[:fullname].blank? && participant.save
-      redirect_to participants_home_path, notice: "#{participant.fullname}, was successfully updated."
-      # format.json { render :show, status: :ok, location: @participant }
-    else
-
-      flash[:alert] = "Eine Name ist nötig"
-      render :edit, locals: {participant: participant} #, status: :unprocessable_entity
-      # format.json { render json: @participant.errors, status: :unprocessable_entity }
+      render :edit, locals: { participant: }
     end
-  end
 
-  def destroy
-    participant = set_participant
-    fullname = participant.fullname
-    participant.destroy
-    session[:participant] = nil
-    session[:login_token] = nil
-    respond_to do |format|
-      format.html { redirect_to root_path, notice: "#{fullname}, was successfully removed." }
-      format.json { head :no_content }
+    def update
+      participant = set_participant
+      participant.assign_attributes(participant_params)
+
+      if !participant_params[:fullname].blank? && participant.save
+        redirect_to participants_home_path, notice: "#{participant.fullname}, was successfully updated."
+        # format.json { render :show, status: :ok, location: @participant }
+      else
+
+        flash[:alert] = 'Eine Name ist nötig'
+        render :edit, locals: { participant: } # , status: :unprocessable_entity
+        # format.json { render json: @participant.errors, status: :unprocessable_entity }
+      end
     end
-  end
 
-  private
+    def destroy
+      participant = set_participant
+      fullname = participant.fullname
+      participant.destroy
+      session[:participant] = nil
+      session[:login_token] = nil
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: "#{fullname}, was successfully removed." }
+        format.json { head :no_content }
+      end
+    end
+
+    private
+
     def set_participant
       current_participant(session[:login_token])
     end
@@ -43,4 +47,5 @@ class Participants::ProfilesController < Participants::ApplicationController
     def participant_params
       params.require(:participant).permit(:fullname)
     end
+  end
 end

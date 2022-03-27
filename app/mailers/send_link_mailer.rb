@@ -1,5 +1,6 @@
-class SendLinkMailer < ApplicationMailer
+# frozen_string_literal: true
 
+class SendLinkMailer < ApplicationMailer
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
   #
@@ -9,8 +10,8 @@ class SendLinkMailer < ApplicationMailer
     @person   = person
     @auth_url = auth_url
 
-    mail(to:      @person.email,
-         from:    'access-link@bernumdze.org',
+    mail(to: @person.email,
+         from: 'access-link@bernumdze.org',
          subject: 'Access für bernumdze.org')
   end
 end

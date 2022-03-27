@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # trims leading & trailing white space - and retains tabs & new lines
 class TrimmedText < ActiveRecord::Type::String
   def cast(value)

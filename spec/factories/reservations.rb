@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :reservation do
     event           { FactoryBot.create :event }
@@ -18,6 +20,5 @@ FactoryBot.define do
     start_date_time { nil }
     end_date_time   { nil }
     is_cancelled    { false }
-
   end
 end

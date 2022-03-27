@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 # https://railsapps.github.io/rails-authorization.html
-class Viewers::ApplicationController < Users::ApplicationController
-  before_action :viewer_only #, :except => :show
+module Viewers
+  class ApplicationController < Users::ApplicationController
+    before_action :viewer_only # , :except => :show
 
-  private
+    private
 
-  def viewer_only
-    unless current_user.access_role == 'viewer' # || current_user.access_role == 'member'
-      redirect_back fallback_location: landing_path, :alert => "Access denied."
+    def viewer_only
+      unless current_user.access_role == 'viewer' # || current_user.access_role == 'member'
+        redirect_back fallback_location: landing_path, alert: 'Access denied.'
+      end
     end
   end
-
 end

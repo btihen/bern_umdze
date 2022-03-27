@@ -1,13 +1,14 @@
-class TokensController < ApplicationController
+# frozen_string_literal: true
 
+class TokensController < ApplicationController
   def new
     participant = Participant.new
-    render :new, locals: {participant: participant}
+    render :new, locals: { participant: }
   end
 
   def create
     email = get_params[:email]
-    person = User.find_by(email: email) || Participant.find_by(email: email) || Participant.new(email: email)
+    person = User.find_by(email:) || Participant.find_by(email:) || Participant.new(email:)
 
     if person.is_a?(User) || (person.is_a?(Participant) && person.valid? && person.save)
       auth_sgid = person.to_sgid(expires_in: 1.hour, for: 'access')
@@ -42,9 +43,8 @@ class TokensController < ApplicationController
 
   private
 
-    # Only allow a list of trusted parameters through.
-    def get_params
-      params.require(:participant).permit(:email)
-    end
-
+  # Only allow a list of trusted parameters through.
+  def get_params
+    params.require(:participant).permit(:email)
+  end
 end

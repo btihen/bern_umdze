@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # config/initializers/types.rb
 # Use on_load to avoid DEPRECATION warnings
 # https://github.com/rails/rails/issues/36363

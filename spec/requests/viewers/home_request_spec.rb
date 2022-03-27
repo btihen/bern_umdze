@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe "route '/' - for viewers", type: :request do
-
   describe "logged in as a 'viewer'" do
-    let(:viewer)  { FactoryBot.create :user, access_role: "viewer" }
+    let(:viewer) { FactoryBot.create :user, access_role: 'viewer' }
     before do
       sign_in viewer
     end
@@ -18,5 +19,4 @@ RSpec.describe "route '/' - for viewers", type: :request do
       expect(response.body).to include("<p hidden id='viewer_home' class='pageName'>Viewer-#{viewer.id} Home</p>")
     end
   end
-
 end

@@ -1,6 +1,8 @@
-require_relative "boot"
+# frozen_string_literal: true
 
-require "rails/all"
+require_relative 'boot'
+
+require 'rails/all'
 # require "rails"
 # # Pick the frameworks you want:
 # require "active_model/railtie"
@@ -28,7 +30,7 @@ module BernUmdze
 
     # config.autoloader = :zeitwerk
 
-    config.time_zone = "Zurich"
+    config.time_zone = 'Zurich'
     # hoping to ignore timezones and just display time entered
     # https://makandracards.com/makandra/46009-working-with-or-without-time-zones-in-rails-applications
     config.active_record.default_timezone = :local

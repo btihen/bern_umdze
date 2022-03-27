@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateReservations < ActiveRecord::Migration[6.0]
   def change
     create_table :reservations do |t|
@@ -20,7 +22,7 @@ class CreateReservations < ActiveRecord::Migration[6.0]
     end
     add_index :reservations,  :end_date
     add_index :reservations,  :start_date
-    add_index :reservations, [:event_id, :space_id, :start_date_time, :end_date_time],
-                              unique: true, name: "index_reservation_unique"
+    add_index :reservations, %i[event_id space_id start_date_time end_date_time],
+              unique: true, name: 'index_reservation_unique'
   end
 end

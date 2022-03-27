@@ -1,5 +1,6 @@
-class RepeatBooking < ApplicationRecord
+# frozen_string_literal: true
 
+class RepeatBooking < ApplicationRecord
   belongs_to :event
   belongs_to :space
 
@@ -36,7 +37,7 @@ class RepeatBooking < ApplicationRecord
 
   # https://stackoverflow.com/questions/12181444/ruby-combine-date-and-time-objects-into-a-datetime
   def create_date_times
-    return  if start_date.blank? || start_time.blank? || end_date.blank? || end_time.blank?
+    return if start_date.blank? || start_time.blank? || end_date.blank? || end_time.blank?
 
     unless start_date_time.is_a? DateTime
       self.start_date_time = start_date.to_datetime + start_time.seconds_since_midnight.seconds
@@ -51,30 +52,25 @@ class RepeatBooking < ApplicationRecord
     return  if start_date.blank? || start_time.blank? || end_date.blank? || end_time.blank?
     return  if start_date_time < end_date_time
 
-    if start_date > end_date
-      errors.add(:start_date, "must be before end-date")
-    end
-    if start_date == end_date && start_time > end_time
-      errors.add(:start_time, "must be before end-time")
-    end
+    errors.add(:start_date, 'must be before end-date') if start_date > end_date
+    errors.add(:start_time, 'must be before end-time') if start_date == end_date && start_time > end_time
   end
 
   def validate_start_date_time_before_repeat_until_date
     return  if start_date.blank? || repeat_until_date.blank?
     return  if start_date < repeat_until_date
 
-    if start_date > repeat_until_date
-      errors.add(:repeat_until_date, "must be after start_date")
-    end
+    errors.add(:repeat_until_date, 'must be after start_date') if start_date > repeat_until_date
   end
 
   def validate_repeat_input_combinations
     # validate only unit 'year & month' are allowed to use 'this' 'date'
-    return  if %w[year month].include?(repeat_unit) && repeat_ordinal.eql?("this") && repeat_choice.eql?("date")
-    if repeat_ordinal.eql?("this")
+    return if %w[year month].include?(repeat_unit) && repeat_ordinal.eql?('this') && repeat_choice.eql?('date')
+
+    if repeat_ordinal.eql?('this')
       errors.add(:repeat_ordinal, "'this' must be used with unit-'year or month' and choice-'date'")
     end
-    if repeat_choice.eql?("date")
+    if repeat_choice.eql?('date')
       errors.add(:repeat_choice, "'date' must be used with unit-'year or month' and ordinal-'this'")
     end
     if %w[year month].include?(repeat_unit) && (repeat_ordinal.blank? || repeat_choice.blank?)
@@ -83,20 +79,19 @@ class RepeatBooking < ApplicationRecord
     end
 
     # validate usage of unit-week
-    return  if repeat_unit.eql?("week") && repeat_ordinal.blank? && %w[mon tue wed thu fri sat sun].include?(repeat_choice)
-    if repeat_unit.eql?("week") && !repeat_ordinal.blank?
+    return if repeat_unit.eql?('week') && repeat_ordinal.blank? && %w[mon tue wed thu fri sat
+                                                                      sun].include?(repeat_choice)
+
+    if repeat_unit.eql?('week') && !repeat_ordinal.blank?
       errors.add(:repeat_unit, "'week' cannot be paired with an ordinal")
     end
-    if repeat_unit.eql?("week") && ["", "date"].include?(repeat_choice)
+    if repeat_unit.eql?('week') && ['', 'date'].include?(repeat_choice)
       errors.add(:repeat_unit, "'week' must be paired with a weekday choice")
     end
 
     # validate usage of unit-day
-    return  if repeat_unit.eql?("day") && repeat_ordinal.blank? && repeat_choice.blank?
-    if repeat_unit.eql?("day")
-      errors.add(:repeat_unit, "'day' can only be paired with the 'frequency' (every)")
-    end
+    return if repeat_unit.eql?('day') && repeat_ordinal.blank? && repeat_choice.blank?
 
+    errors.add(:repeat_unit, "'day' can only be paired with the 'frequency' (every)") if repeat_unit.eql?('day')
   end
-
 end

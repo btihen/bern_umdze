@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddRepeatBookingToReservations < ActiveRecord::Migration[6.0]
   def change
     # null true (allows optionally belongs_to reservation)

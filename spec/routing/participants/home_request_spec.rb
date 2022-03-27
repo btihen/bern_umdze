@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "Participant Home", type: :request do
-
+RSpec.describe 'Participant Home', type: :request do
   # describe "GET /home - NOT loged-in" do
   #   it "returns http success" do
   #     get root_path
@@ -101,5 +102,4 @@ RSpec.describe "Participant Home", type: :request do
   #     expect(response.body).to include("<p hidden id='manager_home' class='pageName'>Manager-#{user.id} Home</p>")
   #   end
   # end
-
 end

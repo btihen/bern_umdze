@@ -3,7 +3,6 @@
 class AttendanceError < StandardError; end
 
 class AttendanceCommand
-
   # helpful for debugging
   attr_reader :location, :attendance, :reservation
 
@@ -35,31 +34,31 @@ class AttendanceCommand
 
   private
 
-    def notice_msg
-      {notice: "#{location.capitalize} attendance for #{event_display}."}
-    end
+  def notice_msg
+    { notice: "#{location.capitalize} attendance for #{event_display}." }
+  end
 
-    def alert_msg
-      {alert: "OOPS - unexpected error for event #{event_display}"}
-    end
+  def alert_msg
+    { alert: "OOPS - unexpected error for event #{event_display}" }
+  end
 
-    def event_display
-      "#{reservation.event.event_name} on #{reservation.start_date}"
-    end
+  def event_display
+    "#{reservation.event.event_name} on #{reservation.start_date}"
+  end
 
-    def delete?
-      location.eql?('delete')
-    end
+  def delete?
+    location.eql?('delete')
+  end
 
-    def onsite?
-      location.eql?('onsite')
-    end
+  def onsite?
+    location.eql?('onsite')
+  end
 
-    def remote?
-      location.eql?('remote')
-    end
+  def remote?
+    location.eql?('remote')
+  end
 
-    def onsite_limit_ok?
-      reservation.onsite_space_available?
-    end
+  def onsite_limit_ok?
+    reservation.onsite_space_available?
+  end
 end

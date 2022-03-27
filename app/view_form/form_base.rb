@@ -3,7 +3,6 @@
 # https://ducktypelabs.com/how-to-keep-your-controllers-thin-with-form-objects/
 # # sample generic InputForm
 class FormBase
-
   # attr_reader :root_model
 
   # ActiveModel provides validations & form_for tools
@@ -32,17 +31,17 @@ class FormBase
   #   return false # if id.blank?
   # end
 
-#   # All the models that are apart of our form should be part attr_accessor.
-#   # This allows the form to be initialized with existing instances.
-#   attr_accessor :contact, :attendance, :initiative, :attendance_school
-#
-#   # list attributes used in the form
-#   attr_accessor :model_id
-#
-#   # define attributes for input conversion
-#   attribute :model_id,       Integer
-#
-#   # add necessary validations
-#   validates :model_id,       presence: true
-#
+  #   # All the models that are apart of our form should be part attr_accessor.
+  #   # This allows the form to be initialized with existing instances.
+  #   attr_accessor :contact, :attendance, :initiative, :attendance_school
+  #
+  #   # list attributes used in the form
+  #   attr_accessor :model_id
+  #
+  #   # define attributes for input conversion
+  #   attribute :model_id,       Integer
+  #
+  #   # add necessary validations
+  #   validates :model_id,       presence: true
+  #
 end

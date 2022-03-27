@@ -1,9 +1,9 @@
 # frozen_string_literal: true
+
 require 'csv'
 
 # https://makandracards.com/makandra/1307-how-to-use-helper-methods-inside-a-model
 class ViewBase < ActionView::Base
-
   include ActiveModel::Model
   include ActiveModel::Serializers::JSON
 
@@ -45,16 +45,16 @@ class ViewBase < ActionView::Base
   # figure out how to point to the ROOT_MODEL of the View Object instance
   delegate :id, :to_param, :model_name, :to_partial_path, to: :root_model
 
-  def initialize(root_model, view_context=nil)
+  def initialize(root_model, view_context = nil)
     @view_context = view_context
-    @root_model   = root_model #|| NoModel.new
+    @root_model   = root_model # || NoModel.new
   end
 
   # Initialize collection
-  def self.collection(collection, view_context=nil)
-    return []   if collection.blank?
+  def self.collection(collection, view_context = nil)
+    return [] if collection.blank?
 
-    collection.map { |root_model| self.new(root_model, view_context) }
+    collection.map { |root_model| new(root_model, view_context) }
   end
 
   # export as CSV -- for
@@ -62,7 +62,7 @@ class ViewBase < ActionView::Base
   def self.collection_to_csv(view_collection, attribs_list)
     CSV.generate do |csv|
       csv << attribs_list
-      view_collection.each do |view_object|
+      view_collection.each do |_view_object|
         # get use values_at instead of map - still works
         # csv << view_object.root_model.attributes.values_at(*attribs_list)
         # get attributes directly (works with view objects)
@@ -72,5 +72,4 @@ class ViewBase < ActionView::Base
       end
     end
   end
-
 end

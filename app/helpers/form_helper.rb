@@ -2,7 +2,6 @@
 
 # stuff available to all forms
 module FormHelper
-
   def error_message_on(object, method)
     return unless object.respond_to?(:errors) && object.errors.include?(method)
 
@@ -15,5 +14,4 @@ module FormHelper
   def field_errors(object, method)
     object.errors[method].map { |error| "#{method.to_s.humanize} #{error}" }
   end
-
 end

@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 class CreateRepeatBookings < ActiveRecord::Migration[6.0]
   def change
     create_table :repeat_bookings do |t|
-
       # infos needed to create many different repeat bookings
       t.integer    :repeat_every,      null: false # every 1 month (every 2 months), etc.
       t.string     :repeat_unit,       null: false # year, month, week, day

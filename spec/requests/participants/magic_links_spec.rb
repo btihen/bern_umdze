@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "Participants::MagicLinks", type: :request do
-  let(:new_attributes)  { {email: "test@test.ch"} }
+RSpec.describe 'Participants::MagicLinks', type: :request do
+  let(:new_attributes) { { email: 'test@test.ch' } }
 
-  describe "GET /participants/magic_links/new" do
-    it "returns http success" do
+  describe 'GET /participants/magic_links/new' do
+    it 'returns http success' do
       get new_participants_magic_link_path
 
       expect(response).to have_http_status(:success)
@@ -12,10 +14,9 @@ RSpec.describe "Participants::MagicLinks", type: :request do
     end
   end
 
-  describe "POST /create" do
-
-    it "returns to new magic link without an email without creating a Participant" do
-      new_attributes[:email] = ""
+  describe 'POST /create' do
+    it 'returns to new magic link without an email without creating a Participant' do
+      new_attributes[:email] = ''
       post participants_magic_links_path, params: { participant: new_attributes }
 
       expect(response).to have_http_status(:success)
@@ -23,8 +24,8 @@ RSpec.describe "Participants::MagicLinks", type: :request do
       expect(Participant.count).to eq 0
     end
 
-    it "returns to new magic link with an invalid email without creating a Participant" do
-      new_attributes[:email] = "bill"
+    it 'returns to new magic link with an invalid email without creating a Participant' do
+      new_attributes[:email] = 'bill'
       post participants_magic_links_path, params: { participant: new_attributes }
 
       expect(response).to have_http_status(:success)
@@ -32,10 +33,10 @@ RSpec.describe "Participants::MagicLinks", type: :request do
       expect(Participant.count).to eq 0
     end
 
-    it "returns http success with a valid email" do
+    it 'returns http success with a valid email' do
       post participants_magic_links_path, params: { participant: new_attributes }
 
-      expect(response.status).to eq(302) #redirected
+      expect(response.status).to eq(302) # redirected
       expect(response).to redirect_to(landing_path)
 
       # be sure participant is properly created
@@ -45,5 +46,4 @@ RSpec.describe "Participants::MagicLinks", type: :request do
       expect(participant.email).to eq(new_attributes[:email])
     end
   end
-
 end

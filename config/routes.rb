@@ -1,20 +1,21 @@
-Rails.application.routes.draw do
+# frozen_string_literal: true
 
+Rails.application.routes.draw do
   namespace :users do
-    get '/attendances',         as: 'attendance',   to: 'attendances#edit'
-    resources :profiles,        only: [:edit, :update, :destroy]
+    get '/attendances',         as: 'attendance', to: 'attendances#edit'
+    resources :profiles,        only: %i[edit update destroy]
   end
   namespace :hosts do
-    resources :reservations,    only: [:edit, :update]
+    resources :reservations,    only: %i[edit update]
   end
   namespace :planners do
-    resources :reservations,    only: [:edit, :update, :new, :create, :destroy]
+    resources :reservations,    only: %i[edit update new create destroy]
   end
   namespace :managers do
-    resources :users,           only: [:edit, :update, :new, :create, :index, :destroy]
-    resources :events,          only: [:edit, :update, :new, :create, :index, :destroy]
-    resources :reservations,    only: [:edit, :update, :new, :create, :destroy]
-    resources :repeat_bookings, only: [:edit, :update, :new, :create, :index, :destroy]
+    resources :users,           only: %i[edit update new create index destroy]
+    resources :events,          only: %i[edit update new create index destroy]
+    resources :reservations,    only: %i[edit update new create destroy]
+    resources :repeat_bookings, only: %i[edit update new create index destroy]
   end
 
   namespace :participants do
@@ -22,8 +23,8 @@ Rails.application.routes.draw do
     get '/sessions/:token',     as: 'session_auth', to: 'sessions#auth'
     get '/attendances',         as: 'attendance',   to: 'attendances#edit'
     resources :sessions,        only: [:destroy]
-    resources :magic_links,     only: [:new, :create]
-    resources :profiles,        only: [:edit, :update, :destroy]
+    resources :magic_links,     only: %i[new create]
+    resources :profiles,        only: %i[edit update destroy]
   end
 
   get  'tokens/:auth', as: :auth_tokens,   to: 'tokens#auth'
@@ -37,17 +38,27 @@ Rails.application.routes.draw do
 
   # ugly, but works as auto-redirect upon login
   # https://stackoverflow.com/questions/4753871/how-can-i-redirect-a-users-home-root-path-based-on-their-role-using-devise
-  root to: 'landing#index',             as: :landing_root, constraints: lambda { |request| !request.env['warden'].user }
+  root to: 'landing#index',             as: :landing_root, constraints: ->(request) { !request.env['warden'].user }
   # root to: 'participants/home#index',   as: :participant_root, constraints: lambda { |request| !request.env['warden'].user && request.env['warden'].participant }
-  root to: 'viewers/home#index',        as: :user_root,    constraints: lambda { |request|  request.env['warden'].user.access_role.blank? }
-  root to: 'hosts/home#index',          as: :host_root,    constraints: lambda { |request|  request.env['warden'].user.access_role == 'host' }
-  root to: 'viewers/home#index',        as: :viewer_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'viewer' }
-  root to: 'planners/home#index',       as: :planner_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'planner' }
-  root to: 'managers/home#index',       as: :manager_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'manager' }
+  root to: 'viewers/home#index',        as: :user_root,    constraints: lambda { |request|
+                                                                          request.env['warden'].user.access_role.blank?
+                                                                        }
+  root to: 'hosts/home#index', as: :host_root, constraints: lambda { |request|
+                                                              request.env['warden'].user.access_role == 'host'
+                                                            }
+  root to: 'viewers/home#index', as: :viewer_root, constraints: lambda { |request|
+                                                                  request.env['warden'].user.access_role == 'viewer'
+                                                                }
+  root to: 'planners/home#index', as: :planner_root, constraints: lambda { |request|
+                                                                    request.env['warden'].user.access_role == 'planner'
+                                                                  }
+  root to: 'managers/home#index', as: :manager_root, constraints: lambda { |request|
+                                                                    request.env['warden'].user.access_role == 'manager'
+                                                                  }
   # root to: 'hosts/home#index',          as: :umdze_root,   constraints: lambda { |request|  request.env['warden'].user.access_role == 'umdze' }
   # root to: 'viewers/home#index',        as: :member_root,  constraints: lambda { |request|  request.env['warden'].user.access_role == 'member' }
   # root to: 'managers/home#index',       as: :trustee_root, constraints: lambda { |request|  request.env['warden'].user.access_role == 'trustee' }
-  root to: "landing#index"
+  root to: 'landing#index'
 
   # These cause csfr error!!!
   ###########################
@@ -78,5 +89,4 @@ Rails.application.routes.draw do
   #     resources :reservations, only: [:edit, :update, :new, :create, :destroy]
   #   end
   # end
-
 end

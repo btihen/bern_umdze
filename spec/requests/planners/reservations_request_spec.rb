@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "/planners/reservations", type: :request do
-
+RSpec.describe '/planners/reservations', type: :request do
   # only: [:edit, :update, :new, :create, :destroy]
   #     planners_reservations  POST   /planners/reservations(.:format)
   #   new_planners_reservation GET    /planners/reservations/new(.:format)
@@ -10,7 +11,7 @@ RSpec.describe "/planners/reservations", type: :request do
   #                            PUT    /planners/reservations/:id(.:format)
   #                            DELETE /planners/reservations/:id(.:format)
 
-  let(:planner)  { FactoryBot.create :user, access_role: "planner" }
+  let(:planner) { FactoryBot.create :user, access_role: 'planner' }
   before do
     sign_in planner
   end
@@ -18,24 +19,24 @@ RSpec.describe "/planners/reservations", type: :request do
     sign_out planner
   end
 
-  let(:valid_attributes) {
+  let(:valid_attributes) do
     event  = FactoryBot.create :event
     space  = FactoryBot.create :space
-    params = FactoryBot.attributes_for(:reservation).transform_values { |v| v.nil? ? "" : v }
+    params = FactoryBot.attributes_for(:reservation).transform_values { |v| v.nil? ? '' : v }
     params[:event_id] = event.id
     params[:space_id] = space.id
     params.except(:repeat_booking)
-  }
+  end
 
-  let(:invalid_attributes) {
+  let(:invalid_attributes) do
     params = valid_attributes
-    params[:start_date] = "2020-02-02"
-    params[:end_date] = "1920-01-01"
+    params[:start_date] = '2020-02-02'
+    params[:end_date] = '1920-01-01'
     params
-  }
+  end
 
-  describe "GET /planners/reservations/new (new)" do
-    it "renders a successful response" do
+  describe 'GET /planners/reservations/new (new)' do
+    it 'renders a successful response' do
       FactoryBot.create :event
       FactoryBot.create :space
       get new_planners_reservation_path
@@ -44,8 +45,8 @@ RSpec.describe "/planners/reservations", type: :request do
     end
   end
 
-  describe "GET /planners/reservations/:id/edit (edit)" do
-    it "render a successful response" do
+  describe 'GET /planners/reservations/:id/edit (edit)' do
+    it 'render a successful response' do
       reservation = Reservation.create! valid_attributes
       get edit_planners_reservation_path(reservation)
 
@@ -53,25 +54,25 @@ RSpec.describe "/planners/reservations", type: :request do
     end
   end
 
-  describe "POST /planners/reservations (create)" do
-    context "with valid parameters" do
-      it "creates a new Reservation" do
-        expect {
+  describe 'POST /planners/reservations (create)' do
+    context 'with valid parameters' do
+      it 'creates a new Reservation' do
+        expect do
           post planners_reservations_path, params: { reservation: valid_attributes }
-        }.to change(Reservation, :count).by(1)
+        end.to change(Reservation, :count).by(1)
       end
 
-      it "redirects to the home agenda page" do
+      it 'redirects to the home agenda page' do
         post planners_reservations_path, params: { reservation: valid_attributes }
         expect(response).to redirect_to(root_path(date: Date.today.to_s))
       end
     end
 
-    context "with invalid parameters" do
-      it "does not create a new Reservation" do
-        expect {
+    context 'with invalid parameters' do
+      it 'does not create a new Reservation' do
+        expect do
           post planners_reservations_path, params: { reservation: invalid_attributes }
-        }.to change(Reservation, :count).by(0)
+        end.to change(Reservation, :count).by(0)
       end
 
       it "renders a successful response (i.e. to display the 'new' template)" do
@@ -81,14 +82,14 @@ RSpec.describe "/planners/reservations", type: :request do
     end
   end
 
-  describe "PATCH /planners/reservations/:id (update)" do
-    context "with valid parameters" do
+  describe 'PATCH /planners/reservations/:id (update)' do
+    context 'with valid parameters' do
       let(:reservation) { Reservation.create! valid_attributes }
-      let(:new_attributes) {
-        {start_date: reservation.start_date_time + 3.days, end_date: reservation.end_date_time + 3.days}
-      }
+      let(:new_attributes) do
+        { start_date: reservation.start_date_time + 3.days, end_date: reservation.end_date_time + 3.days }
+      end
 
-      it "updates the requested managers_user" do
+      it 'updates the requested managers_user' do
         # reservation = Reservation.create! valid_attributes
         patch planners_reservation_path(reservation), params: { reservation: new_attributes }
         reservation.reload
@@ -97,7 +98,7 @@ RSpec.describe "/planners/reservations", type: :request do
         expect(reservation.end_date).to   eq Date.parse(new_attributes[:end_date].to_date.to_s)
       end
 
-      it "redirects to the planners home page" do
+      it 'redirects to the planners home page' do
         # reservation = Reservation.create! valid_attributes
         patch planners_reservation_path(reservation), params: { reservation: new_attributes }
         reservation.reload
@@ -105,27 +106,28 @@ RSpec.describe "/planners/reservations", type: :request do
       end
     end
 
-    context "with invalid parameters" do
+    context 'with invalid parameters' do
       it "renders a successful response (i.e. to display the 'edit' template)" do
         reservation = Reservation.create! valid_attributes
         patch planners_reservation_path(reservation), params: { reservation: invalid_attributes }
 
         expect(response).to be_successful
         # back to the edit page (until good params are sent)
-        expect(response.body).to include "<p hidden id='planner-edit-resevation-#{reservation.id}' class='pageName'>Planner Edit Reservation #{reservation.id}</p>"
+        expect(response.body)
+          .to include "<p hidden id='planner-edit-resevation-#{reservation.id}' class='pageName'>Planner Edit Reservation #{reservation.id}</p>"
       end
     end
   end
 
-  describe "DELETE /destroy" do
-    it "destroys the requested managers_user" do
+  describe 'DELETE /destroy' do
+    it 'destroys the requested managers_user' do
       reservation = Reservation.create! valid_attributes
-      expect {
+      expect do
         delete planners_reservation_path(reservation)
-      }.to change(Reservation, :count).by(-1)
+      end.to change(Reservation, :count).by(-1)
     end
 
-    it "redirects to the planners agenda (home page)" do
+    it 'redirects to the planners agenda (home page)' do
       reservation = Reservation.create! valid_attributes
       delete planners_reservation_path(reservation)
       expect(response).to redirect_to(root_path(date: Date.today.to_s))

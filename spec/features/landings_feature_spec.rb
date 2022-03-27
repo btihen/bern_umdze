@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'Landing Page Features without a login', type: :feature do
-
   scenario 'Visit landing Page' do
     visit landing_path
 
@@ -11,8 +12,8 @@ RSpec.describe 'Landing Page Features without a login', type: :feature do
     expect(page_tag).to be_truthy
   end
 
-  describe "logged in as viewer" do
-    let(:user)  { FactoryBot.create :user }
+  describe 'logged in as viewer' do
+    let(:user) { FactoryBot.create :user }
     before do
       sign_in user
     end
@@ -29,5 +30,4 @@ RSpec.describe 'Landing Page Features without a login', type: :feature do
       expect(page_tag).to be_truthy
     end
   end
-
 end

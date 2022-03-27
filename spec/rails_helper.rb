@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
-abort("The Rails environment is running in production mode!") if Rails.env.production?
+abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 
 # to enable integration tests with rspec
 require 'capybara/rspec'
 
 # include custom support files
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |file| require file }
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |file| require file }
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -86,7 +88,7 @@ RSpec.configure do |config|
   # setup devise login helpers in Rspec (login helpers)
   config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include Devise::Test::IntegrationHelpers, type: :request
-  
+
   # allows us for force session logouts (im feature tests)
   config.include Warden::Test::Helpers
 end

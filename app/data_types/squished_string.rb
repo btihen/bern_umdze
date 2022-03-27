@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # removes leading & trailing spaces and removes duplicate internal spaces
 class SquishedString < ActiveRecord::Type::String
   def cast(value)

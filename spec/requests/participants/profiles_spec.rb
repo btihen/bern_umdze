@@ -1,20 +1,21 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "Participants::Profiles", type: :request do
+RSpec.describe 'Participants::Profiles', type: :request do
+  describe 'GET /edit' do
+    let(:participant) { FactoryBot.create :participant }
 
-  describe "GET /edit" do
-    let(:participant)   { FactoryBot.create :participant }
+    it 'returns a redirect without a valid session' do
+      get '/participants/profiles/1/edit'
 
-    it "returns a redirect without a valid session" do
-      get "/participants/profiles/1/edit"
-
-      expect(response.status).to eq(302) #redirected
+      expect(response.status).to eq(302) # redirected
       expect(response).to redirect_to(new_participants_magic_link_path)
     end
 
-    it "success auf participant profile with a valid token" do
+    it 'success auf participant profile with a valid token' do
       get "/participants/sessions/#{participant.login_token}"
-      expect(response.status).to eq(302) #redirected
+      expect(response.status).to eq(302) # redirected
       expect(response).to redirect_to(participants_home_path)
 
       # get "/participants/profiles/#{participant.id}/edit"
@@ -24,35 +25,35 @@ RSpec.describe "Participants::Profiles", type: :request do
     end
   end
 
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:participant)     { FactoryBot.create :participant, fullname: "" }
-      let(:new_attributes)  { {fullname: "Nyima"} }
+  describe 'PATCH /update' do
+    context 'with valid parameters' do
+      let(:participant)     { FactoryBot.create :participant, fullname: '' }
+      let(:new_attributes)  { { fullname: 'Nyima' } }
 
-      it "update the participant name with a new name" do
+      it 'update the participant name with a new name' do
         get "/participants/sessions/#{participant.login_token}"
-        expect(response.status).to eq(302) #redirected
+        expect(response.status).to eq(302) # redirected
         expect(response).to redirect_to(participants_home_path)
 
-        follow_redirect!  # ensure that the central controller redirects to profile
+        follow_redirect! # ensure that the central controller redirects to profile
         expect(response).to redirect_to(edit_participants_profile_path(participant))
 
         # get "/participants/profiles/#{participant.id}/edit"
         patch participants_profile_path(participant, participant: new_attributes)
-        expect(response.status).to eq(302) #redirected
+        expect(response.status).to eq(302) # redirected
         expect(response).to redirect_to(participants_home_path)
 
         participant.reload
         expect(participant.fullname).to eq new_attributes[:fullname]
       end
 
-      it "redirects to profile page if empty name is entered" do
-        new_attributes[:fullname] = ""
+      it 'redirects to profile page if empty name is entered' do
+        new_attributes[:fullname] = ''
         get "/participants/sessions/#{participant.login_token}"
-        expect(response.status).to eq(302) #redirected
+        expect(response.status).to eq(302) # redirected
         expect(response).to redirect_to(participants_home_path)
 
-        follow_redirect!  # ensure that the central controller redirects to profile
+        follow_redirect! # ensure that the central controller redirects to profile
         expect(response).to redirect_to(edit_participants_profile_path(participant))
 
         # get "/participants/profiles/#{participant.id}/edit"
@@ -66,10 +67,8 @@ RSpec.describe "Participants::Profiles", type: :request do
     end
   end
 
-
-  describe "DESTROY /participants/profile/:id" do
-    xit "particpant logout" do
+  describe 'DESTROY /participants/profile/:id' do
+    xit 'particpant logout' do
     end
   end
-
 end

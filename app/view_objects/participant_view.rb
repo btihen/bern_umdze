@@ -1,7 +1,8 @@
-class ParticipantView < ViewBase
+# frozen_string_literal: true
 
+class ParticipantView < ViewBase
   # alias method allows use to rename view_object to a clear name without the initializer
-  alias_method :participant,      :root_model
+  alias participant root_model
 
   # delegate to model for attributes needed
   delegate  :id, :fullname, :email,
@@ -12,5 +13,4 @@ class ParticipantView < ViewBase
 
     email
   end
-
 end
